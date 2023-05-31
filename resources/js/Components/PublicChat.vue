@@ -15,22 +15,22 @@
                     msg.send_by_user
                   }}</span> -->
                   <span v-if="msg.user_token">
-                     <a  :style="{'color':authUserLevelData.color}" href="#" @click="showToast(authUserLevelData, msg.user_token)"> {{  msg.send_by_user }}  </a>
+                     <a  :style="{'color':msg.level_data ? msg.level_data.color : ''}" href="#" @click="showToast(authUserLevelData, msg.user_token)"> {{  msg.send_by_user }}  </a>
                   </span>
                   <span v-else>
                     {{  msg.send_by_user }} 
                   </span>
-                  <div class="toast" :id="'liveToast'+authUserLevelData.color" role="alert" aria-live="assertive" aria-atomic="true">
+                  <div class="toast" :id="'liveToast'+msg.user_token" role="alert" aria-live="assertive" aria-atomic="true">
   <div class="toast-header">
     <!-- <img src="..." class="rounded me-2" alt="..."> -->
-    <span class="badge me-auto" :style="{'background-color':authUserLevelData.color}">Level : {{ authUserLevelData.level  }}</span>
+    <span class="badge me-auto" :style="{'background-color':msg.level_data ? msg.level_data.color : ''}">Level : {{ msg.level_data ? msg.level_data.level : null  }}</span>
   
-    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close" @click="closeToast(authUserLevelData)">
+    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close" @click="closeToast(msg.user_token)">
       <i class=" bi bi-x-lg"></i>
     </button>
   </div>
   <div class="toast-body">
-    <small>Subscribed Plan : <span :style="{'color':authUserLevelData.color}"> {{ authUserLevelData.name  }} </span>  </small>
+    <small>Subscribed Plan : <span :style="{'color':msg.level_data ? msg.level_data.color : ''}"> {{ msg.level_data ? msg.level_data.name : null  }} </span>  </small>
 
     <!-- <button class="btn btn-primary btn-sm">{{  Reply }}</button> -->
   </div>
@@ -111,6 +111,7 @@ export default {
       userId: 1,
       hasNotPermission: true,
       authUserLevelData: {},
+      host_tip_menus: [],
     };
   },
   created() {
@@ -128,8 +129,8 @@ export default {
   mounted() {
     this.ref.child(this.chatKey).child(this.hostDetail?.uuid).on("value", (msg) => {
       try {
-        console.log( msg.val());
         let data = msg.val();
+        console.log(msg.val());
         // if (msg.exists()) {
         if (data && data.length > 0) {
           this.messages = data;
@@ -144,13 +145,25 @@ export default {
     });
     this.scrollBottom();
     this.getUserLevels();
+    this.getHostTipMenu();
   },
   methods: {
+    getHostTipMenu() {
+      try {
+          axios.get("/host-tip-menu/?host_id="+this.hostDetail.uuid).then((resp)=> {
+              // console.log(resp);
+              this.host_tip_menus = resp.data.host_tip_menu;
+            });
+           
+        } catch (error) {
+            console.log(error);
+        }
+    },
     closeToast(value) {
-      document.getElementById('liveToast'+value.color).style.display='none'
+      document.getElementById('liveToast'+value).style.display='none'
     },
     showToast(value, token) {
-      document.getElementById('liveToast'+value.color).style.display='block';
+      document.getElementById('liveToast'+token).style.display='block';
       this.getUserLevels(token);
     },
     showLoginModel() {
@@ -198,6 +211,7 @@ export default {
                   // avatar: 2,
                   send_at: date,
                   user_token: this.authUser.token,
+                  level_data: this.authUserLevelData,
                 };
                 var msgClone = this.messages;
                 msgClone.push(data);
@@ -216,7 +230,8 @@ export default {
                     msg: this.message,
                     send_by: this.authUser.uuid,
                     send_by_user: this.authUser.name,
-                    user_token: this.authUser.token
+                    user_token: this.authUser.token,
+                    level_data: this.authUserLevelData,
                     // avatar: this.authUser.avatar,
                     // send_at: date,
                   },

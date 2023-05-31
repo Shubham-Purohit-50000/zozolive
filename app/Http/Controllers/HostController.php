@@ -187,9 +187,11 @@ class HostController extends Controller
 
     public function hostTipMenu(Request $req){
         $HostTipMenu = HostTipMenu::where('host_id', $req->host_id)->get();
-        return response()->json([
-            $HostTipMenu,
-        ]);
+        return response()->json(
+            [
+                'host_tip_menu'=> $HostTipMenu
+            ]
+        );
     }
 
     public function CreateHostTipMenu(Request $req){
