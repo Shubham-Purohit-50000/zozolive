@@ -153,7 +153,7 @@ export default {
     },
     getUserLevels() {
       try {
-            axios.get("/user-level/"+this.authUser.token).then((resp)=> {
+            axios.get("/user_level/"+this.authUser.token).then((resp)=> {
               // console.log(resp);
               this.authUserLevelData = resp.data.data;
             });
