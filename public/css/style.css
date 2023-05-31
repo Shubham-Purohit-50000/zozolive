@@ -1,0 +1,136 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.permission {
+    height: 100vh;
+    background: linear-gradient(180deg, #a2262e 0%, #000 50%);
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header .total_live {
+    margin-left: 1rem;
+}
+
+.header .total_live--icon {
+    color: #9fe20d;
+    margin-right: 7px;
+    font-size: 1.5rem;
+}
+
+.header .total_live--count {
+    margin-top: 0.3rem;
+}
+
+.logo {
+    letter-spacing: 2px;
+    font-size: 1.25rem;
+}
+
+.main-gradient {
+    color: #ffffff;
+    text-align: center;
+    letter-spacing: 0.3px;
+}
+
+.main-gradient .content {
+    width: 40%;
+    margin: 0 auto;
+}
+
+.main-gradient .content .terms {
+    font-size: 0.75rem;
+}
+
+.main-gradient .content .terms>a {
+    opacity: 0.6;
+    color: #f8f8f8;
+    text-decoration: underline;
+}
+
+.text-gray-light {
+    opacity: 0.6;
+    color: #f8f8f8;
+    font-size: 0.7rem;
+}
+
+.main-gradient .content .btn {
+    padding: 0.7rem 1.25rem;
+    border-radius: 2rem;
+    font-size: 1rem;
+    background-color: #718b39;
+    color: #ffffff;
+    margin-top: 1rem;
+}
+
+.main-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.main-content .exit {
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+    color: #f8f8f8;
+    text-decoration: underline;
+}
+
+.w-40 {
+    width: 40%;
+}
+
+.mt-6 {
+    margin-top: 2rem;
+}
+
+.mt-8 {
+    margin-top: 3rem;
+}
+
+.error_msg {
+    color: #f00 !important;
+}
+
+.ml-2 {
+    margin-left: 1rem;
+}
+/* .sidebar-nav .nav-link i{
+    color: var(--primary);
+} */
+
+.buyTkn {
+    /*height: 35px;*/
+    /*width: 35px;*/
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 25px;
+    font-size: 22px;
+    color: #000;
+}
+.bg-green{
+    background: #96cd1f;
+}
+.buy_token_plus_btn{
+    border-radius: 50%;
+    width: 2.3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@media screen and (max-width: 768px){
+    .header-nav .login__btn, .header-nav .signup__btn{
+        display: none;
+    }
+
+}

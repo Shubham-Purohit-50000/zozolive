@@ -1,0 +1,50 @@
+{
+    "private": true,
+    "scripts": {
+        "dev": "npm run development",
+        "development": "mix",
+        "watch": "mix watch",
+        "watch-poll": "mix watch -- --watch-options-poll=1000",
+        "hot": "mix watch --hot",
+        "prod": "npm run production",
+        "production": "mix --production"
+    },
+    "devDependencies": {
+        "@inertiajs/inertia": "^0.11.0",
+        "@inertiajs/inertia-vue3": "^0.6.0",
+        "@inertiajs/progress": "^0.2.7",
+        "@tailwindcss/forms": "^0.5.3",
+        "autoprefixer": "^10.4.12",
+        "axios": "^1.1.2",
+        "laravel-mix": "^6.0.49",
+        "lodash": "^4.17.19",
+        "parcel": "^2.8.3",
+        "postcss": "^8.4.18",
+        "tailwindcss": "^3.2.1",
+        "video.js": "^8.0.4",
+        "vue": "^3.2.41",
+        "vue-loader": "^16.2.0",
+        "vue-template-compiler": "^2.7.14"
+    },
+    "dependencies": {
+        "@100mslive/hms-video-store": "^0.8.4",
+        "@inertiajs/vue3": "^1.0.0",
+        "agora-rtc-sdk-ng": "^4.16.1",
+        "hls-server": "^1.5.0",
+        "hls.js": "^1.3.3",
+        "laravel-echo": "^1.15.0",
+        "moment": "^2.29.4",
+        "pusher-js": "^8.0.1",
+        "simple-peer": "^9.11.1",
+        "vue-chat-scroll": "^1.4.0",
+        "vue-loading-overlay": "^6.0.2",
+        "vue-multiselect": "^2.1.7",
+        "vue-native-websocket": "^2.0.15",
+        "vue-select": "^3.20.2",
+        "vue3-emoji-picker": "^1.1.7",
+        "vue3-otp-input": "^0.3.6",
+        "vue3-toastify": "^0.1.6",
+        "vuex": "^4.0.2",
+        "ws": "^8.12.1"
+    }
+}

@@ -1,0 +1,258 @@
+@charset "UTF-8";
+
+:root {
+  --primary: #a2262e;
+  --primary-light: #fa5365;
+  --primary-dark: #912229;
+  --primary-border: #a2262e;
+}
+
+header#header {
+  background: var(--primary);
+}
+
+.sidebar-nav .nav-link.active {
+  background: #ffffff1f;
+  color: var(--primary);
+  font-weight: bold;
+}
+
+.bi-list::before {
+  color: #fff;
+}
+
+.color_white {
+  color: #fff;
+}
+
+.ms-auto {
+  margin-right: auto;
+}
+
+.alignitem_center {
+  align-items: center;
+}
+
+.border_botton {
+  border-bottom: 1px solid #f8f8f833;
+}
+
+.loginLink {
+  font-size: 0.8rem !important;
+}
+
+.bg_button {
+  background: #fff;
+  padding: 0.35rem 1rem;
+  border-radius: 18px;
+}
+
+.outline_button {
+  border: 1px solid #fff;
+  padding: 0.35rem 1rem;
+  border-radius: 18px;
+  color: #fff !important;
+}
+
+.card.list .caption{
+  position: absolute;
+    height: 100%;
+    bottom: 0%;
+    color: #fff;
+    font-weight: 500;
+    font-size: 14px;
+    width: 100%;
+    padding: 4px;
+    background: #0a0a0a42;
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+}
+
+.card.list .caption img {
+    height: 10px;
+}
+
+.see-more-button {
+  border-radius: 20px;
+  padding: 5px 20px;
+  font-weight: 600;
+}
+
+.see-more-button:hover {
+  background: #303133 !important;
+  color: #fff;
+  border-radius: 20px;
+  padding: 5px 20px;
+  font-weight: 500;
+}
+
+/* -------second nav--- */
+.second-nav {
+  background-color: #333;
+  font-size: 18px;
+  color: #fff;
+
+}
+
+.second-nav-ul {
+  list-style: none;
+  margin: 0;
+  /* padding: 0; */
+}
+
+.second-nav-li {
+  display: inline-block;
+}
+
+.second-nav-a {
+  display: block;
+  padding: 10px 20px;
+
+  text-decoration: none;
+  font-size: .938rem;
+  color: rgba(255, 255, 255, .6);
+}
+
+nav a:hover {
+
+  color: white;
+
+}
+
+/* ------------------chips */
+
+.chip {
+  display: inline-flex;
+  flex-direction: row;
+  background-color: #2e2e2e;
+  border: none;
+  cursor: pointer;
+  height: 26px;
+  outline: none;
+  padding: 0;
+  font-size: .813rem;
+  color: f8f8f8;
+  font-family: "Open Sans", sans-serif;
+  white-space: nowrap;
+  align-items: center;
+  border-radius: 16px;
+  vertical-align: middle;
+  text-decoration: none;
+  justify-content: center;
+}
+
+.chip-head {
+  display: flex;
+  position: relative;
+  overflow: hidden;
+  background-color: #32C5D2;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+  align-items: center;
+  user-select: none;
+  border-radius: 50%;
+  justify-content: center;
+  width: 25px;
+  color: #fff;
+  height: 25px;
+  font-size: 20px;
+  margin-right: -4px;
+}
+
+.chip-content {
+  cursor: inherit;
+  display: flex;
+  align-items: center;
+  user-select: none;
+  white-space: nowrap;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.font-size-cips {
+  font-size: .75rem;
+  color: #8d8d8d;
+}
+
+.chip-text {
+  color: #8d8d8d;
+}
+
+.chip-content {
+  cursor: inherit;
+  display: flex;
+  align-items: center;
+  user-select: none;
+  white-space: nowrap;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.chip-svg {
+  /* color: #999999; */
+  cursor: pointer;
+  height: auto;
+  margin: 4px 4px 0 -8px;
+  fill: currentColor;
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  font-size: 24px;
+  transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.chip-content {
+  cursor: inherit;
+  display: flex;
+  align-items: center;
+  user-select: none;
+  white-space: nowrap;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.chip-svg {
+  color: #999999;
+  cursor: pointer;
+  height: auto;
+  margin: 4px 4px 0 -8px;
+  fill: currentColor;
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  font-size: 24px;
+  transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.chip-svg:hover {
+  color: #666666;
+}
+
+.chip-svg:hover {
+  color: #666666;
+}
+
+/* ms css */
+hr {
+  margin: 0.3rem 0;
+}
+
+.font-7 {
+  font-size: 0.7rem;
+}
+
+.font-8 {
+  font-size: 0.8rem !important;
+}
+
+.font-9 {
+  font-size: 0.9rem;
+}
+.pt-8{
+  padding-top: 3rem;
+}

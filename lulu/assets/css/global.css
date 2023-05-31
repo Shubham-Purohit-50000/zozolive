@@ -1,0 +1,68 @@
+@charset "UTF-8";
+
+:root {
+    --primary: #a2262e;
+    --primary-light: #fa5365;
+    --primary-dark: #912229;
+    --primary-border: #a2262e; 
+}
+
+header#header{
+  background:var(--primary);
+}
+
+.sidebar-nav .nav-link.active{
+  background: #ffffff1f;
+  color: var(--primary);
+  font-weight:bold;
+}
+
+.bi-list::before {
+  color: #fff;
+}
+.color_white{
+  color: #fff;
+}
+.ms-auto{margin-right:auto;}
+.alignitem_center{align-items:center;}
+.border_botton{border-bottom: 1px solid #f8f8f833;}
+
+.loginLink{font-size:17px !important;}
+
+.bg_button{
+  background: #fff;
+padding: 5px 15px;
+border-radius: 18px;
+}
+
+.outline_button{
+  border: 1px solid #fff;
+padding: 6px 17px;
+border-radius: 18px;
+color: #fff !important;
+}
+
+.card.list .caption{
+  position: absolute;
+    bottom: 0%;
+    color: #fff;
+    font-weight: 500;
+    font-size: 14px;
+    width: 100%;
+    padding: 4px;
+    background: #0a0a0a42;
+}
+
+.see-more-button{
+  border-radius:20px;
+  padding:5px 20px;
+  font-weight:600;
+}
+
+.see-more-button:hover{
+  background:#303133 !important;
+  color:#fff;
+  border-radius:20px;
+  padding:5px 20px;
+  font-weight:500;
+}

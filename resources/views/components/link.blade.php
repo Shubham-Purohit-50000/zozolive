@@ -1,0 +1,1 @@
+<a href="{{ url($url) }}" class="text-decoration-none px-2 py-1 font-weight-bold rounded {{ $class ?? null }}">{{ $title }}</a>
