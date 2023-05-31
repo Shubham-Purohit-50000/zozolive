@@ -712,7 +712,8 @@ __webpack_require__.r(__webpack_exports__);
       messages: [],
       userId: 1,
       hasNotPermission: true,
-      authUserLevelData: {}
+      authUserLevelData: {},
+      host_tip_menus: []
     };
   },
   created: function created() {
@@ -733,8 +734,8 @@ __webpack_require__.r(__webpack_exports__);
       _this = this;
     this.ref.child(this.chatKey).child((_this$hostDetail = this.hostDetail) === null || _this$hostDetail === void 0 ? void 0 : _this$hostDetail.uuid).on("value", function (msg) {
       try {
-        console.log(msg.val());
         var data = msg.val();
+        console.log(msg.val());
         // if (msg.exists()) {
         if (data && data.length > 0) {
           _this.messages = data;
@@ -748,31 +749,43 @@ __webpack_require__.r(__webpack_exports__);
     });
     this.scrollBottom();
     this.getUserLevels();
+    this.getHostTipMenu();
   },
   methods: {
+    getHostTipMenu: function getHostTipMenu() {
+      var _this2 = this;
+      try {
+        axios.get("/host-tip-menu/?host_id=" + this.hostDetail.uuid).then(function (resp) {
+          // console.log(resp);
+          _this2.host_tip_menus = resp.data.host_tip_menu;
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    },
     closeToast: function closeToast(value) {
-      document.getElementById('liveToast' + value.color).style.display = 'none';
+      document.getElementById('liveToast' + value).style.display = 'none';
     },
     showToast: function showToast(value, token) {
-      document.getElementById('liveToast' + value.color).style.display = 'block';
+      document.getElementById('liveToast' + token).style.display = 'block';
       this.getUserLevels(token);
     },
     showLoginModel: function showLoginModel() {
       $("#basicModal").modal("show");
     },
     getUserLevels: function getUserLevels() {
-      var _this2 = this;
+      var _this3 = this;
       var token = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
       try {
         if (token) {
           axios.get("/user_level/" + token).then(function (resp) {
             // console.log(resp);
-            _this2.authUserLevelData = resp.data.data;
+            _this3.authUserLevelData = resp.data.data;
           });
         } else {
           axios.get("/user_level/" + this.authUser.token).then(function (resp) {
             // console.log(resp);
-            _this2.authUserLevelData = resp.data.data;
+            _this3.authUserLevelData = resp.data.data;
           });
         }
       } catch (error) {
@@ -780,7 +793,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     send: function send() {
-      var _this3 = this;
+      var _this4 = this;
       var date = new Date();
       // console.log("condition", this.authUser && this.authUser.token > 0);
       if (this.authUser) {
@@ -793,41 +806,43 @@ __webpack_require__.r(__webpack_exports__);
         // .equalTo(this.chatKey)
         .get().then(function (snap) {
           if (snap.exists()) {
-            var _this3$hostDetail;
+            var _this4$hostDetail;
             var data = {
-              msg: _this3.message,
-              send_by: _this3.authUser.uuid,
-              send_by_user: _this3.authUser.name,
+              msg: _this4.message,
+              send_by: _this4.authUser.uuid,
+              send_by_user: _this4.authUser.name,
               // avatar: 2,
               send_at: date,
-              user_token: _this3.authUser.token
+              user_token: _this4.authUser.token,
+              level_data: _this4.authUserLevelData
             };
-            var msgClone = _this3.messages;
+            var msgClone = _this4.messages;
             msgClone.push(data);
-            _this3.ref
+            _this4.ref
             // .child(this.chatKey)
-            .child(_this3.chatKey).child((_this3$hostDetail = _this3.hostDetail) === null || _this3$hostDetail === void 0 ? void 0 : _this3$hostDetail.uuid).set(msgClone);
-            if (_this3.message) {
-              _this3.getUserLevels();
+            .child(_this4.chatKey).child((_this4$hostDetail = _this4.hostDetail) === null || _this4$hostDetail === void 0 ? void 0 : _this4$hostDetail.uuid).set(msgClone);
+            if (_this4.message) {
+              _this4.getUserLevels();
             }
-            _this3.message = "";
+            _this4.message = "";
           } else {
-            var _this3$hostDetail2;
+            var _this4$hostDetail2;
             var _data = [{
-              msg: _this3.message,
-              send_by: _this3.authUser.uuid,
-              send_by_user: _this3.authUser.name,
-              user_token: _this3.authUser.token
+              msg: _this4.message,
+              send_by: _this4.authUser.uuid,
+              send_by_user: _this4.authUser.name,
+              user_token: _this4.authUser.token,
+              level_data: _this4.authUserLevelData
               // avatar: this.authUser.avatar,
               // send_at: date,
             }];
 
-            _this3.ref.child(_this3.chatKey).child((_this3$hostDetail2 = _this3.hostDetail) === null || _this3$hostDetail2 === void 0 ? void 0 : _this3$hostDetail2.uuid).set(_data);
-            if (_this3.message) {
-              _this3.getUserLevels();
+            _this4.ref.child(_this4.chatKey).child((_this4$hostDetail2 = _this4.hostDetail) === null || _this4$hostDetail2 === void 0 ? void 0 : _this4$hostDetail2.uuid).set(_data);
+            if (_this4.message) {
+              _this4.getUserLevels();
             }
           }
-          _this3.message = "";
+          _this4.message = "";
         });
         this.scrollBottom();
       }
@@ -7168,42 +7183,43 @@ var _hoisted_6 = ["id"];
 var _hoisted_7 = {
   "class": "toast-header"
 };
-var _hoisted_8 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_8 = ["onClick"];
+var _hoisted_9 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
     "class": "bi bi-x-lg"
   }, null, -1 /* HOISTED */);
 });
-var _hoisted_9 = [_hoisted_8];
-var _hoisted_10 = {
+var _hoisted_10 = [_hoisted_9];
+var _hoisted_11 = {
   "class": "toast-body"
 };
-var _hoisted_11 = {
+var _hoisted_12 = {
   key: 0
 };
-var _hoisted_12 = {
+var _hoisted_13 = {
   "class": "public__chat--alert"
 };
-var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"tip_menu\" data-v-7d1cd16c> Tip menu is available <ul class=\"list-group\" data-v-7d1cd16c><li class=\"list-group-item d-flex justify-content-between align-items-center\" data-v-7d1cd16c> Cras justo odio <span class=\"badge badge-primary badge-pill\" data-v-7d1cd16c>14</span></li><li class=\"list-group-item d-flex justify-content-between align-items-center\" data-v-7d1cd16c> Dapibus ac facilisis in <span class=\"badge badge-primary badge-pill\" data-v-7d1cd16c>2</span></li><li class=\"list-group-item d-flex justify-content-between align-items-center\" data-v-7d1cd16c> Morbi leo risus <span class=\"badge badge-primary badge-pill\" data-v-7d1cd16c>1</span></li></ul></div>", 1);
-var _hoisted_14 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"tip_menu\" data-v-7d1cd16c> Tip menu is available <ul class=\"list-group\" data-v-7d1cd16c><li class=\"list-group-item d-flex justify-content-between align-items-center\" data-v-7d1cd16c> Cras justo odio <span class=\"badge badge-primary badge-pill\" data-v-7d1cd16c>14</span></li><li class=\"list-group-item d-flex justify-content-between align-items-center\" data-v-7d1cd16c> Dapibus ac facilisis in <span class=\"badge badge-primary badge-pill\" data-v-7d1cd16c>2</span></li><li class=\"list-group-item d-flex justify-content-between align-items-center\" data-v-7d1cd16c> Morbi leo risus <span class=\"badge badge-primary badge-pill\" data-v-7d1cd16c>1</span></li></ul></div>", 1);
+var _hoisted_15 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "btn public__chat--alert_btn"
   }, "Buy Tokens", -1 /* HOISTED */);
 });
-var _hoisted_15 = {
+var _hoisted_16 = {
   "class": "my-2 chat__box"
 };
-var _hoisted_16 = {
+var _hoisted_17 = {
   "class": "input-group chat__box--wrapper"
 };
-var _hoisted_17 = {
+var _hoisted_18 = {
   "class": "input-group-append"
 };
-var _hoisted_18 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_19 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
     "class": "bi bi-send"
   }, null, -1 /* HOISTED */);
 });
-var _hoisted_19 = [_hoisted_18];
+var _hoisted_20 = [_hoisted_19];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_2, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.messages, function (msg, i) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", {
@@ -7211,7 +7227,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       key: i
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <span class=\"messages__box--user_name\">{{\n                    msg.send_by_user\n                  }}</span> "), msg.user_token ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
       style: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeStyle)({
-        'color': $data.authUserLevelData.color
+        'color': msg.level_data ? msg.level_data.color : ''
       }),
       href: "#",
       onClick: function onClick($event) {
@@ -7219,58 +7235,58 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }
     }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(msg.send_by_user), 13 /* TEXT, STYLE, PROPS */, _hoisted_4)])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(msg.send_by_user), 1 /* TEXT */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
       "class": "toast",
-      id: 'liveToast' + $data.authUserLevelData.color,
+      id: 'liveToast' + msg.user_token,
       role: "alert",
       "aria-live": "assertive",
       "aria-atomic": "true"
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <img src=\"...\" class=\"rounded me-2\" alt=\"...\"> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
       "class": "badge me-auto",
       style: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeStyle)({
-        'background-color': $data.authUserLevelData.color
+        'background-color': msg.level_data ? msg.level_data.color : ''
       })
-    }, "Level : " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.authUserLevelData.level), 5 /* TEXT, STYLE */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    }, "Level : " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(msg.level_data ? msg.level_data.level : null), 5 /* TEXT, STYLE */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
       type: "button",
       "class": "btn-close",
       "data-bs-dismiss": "toast",
       "aria-label": "Close",
-      onClick: _cache[0] || (_cache[0] = function ($event) {
-        return $options.closeToast($data.authUserLevelData);
-      })
-    }, _hoisted_9)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("small", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Subscribed Plan : "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+      onClick: function onClick($event) {
+        return $options.closeToast(msg.user_token);
+      }
+    }, _hoisted_10, 8 /* PROPS */, _hoisted_8)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("small", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Subscribed Plan : "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
       style: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeStyle)({
-        'color': $data.authUserLevelData.color
+        'color': msg.level_data ? msg.level_data.color : ''
       })
-    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.authUserLevelData.name), 5 /* TEXT, STYLE */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button class=\"btn btn-primary btn-sm\">{{  Reply }}</button> ")])], 8 /* PROPS */, _hoisted_6), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(msg.msg), 1 /* TEXT */)]);
-  }), 128 /* KEYED_FRAGMENT */))]), $data.hasNotPermission && !$options.authUser ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" To chat, "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(msg.level_data ? msg.level_data.name : null), 5 /* TEXT, STYLE */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button class=\"btn btn-primary btn-sm\">{{  Reply }}</button> ")])], 8 /* PROPS */, _hoisted_6), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(msg.msg), 1 /* TEXT */)]);
+  }), 128 /* KEYED_FRAGMENT */))]), $data.hasNotPermission && !$options.authUser ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" To chat, "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
     href: "#",
-    onClick: _cache[1] || (_cache[1] = function () {
+    onClick: _cache[0] || (_cache[0] = function () {
       return $options.showLoginModel && $options.showLoginModel.apply($options, arguments);
     })
   }, "log in"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" or "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
     href: "#",
-    onClick: _cache[2] || (_cache[2] = function () {
+    onClick: _cache[1] || (_cache[1] = function () {
       return $options.showLoginModel && $options.showLoginModel.apply($options, arguments);
     })
-  }, " create a free account.")]), _hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      <span>With tokens, you get to</span>"), _hoisted_14])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  }, " create a free account.")]), _hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      <span>With tokens, you get to</span>"), _hoisted_15])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
     "class": "form-control chat__box--input",
     placeholder: "Public message",
     "aria-label": "Public message",
     "aria-describedby": "basic-addon2",
-    "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
+    "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
       return $data.message = $event;
     }),
-    onKeyup: _cache[4] || (_cache[4] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withKeys)(function () {
+    onKeyup: _cache[3] || (_cache[3] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withKeys)(function () {
       return $options.send && $options.send.apply($options, arguments);
     }, ["enter"]))
-  }, null, 544 /* HYDRATE_EVENTS, NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.message]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  }, null, 544 /* HYDRATE_EVENTS, NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.message]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "btn input-group-text chat__box--btn",
     type: "button",
-    onClick: _cache[5] || (_cache[5] = function () {
+    onClick: _cache[4] || (_cache[4] = function () {
       return $options.send && $options.send.apply($options, arguments);
     }),
     id: "basic-addon2"
-  }, _hoisted_19)])])])]);
+  }, _hoisted_20)])])])]);
 }
 
 /***/ }),
