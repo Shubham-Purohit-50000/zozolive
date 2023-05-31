@@ -14,8 +14,11 @@
                 <!-- <span class="messages__box--user_name">{{
                     msg.send_by_user
                   }}</span> -->
-                  <span >
-                     <a  :style="{'color':authUserLevelData.color}" href="#" @click="showToast(authUserLevelData, msg.send_by)"> {{  msg.send_by_user }}  </a>
+                  <span v-if="msg.user_token">
+                     <a  :style="{'color':authUserLevelData.color}" href="#" @click="showToast(authUserLevelData, msg.user_token)"> {{  msg.send_by_user }}  </a>
+                  </span>
+                  <span v-else>
+                    {{  msg.send_by_user }} 
                   </span>
                   <div class="toast" :id="'liveToast'+authUserLevelData.color" role="alert" aria-live="assertive" aria-atomic="true">
   <div class="toast-header">
@@ -125,6 +128,7 @@ export default {
   mounted() {
     this.ref.child(this.chatKey).child(this.hostDetail?.uuid).on("value", (msg) => {
       try {
+        console.log( msg.val());
         let data = msg.val();
         // if (msg.exists()) {
         if (data && data.length > 0) {
@@ -145,18 +149,27 @@ export default {
     closeToast(value) {
       document.getElementById('liveToast'+value.color).style.display='none'
     },
-    showToast(value) {
-      document.getElementById('liveToast'+value.color).style.display='block'
+    showToast(value, token) {
+      document.getElementById('liveToast'+value.color).style.display='block';
+      this.getUserLevels(token);
     },
     showLoginModel() {
       $("#basicModal").modal("show");
     },
-    getUserLevels() {
+    getUserLevels(token = null) {
       try {
-            axios.get("/user_level/"+this.authUser.token).then((resp)=> {
+            if(token) {
+              axios.get("/user_level/"+token).then((resp)=> {
               // console.log(resp);
               this.authUserLevelData = resp.data.data;
             });
+            } else {
+              axios.get("/user_level/"+this.authUser.token).then((resp)=> {
+              // console.log(resp);
+              this.authUserLevelData = resp.data.data;
+            });
+            }
+           
         } catch (error) {
             console.log(error);
         }
@@ -184,6 +197,7 @@ export default {
                   send_by_user: this.authUser.name,
                   // avatar: 2,
                   send_at: date,
+                  user_token: this.authUser.token,
                 };
                 var msgClone = this.messages;
                 msgClone.push(data);
@@ -202,6 +216,7 @@ export default {
                     msg: this.message,
                     send_by: this.authUser.uuid,
                     send_by_user: this.authUser.name,
+                    user_token: this.authUser.token
                     // avatar: this.authUser.avatar,
                     // send_at: date,
                   },

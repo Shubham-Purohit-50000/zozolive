@@ -733,6 +733,7 @@ __webpack_require__.r(__webpack_exports__);
       _this = this;
     this.ref.child(this.chatKey).child((_this$hostDetail = this.hostDetail) === null || _this$hostDetail === void 0 ? void 0 : _this$hostDetail.uuid).on("value", function (msg) {
       try {
+        console.log(msg.val());
         var data = msg.val();
         // if (msg.exists()) {
         if (data && data.length > 0) {
@@ -752,19 +753,28 @@ __webpack_require__.r(__webpack_exports__);
     closeToast: function closeToast(value) {
       document.getElementById('liveToast' + value.color).style.display = 'none';
     },
-    showToast: function showToast(value) {
+    showToast: function showToast(value, token) {
       document.getElementById('liveToast' + value.color).style.display = 'block';
+      this.getUserLevels(token);
     },
     showLoginModel: function showLoginModel() {
       $("#basicModal").modal("show");
     },
     getUserLevels: function getUserLevels() {
       var _this2 = this;
+      var token = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
       try {
-        axios.get("/user_level/" + this.authUser.token).then(function (resp) {
-          // console.log(resp);
-          _this2.authUserLevelData = resp.data.data;
-        });
+        if (token) {
+          axios.get("/user_level/" + token).then(function (resp) {
+            // console.log(resp);
+            _this2.authUserLevelData = resp.data.data;
+          });
+        } else {
+          axios.get("/user_level/" + this.authUser.token).then(function (resp) {
+            // console.log(resp);
+            _this2.authUserLevelData = resp.data.data;
+          });
+        }
       } catch (error) {
         console.log(error);
       }
@@ -789,7 +799,8 @@ __webpack_require__.r(__webpack_exports__);
               send_by: _this3.authUser.uuid,
               send_by_user: _this3.authUser.name,
               // avatar: 2,
-              send_at: date
+              send_at: date,
+              user_token: _this3.authUser.token
             };
             var msgClone = _this3.messages;
             msgClone.push(data);
@@ -805,7 +816,8 @@ __webpack_require__.r(__webpack_exports__);
             var _data = [{
               msg: _this3.message,
               send_by: _this3.authUser.uuid,
-              send_by_user: _this3.authUser.name
+              send_by_user: _this3.authUser.name,
+              user_token: _this3.authUser.token
               // avatar: this.authUser.avatar,
               // send_at: date,
             }];
@@ -7145,67 +7157,73 @@ var _hoisted_1 = {
 var _hoisted_2 = {
   "class": "messages__box ml-2"
 };
-var _hoisted_3 = ["onClick"];
-var _hoisted_4 = ["id"];
+var _hoisted_3 = {
+  key: 0
+};
+var _hoisted_4 = ["onClick"];
 var _hoisted_5 = {
+  key: 1
+};
+var _hoisted_6 = ["id"];
+var _hoisted_7 = {
   "class": "toast-header"
 };
-var _hoisted_6 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_8 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
     "class": "bi bi-x-lg"
   }, null, -1 /* HOISTED */);
 });
-var _hoisted_7 = [_hoisted_6];
-var _hoisted_8 = {
+var _hoisted_9 = [_hoisted_8];
+var _hoisted_10 = {
   "class": "toast-body"
 };
-var _hoisted_9 = {
+var _hoisted_11 = {
   key: 0
 };
-var _hoisted_10 = {
+var _hoisted_12 = {
   "class": "public__chat--alert"
 };
-var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"tip_menu\" data-v-7d1cd16c> Tip menu is available <ul class=\"list-group\" data-v-7d1cd16c><li class=\"list-group-item d-flex justify-content-between align-items-center\" data-v-7d1cd16c> Cras justo odio <span class=\"badge badge-primary badge-pill\" data-v-7d1cd16c>14</span></li><li class=\"list-group-item d-flex justify-content-between align-items-center\" data-v-7d1cd16c> Dapibus ac facilisis in <span class=\"badge badge-primary badge-pill\" data-v-7d1cd16c>2</span></li><li class=\"list-group-item d-flex justify-content-between align-items-center\" data-v-7d1cd16c> Morbi leo risus <span class=\"badge badge-primary badge-pill\" data-v-7d1cd16c>1</span></li></ul></div>", 1);
-var _hoisted_12 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"tip_menu\" data-v-7d1cd16c> Tip menu is available <ul class=\"list-group\" data-v-7d1cd16c><li class=\"list-group-item d-flex justify-content-between align-items-center\" data-v-7d1cd16c> Cras justo odio <span class=\"badge badge-primary badge-pill\" data-v-7d1cd16c>14</span></li><li class=\"list-group-item d-flex justify-content-between align-items-center\" data-v-7d1cd16c> Dapibus ac facilisis in <span class=\"badge badge-primary badge-pill\" data-v-7d1cd16c>2</span></li><li class=\"list-group-item d-flex justify-content-between align-items-center\" data-v-7d1cd16c> Morbi leo risus <span class=\"badge badge-primary badge-pill\" data-v-7d1cd16c>1</span></li></ul></div>", 1);
+var _hoisted_14 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "btn public__chat--alert_btn"
   }, "Buy Tokens", -1 /* HOISTED */);
 });
-var _hoisted_13 = {
+var _hoisted_15 = {
   "class": "my-2 chat__box"
 };
-var _hoisted_14 = {
+var _hoisted_16 = {
   "class": "input-group chat__box--wrapper"
 };
-var _hoisted_15 = {
+var _hoisted_17 = {
   "class": "input-group-append"
 };
-var _hoisted_16 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_18 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
     "class": "bi bi-send"
   }, null, -1 /* HOISTED */);
 });
-var _hoisted_17 = [_hoisted_16];
+var _hoisted_19 = [_hoisted_18];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_2, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.messages, function (msg, i) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", {
       "class": "messages__box--message left",
       key: i
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <span class=\"messages__box--user_name\">{{\n                    msg.send_by_user\n                  }}</span> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <span class=\"messages__box--user_name\">{{\n                    msg.send_by_user\n                  }}</span> "), msg.user_token ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
       style: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeStyle)({
         'color': $data.authUserLevelData.color
       }),
       href: "#",
       onClick: function onClick($event) {
-        return $options.showToast($data.authUserLevelData, msg.send_by);
+        return $options.showToast($data.authUserLevelData, msg.user_token);
       }
-    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(msg.send_by_user), 13 /* TEXT, STYLE, PROPS */, _hoisted_3)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(msg.send_by_user), 13 /* TEXT, STYLE, PROPS */, _hoisted_4)])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(msg.send_by_user), 1 /* TEXT */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
       "class": "toast",
       id: 'liveToast' + $data.authUserLevelData.color,
       role: "alert",
       "aria-live": "assertive",
       "aria-atomic": "true"
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <img src=\"...\" class=\"rounded me-2\" alt=\"...\"> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <img src=\"...\" class=\"rounded me-2\" alt=\"...\"> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
       "class": "badge me-auto",
       style: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeStyle)({
         'background-color': $data.authUserLevelData.color
@@ -7218,12 +7236,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       onClick: _cache[0] || (_cache[0] = function ($event) {
         return $options.closeToast($data.authUserLevelData);
       })
-    }, _hoisted_7)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("small", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Subscribed Plan : "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+    }, _hoisted_9)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("small", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Subscribed Plan : "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
       style: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeStyle)({
         'color': $data.authUserLevelData.color
       })
-    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.authUserLevelData.name), 5 /* TEXT, STYLE */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button class=\"btn btn-primary btn-sm\">{{  Reply }}</button> ")])], 8 /* PROPS */, _hoisted_4), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(msg.msg), 1 /* TEXT */)]);
-  }), 128 /* KEYED_FRAGMENT */))]), $data.hasNotPermission && !$options.authUser ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" To chat, "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.authUserLevelData.name), 5 /* TEXT, STYLE */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button class=\"btn btn-primary btn-sm\">{{  Reply }}</button> ")])], 8 /* PROPS */, _hoisted_6), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(msg.msg), 1 /* TEXT */)]);
+  }), 128 /* KEYED_FRAGMENT */))]), $data.hasNotPermission && !$options.authUser ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" To chat, "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
     href: "#",
     onClick: _cache[1] || (_cache[1] = function () {
       return $options.showLoginModel && $options.showLoginModel.apply($options, arguments);
@@ -7233,7 +7251,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[2] || (_cache[2] = function () {
       return $options.showLoginModel && $options.showLoginModel.apply($options, arguments);
     })
-  }, " create a free account.")]), _hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      <span>With tokens, you get to</span>"), _hoisted_12])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  }, " create a free account.")]), _hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      <span>With tokens, you get to</span>"), _hoisted_14])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
     "class": "form-control chat__box--input",
     placeholder: "Public message",
@@ -7245,14 +7263,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onKeyup: _cache[4] || (_cache[4] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withKeys)(function () {
       return $options.send && $options.send.apply($options, arguments);
     }, ["enter"]))
-  }, null, 544 /* HYDRATE_EVENTS, NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.message]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  }, null, 544 /* HYDRATE_EVENTS, NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.message]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "btn input-group-text chat__box--btn",
     type: "button",
     onClick: _cache[5] || (_cache[5] = function () {
       return $options.send && $options.send.apply($options, arguments);
     }),
     id: "basic-addon2"
-  }, _hoisted_17)])])])]);
+  }, _hoisted_19)])])])]);
 }
 
 /***/ }),
