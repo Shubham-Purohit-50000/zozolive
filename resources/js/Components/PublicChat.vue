@@ -11,16 +11,57 @@
           v-for="(msg, i) in messages"
           :key="i"
       >
-                <span class="messages__box--user_name">{{
+                <!-- <span class="messages__box--user_name">{{
                     msg.send_by_user
-                  }}</span>
+                  }}</span> -->
+                  <span >
+                     <a  :style="{'color':authUserLevelData.color}" href="#" @click="showToast(authUserLevelData, msg.send_by)"> {{  msg.send_by_user }}  </a>
+                  </span>
+                  <div class="toast" :id="'liveToast'+authUserLevelData.color" role="alert" aria-live="assertive" aria-atomic="true">
+  <div class="toast-header">
+    <!-- <img src="..." class="rounded me-2" alt="..."> -->
+    <span class="badge me-auto" :style="{'background-color':authUserLevelData.color}">Level : {{ authUserLevelData.level  }}</span>
+  
+    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close" @click="closeToast(authUserLevelData)">
+      <i class=" bi bi-x-lg"></i>
+    </button>
+  </div>
+  <div class="toast-body">
+    <small>Subscribed Plan : <span :style="{'color':authUserLevelData.color}"> {{ authUserLevelData.name  }} </span>  </small>
+
+    <!-- <button class="btn btn-primary btn-sm">{{  Reply }}</button> -->
+  </div>
+</div>
         {{ msg.msg }}
       </li>
     </ul>
-    <div class="public__chat--alert" v-if="hasNotPermission">
-      <span> This model allows chatting only for users with tokens </span>
+  
+    <div v-if="hasNotPermission && !authUser">
+          <div class="public__chat--alert">
+      <div> To chat, <a href="#" @click="showLoginModel">log in</a> or <a href="#" @click="showLoginModel"> create a free account.</a> </div>
+      <div class="tip_menu">
+        Tip menu is available 
+
+        <ul class="list-group">
+  <li class="list-group-item d-flex justify-content-between align-items-center">
+    Cras justo odio
+    <span class="badge badge-primary badge-pill">14</span>
+  </li>
+  <li class="list-group-item d-flex justify-content-between align-items-center">
+    Dapibus ac facilisis in
+    <span class="badge badge-primary badge-pill">2</span>
+  </li>
+  <li class="list-group-item d-flex justify-content-between align-items-center">
+    Morbi leo risus
+    <span class="badge badge-primary badge-pill">1</span>
+  </li>
+</ul>
+      </div>
+
+
       <!--      <span>With tokens, you get to</span>-->
       <button class="btn public__chat--alert_btn">Buy Tokens</button>
+    </div>
     </div>
     <div class="my-2 chat__box">
       <div class="input-group chat__box--wrapper">
@@ -65,7 +106,8 @@ export default {
       chatKey: "public-chats",
       messages: [],
       userId: 1,
-      hasNotPermission: false,
+      hasNotPermission: true,
+      authUserLevelData: {},
     };
   },
   created() {
@@ -73,6 +115,7 @@ export default {
     // .get();
     //   const ref = this.db.ref();
     this.ref = firebase.database().ref();
+    // this.getUserLevels();
   },
   computed: {
     authUser() {
@@ -96,8 +139,28 @@ export default {
       }
     });
     this.scrollBottom();
+    this.getUserLevels();
   },
   methods: {
+    closeToast(value) {
+      document.getElementById('liveToast'+value.color).style.display='none'
+    },
+    showToast(value) {
+      document.getElementById('liveToast'+value.color).style.display='block'
+    },
+    showLoginModel() {
+      $("#basicModal").modal("show");
+    },
+    getUserLevels() {
+      try {
+            axios.get("/user-level/"+this.authUser.token).then((resp)=> {
+              // console.log(resp);
+              this.authUserLevelData = resp.data.data;
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    },
     send() {
       const date = new Date();
       // console.log("condition", this.authUser && this.authUser.token > 0);
@@ -129,6 +192,9 @@ export default {
                     .child(this.chatKey)
                     .child(this.hostDetail?.uuid)
                     .set(msgClone);
+                if(this.message) {
+                  this.getUserLevels();
+                }
                 this.message = "";
               } else {
                 const data = [
@@ -141,6 +207,9 @@ export default {
                   },
                 ];
                 this.ref.child(this.chatKey).child(this.hostDetail?.uuid).set(data);
+                if(this.message) {
+                  this.getUserLevels();
+                }
               }
               this.message = "";
             });
@@ -162,5 +231,17 @@ export default {
 <style scoped>
 .messages__box {
   transition: 0.5s all;
+}
+.toast {
+  background-color: #2b2b2b;
+}
+.toast-header {
+  background-color: #282323; 
+}
+.btn-close {
+  color:#fff
+}
+.badge {
+  font-size:16px;
 }
 </style>
