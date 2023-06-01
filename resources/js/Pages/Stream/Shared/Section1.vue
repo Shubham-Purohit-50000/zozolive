@@ -15,6 +15,7 @@
                                     <div
                                         class="d-flex justify-content-center align-items-center stream_toggle_btn"
                                     >
+                                    <!-- <select id = "videoDevices" ></select> -->
                                         <button
                                             @click="muteMic"
                                             type="button"
@@ -372,6 +373,7 @@ export default {
             incomingCallerUid: "",
             channelUid: "",
             incomingCall: false,
+            videoDevicesDropDown: null,
         };
     },
     created() {
@@ -379,6 +381,28 @@ export default {
         // .get();
         //   const ref = this.db.ref();
         this.ref = firebase.database().ref();
+
+//         AgoraRTC.getDevices()
+// .then(devices => 
+// {
+   
+//     const videoDevices = devices.filter(function(device)
+//     {
+//         return device.kind === "videoinput";
+//     });
+//     console.log(videoDevices);
+//     // audioDevicesDropDown = document.getElementById("audioDevices");
+//     this.videoDevicesDropDown = document.getElementById("videoDevices");
+//     for (let i = 0; i < videoDevices.length; i++) 
+//     {
+//         var option = document.createElement("option");
+//         option.text = videoDevices[i].label;
+//         option.value = videoDevices[i].deviceId;
+//        this.videoDevicesDropDown.appendChild(option)
+//     }
+// });
+
+
     },
     provide() {
         return {
@@ -724,7 +748,16 @@ export default {
                 this.localTracks.audioTrack =
                     await AgoraRTC.createMicrophoneAudioTrack();
                 this.localTracks.videoTrack =
-                    await AgoraRTC.createCameraVideoTrack();
+                    await AgoraRTC.createCameraVideoTrack({
+                        encoderConfig: 
+                        {
+                        width: 640,
+                        // Specify a value range and an ideal value
+                        height: { ideal: 480, min: 400, max: 500 },
+                        frameRate: 15,
+                        bitrateMin: 600, bitrateMax: 1000,
+                        },
+                    });
                 // showMuteButton();
                 // play local video track
                 this.localTracks.videoTrack.play("local-player");
