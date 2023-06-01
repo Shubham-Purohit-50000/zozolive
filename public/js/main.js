@@ -44,6 +44,8 @@ async function startBasicCall() {
     remotePlayerContainer.style.width = "640px";
     remotePlayerContainer.style.height = "480px";
     remotePlayerContainer.style.padding = "15px 5px 5px 5px";
+
+  
     // Listen for the "user-published" event to retrieve a AgoraRTCRemoteUser object.
     agoraEngine.on("user-published", async (user, mediaType) => {
         // Subscribe to the remote user when the SDK triggers the "user-published" event.
@@ -100,8 +102,17 @@ async function startBasicCall() {
             channelParameters.localAudioTrack =
                 await AgoraRTC.createMicrophoneAudioTrack();
             // Create a local video track from the video captured by a camera.
-            channelParameters.localVideoTrack =
-                await AgoraRTC.createCameraVideoTrack();
+            channelParameters.localVideoTrack = await AgoraRTC.createCameraVideoTrack({
+                encoderConfig: 
+                {
+                width: 640,
+                // Specify a value range and an ideal value
+                height: { ideal: 480, min: 400, max: 500 },
+                frameRate: 15,
+                bitrateMin: 600, bitrateMax: 1000,
+                },
+                optimizationMode:"detail"
+            });
             // Append the local video container to the page body.
             document.body.append(localPlayerContainer);
 

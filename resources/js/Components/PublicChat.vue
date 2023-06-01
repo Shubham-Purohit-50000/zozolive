@@ -39,32 +39,193 @@
       </li>
     </ul>
   
-    <div v-if="hasNotPermission && !authUser">
+    <div v-if="hasNotPermission">
           <div class="public__chat--alert">
-      <div> To chat, <a href="#" @click="showLoginModel">log in</a> or <a href="#" @click="showLoginModel"> create a free account.</a> </div>
-      <div class="tip_menu">
-        Tip menu is available 
+      <div v-if="!authUser" class="text-center"> To chat, <a href="#" @click="showLoginModel">log in</a> or 
+        <a href="#" @click="showLoginModel"> create a free account.</a> 
+      <!--      <span>With tokens, you get to</span>-->
+      <br/>
+      <button class="btn public__chat--alert_btn">Buy Tokens</button>
+      </div>
+     
+      <div class="tip_menu" v-if="authUser">
+       <a  href="#" data-bs-toggle="modal"
+        data-bs-target="#tipMenuModel"
+        @click="showtipMenu()">Full tip menu </a>  is available 
+        <!--tip model start-->
+    <div class="col-lg-6">
+                        <div class="card chat_card h-100">
+                            <div
+                                class="modal fade"
+                                id="tipMenuModel"
+                                tabindex="-1"
+                            >
+                                <div
+                                    class="modal-dialog modal-lg"
+                                    style="margin-top: 0"
+                                >
+                                    <div
+                                        class="modal-content"
+                                        style="background: transparent"
+                                    >
+                                        <div class="modal-header">
+                                            <span>Send Tip</span>
+                                            <button
+                                                type="button"
+                                                class="customClose"
+                                                data-bs-dismiss="modal"
+                                                aria-label="Close"
+                                            >
+                                                ×
+                                            </button>
+                                        </div>
+                                        <div
+                                            class="modal-body modal-body-all"
+                                            style="border-radius: 1rem"
+                                        >
+                                            <div class="card chat_card">
+                                                <div
+                                                    class="card-header chat_card--header"
+                                                >
+                                                    <div class="row">
+                                                        <ul
+                                                            class="nav nav-tabs chat_card--tabs d-flex"
+                                                            id="chat_box"
+                                                            role="tablist"
+                                                        >
+                                                            <li
+                                                                class="nav-item"
+                                                                role="presentation"
+                                                            >
+                                                                <button
+                                                                    class="nav-link w-100 chat_card--btn active"
+                                                                    id="home-tab"
+                                                                    data-bs-toggle="tab"
+                                                                    data-bs-target="#tip_menu"
+                                                                    type="button"
+                                                                    role="tab"
+                                                                    aria-controls="home"
+                                                                    aria-selected="true"
+                                                                >
+                                                                    <i
+                                                                        class="bi bi-chat-fill"
+                                                                    ></i>
+                                                                    &nbsp;&nbsp;
+                                                                    Tip Menu
+                                                                </button>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div
+                                                    class="card-body position-relative chat_card--body"
+                                                >
+                                                    <div
+                                                        class="tab-content pt-2 mt-20"
+                                                        id="chat_boxContent"
+                                                        style="
+                                                            height: 240px;
+                                                            overflow-y: scroll;
+                                                        "
+                                                    >
+                                                        <div
+                                                            class="tab-pane active show px-3"
+                                                            id="tip_menu"
+                                                            role="tabpanel"
+                                                            aria-labelledby="contact-tab"
+                                                        >
+                                                            <div
+                                                                class="tip_box"
+                                                            >
+                                                                <table
+                                                                    class="table"
+                                                                >
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>
+                                                                                ACTIVITY
+                                                                            </th>
+                                                                            <th
+                                                                                style="
+                                                                                    text-align: right"
+                                                                            >
+                                                                                TOKENS
+                                                                            </th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr  v-for="(value2, index2) in host_tip_menus" 
+  :key="index2">
+                                                                      <td>
+                                                                          {{ value2.menu_title }}
+                                                                      </td>
+                                                                      <td
+                                                                          style="text-align: right"
+                                                                      >
+                                                                      {{ value2.token }}
+                                                                      </td>
+                                                                  </tr>
+                                                                  
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        class="token_box"
+                                                        style="height: 210px; background-color: #3b3b3b"
+                                                    >
+                                                        <ul>
+                                                            <li v-for="(value3, index3) in host_tip_menus" 
+                                                              :key="index3">
+                                                                <label>
+                                                                    {{ value3.token }}
+                                                                    <input
+                                                                        type="radio"
+                                                                        name="token"
+                                                                        class="d-none"
+                                                                    />
+                                                                </label>
+                                                            </li>
+                                                        </ul>
+                                                        <div>
+                                                            &nbsp;&nbsp;<span
+                                                                >Custom
+                                                                Amount:</span
+                                                            >
+                                                            <input
+                                                                type="text"
+                                                            />
+                                                        </div>
 
-        <ul class="list-group">
-  <li class="list-group-item d-flex justify-content-between align-items-center">
-    Cras justo odio
-    <span class="badge badge-primary badge-pill">14</span>
-  </li>
-  <li class="list-group-item d-flex justify-content-between align-items-center">
-    Dapibus ac facilisis in
-    <span class="badge badge-primary badge-pill">2</span>
-  </li>
-  <li class="list-group-item d-flex justify-content-between align-items-center">
-    Morbi leo risus
-    <span class="badge badge-primary badge-pill">1</span>
+                                                        <div class="tip">
+                                                            <button>
+                                                                Buy Token
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                          </div>
+                            
+                    </div>
+        <ul class="list-group mt-3">
+  <li class="list-group-item d-flex bg-dark-1 text-white justify-content-between align-items-center" 
+  v-for="(value, index) in host_tip_menus" 
+  :key="index">
+   {{ value.menu_title }}
+    <span class="badge badge-primary badge-pill">{{ value.token }}</span>
   </li>
 </ul>
       </div>
 
-
-      <!--      <span>With tokens, you get to</span>-->
-      <button class="btn public__chat--alert_btn">Buy Tokens</button>
+      
     </div>
+  
     </div>
     <div class="my-2 chat__box">
       <div class="input-group chat__box--wrapper">
@@ -89,6 +250,8 @@
         </div>
       </div>
     </div>
+
+    
   </div>
 </template>
 
@@ -148,6 +311,9 @@ export default {
     this.getHostTipMenu();
   },
   methods: {
+    showtipMenu() {
+            $(".modal-backdrop.fade.show").removeClass("modal-backdrop");
+        },
     getHostTipMenu() {
       try {
           axios.get("/host-tip-menu/?host_id="+this.hostDetail.uuid).then((resp)=> {
@@ -274,4 +440,55 @@ export default {
 .badge {
   font-size:16px;
 }
+.tip_menu {
+  width: 100%;
+}
+.bg-dark-1 {
+  background-color: #343434;
+}
+
+.token_box label {
+    background: lightgray;
+    padding: 8px;
+    font-size: 18px;
+    font-weight: 600;
+    min-width: 100px;
+    text-align: center;
+    border-radius: 12px;
+}
+
+.token_box ul {
+    padding-inline-start: 0px;
+    display: flex;
+    overflow-x: scroll;
+}
+
+.token_box ul li {
+    list-style: none;
+    margin-top: 15px;
+    margin-right: 15px;
+    margin-bottom: 15px;
+}
+
+.token_box input {
+    width: 75%;
+    margin-left: 35px;
+    height: 45px;
+    border-radius: 27px;
+    background: #000;
+    border-color: #000;
+    color: #fff;
+    text-align: center;
+}
+
+.token_box button {
+    margin-bottom: 0px;
+    border: 2px solid #a1a1a1;
+    border-radius: 20px;
+    padding: 10px 25px;
+    background: #79943d;
+    color: #fff;
+    margin-left: 10px;
+}
+
 </style>

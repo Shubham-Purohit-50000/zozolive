@@ -752,6 +752,9 @@ __webpack_require__.r(__webpack_exports__);
     this.getHostTipMenu();
   },
   methods: {
+    showtipMenu: function showtipMenu() {
+      $(".modal-backdrop.fade.show").removeClass("modal-backdrop");
+    },
     getHostTipMenu: function getHostTipMenu() {
       var _this2 = this;
       try {
@@ -4390,6 +4393,28 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
   },
   methods: {
+    getLiveUserCount: function getLiveUserCount() {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+          while (1) switch (_context2.prev = _context2.next) {
+            case 0:
+              _context2.next = 2;
+              return axios.get('https://www.linkedin.com/oauth/v2/authorization', {
+                headers: {
+                  'username': 'header value'
+                }
+              }).then(function (response) {
+                console.log("INFO: " + response);
+              })["catch"](function (error) {
+                console.log("ERROR: " + error);
+              });
+            case 2:
+            case "end":
+              return _context2.stop();
+          }
+        }, _callee2);
+      }))();
+    },
     setActiveTab: function setActiveTab(tab) {
       this.activeTab = tab;
     },
@@ -4416,21 +4441,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     placeCall: function placeCall() {
       var _this4 = this;
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
         var _this4$authUser, _this4$hostDetail, _this4$hostDetail$use;
-        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
-          while (1) switch (_context2.prev = _context2.next) {
+        return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+          while (1) switch (_context3.prev = _context3.next) {
             case 0:
               if (!_this4.authUser) {
-                _context2.next = 21;
+                _context3.next = 21;
                 break;
               }
               if (!(((_this4$authUser = _this4.authUser) === null || _this4$authUser === void 0 ? void 0 : _this4$authUser.token) > 10)) {
-                _context2.next = 18;
+                _context3.next = 18;
                 break;
               }
-              _context2.prev = 2;
-              _context2.next = 5;
+              _context3.prev = 2;
+              _context3.next = 5;
               return axios.post("/agora/call-user", {
                 user_to_call: _this4.hostDetail.user_id,
                 channel_name: _this4.channel
@@ -4442,27 +4467,27 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               _this4.listenDeclinecall();
               _this4.listenAcceptcall();
               _this4.outGoingcallStart();
-              _context2.next = 16;
+              _context3.next = 16;
               break;
             case 13:
-              _context2.prev = 13;
-              _context2.t0 = _context2["catch"](2);
-              console.log(_context2.t0);
+              _context3.prev = 13;
+              _context3.t0 = _context3["catch"](2);
+              console.log(_context3.t0);
             case 16:
-              _context2.next = 19;
+              _context3.next = 19;
               break;
             case 18:
               window.location.href = "/buy-token";
             case 19:
-              _context2.next = 22;
+              _context3.next = 22;
               break;
             case 21:
               $("#basicModal").modal("show");
             case 22:
             case "end":
-              return _context2.stop();
+              return _context3.stop();
           }
-        }, _callee2, null, [[2, 13]]);
+        }, _callee3, null, [[2, 13]]);
       }))();
     },
     outGoingcallStart: function outGoingcallStart() {
@@ -4484,50 +4509,50 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     generateToken: function generateToken() {
       var _this6 = this;
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
         var res;
-        return _regeneratorRuntime().wrap(function _callee3$(_context3) {
-          while (1) switch (_context3.prev = _context3.next) {
+        return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+          while (1) switch (_context4.prev = _context4.next) {
             case 0:
-              _context3.next = 2;
+              _context4.next = 2;
               return axios.post("/user/generate-token", {
                 channelName: _this6.hostDetail.user_id
               });
             case 2:
-              res = _context3.sent;
+              res = _context4.sent;
               _this6.uid = res.data.uid;
-              return _context3.abrupt("return", res.data.token);
+              return _context4.abrupt("return", res.data.token);
             case 5:
             case "end":
-              return _context3.stop();
+              return _context4.stop();
           }
-        }, _callee3);
+        }, _callee4);
       }))();
     },
     mangeFavourite: function mangeFavourite(type) {
       var _this7 = this;
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
         var _tokenRes$data;
         var tokenRes;
-        return _regeneratorRuntime().wrap(function _callee4$(_context4) {
-          while (1) switch (_context4.prev = _context4.next) {
+        return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+          while (1) switch (_context5.prev = _context5.next) {
             case 0:
               _this7.isLike = type;
-              _context4.next = 3;
+              _context5.next = 3;
               return axios.post("/manage-favourite", {
                 type: type,
                 host_id: _this7.$props.hostDetail.uuid,
                 host_user_id: _this7.$props.hostDetail.user_id
               });
             case 3:
-              tokenRes = _context4.sent;
+              tokenRes = _context5.sent;
               console.log(tokenRes.data);
               _this7.totalLikes = (_tokenRes$data = tokenRes.data) !== null && _tokenRes$data !== void 0 ? _tokenRes$data : 0;
             case 6:
             case "end":
-              return _context4.stop();
+              return _context5.stop();
           }
-        }, _callee4);
+        }, _callee5);
       }))();
     },
     removeBackdrop: function removeBackdrop() {
@@ -4535,34 +4560,43 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     joinChannel: function joinChannel() {
       var _this8 = this;
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
-        return _regeneratorRuntime().wrap(function _callee5$(_context5) {
-          while (1) switch (_context5.prev = _context5.next) {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
+        return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+          while (1) switch (_context6.prev = _context6.next) {
             case 0:
               // create Agora client
               _this8.client.setClientRole(_this8.options.role);
               // $("#mic-btn").prop("disabled", false);
               // $("#video-btn").prop("disabled", false);
-              _context5.next = 3;
+              _context6.next = 3;
               return _this8.client.join(_this8.options.appId, _this8.options.channel, _this8.token, _this8.options.uid);
             case 3:
-              _this8.options.uid = _context5.sent;
-            case 4:
+              _this8.options.uid = _context6.sent;
+              if (_this8.options.role === "host") {
+                // $("#mic-btn").prop("disabled", true);
+                // $("#video-btn").prop("disabled", true);
+                // add event listener to play remote tracks when remote user publishs.
+                _this8.client.on("user-published", _this8.handleUserPublished);
+                _this8.client.on("user-joined", _this8.handleUserJoined);
+                _this8.client.on("user-left", _this8.handleUserLeft);
+              }
+              // join the channel
+            case 5:
             case "end":
-              return _context5.stop();
+              return _context6.stop();
           }
-        }, _callee5);
+        }, _callee6);
       }))();
     },
     subscribe: function subscribe(user, mediaType) {
       var _this9 = this;
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
         var uid, player;
-        return _regeneratorRuntime().wrap(function _callee6$(_context6) {
-          while (1) switch (_context6.prev = _context6.next) {
+        return _regeneratorRuntime().wrap(function _callee7$(_context7) {
+          while (1) switch (_context7.prev = _context7.next) {
             case 0:
               uid = user.uid; // subscribe to a remote user
-              _context6.next = 3;
+              _context7.next = 3;
               return _this9.client.subscribe(user, mediaType);
             case 3:
               if (mediaType === "video") {
@@ -4577,9 +4611,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               }
             case 5:
             case "end":
-              return _context6.stop();
+              return _context7.stop();
           }
-        }, _callee6);
+        }, _callee7);
       }))();
     },
     setVolumn: function setVolumn(evt) {
@@ -5351,13 +5385,33 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       incomingCallerUid: "",
       joinChannel: "",
       incomingCaller: ""
-    }, _defineProperty(_ref, "incomingCallerUid", ""), _defineProperty(_ref, "channelUid", ""), _defineProperty(_ref, "incomingCall", false), _ref;
+    }, _defineProperty(_ref, "incomingCallerUid", ""), _defineProperty(_ref, "channelUid", ""), _defineProperty(_ref, "incomingCall", false), _defineProperty(_ref, "videoDevicesDropDown", null), _ref;
   },
   created: function created() {
     // this.db = firebase.database();
     // .get();
     //   const ref = this.db.ref();
     this.ref = _firebase__WEBPACK_IMPORTED_MODULE_2__["default"].database().ref();
+
+    //         AgoraRTC.getDevices()
+    // .then(devices => 
+    // {
+
+    //     const videoDevices = devices.filter(function(device)
+    //     {
+    //         return device.kind === "videoinput";
+    //     });
+    //     console.log(videoDevices);
+    //     // audioDevicesDropDown = document.getElementById("audioDevices");
+    //     this.videoDevicesDropDown = document.getElementById("videoDevices");
+    //     for (let i = 0; i < videoDevices.length; i++) 
+    //     {
+    //         var option = document.createElement("option");
+    //         option.text = videoDevices[i].label;
+    //         option.value = videoDevices[i].deviceId;
+    //        this.videoDevicesDropDown.appendChild(option)
+    //     }
+    // });
   },
   provide: function provide() {
     return {
@@ -5773,7 +5827,20 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
             case 17:
               _this10.localTracks.audioTrack = _context8.sent;
               _context8.next = 20;
-              return AgoraRTC.createCameraVideoTrack();
+              return AgoraRTC.createCameraVideoTrack({
+                encoderConfig: {
+                  width: 640,
+                  // Specify a value range and an ideal value
+                  height: {
+                    ideal: 480,
+                    min: 400,
+                    max: 500
+                  },
+                  frameRate: 15,
+                  bitrateMin: 600,
+                  bitrateMax: 1000
+                }
+              });
             case 20:
               _this10.localTracks.videoTrack = _context8.sent;
               // showMuteButton();
@@ -7199,27 +7266,169 @@ var _hoisted_12 = {
 var _hoisted_13 = {
   "class": "public__chat--alert"
 };
-var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"tip_menu\" data-v-7d1cd16c> Tip menu is available <ul class=\"list-group\" data-v-7d1cd16c><li class=\"list-group-item d-flex justify-content-between align-items-center\" data-v-7d1cd16c> Cras justo odio <span class=\"badge badge-primary badge-pill\" data-v-7d1cd16c>14</span></li><li class=\"list-group-item d-flex justify-content-between align-items-center\" data-v-7d1cd16c> Dapibus ac facilisis in <span class=\"badge badge-primary badge-pill\" data-v-7d1cd16c>2</span></li><li class=\"list-group-item d-flex justify-content-between align-items-center\" data-v-7d1cd16c> Morbi leo risus <span class=\"badge badge-primary badge-pill\" data-v-7d1cd16c>1</span></li></ul></div>", 1);
+var _hoisted_14 = {
+  key: 0,
+  "class": "text-center"
+};
 var _hoisted_15 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
+});
+var _hoisted_16 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "btn public__chat--alert_btn"
   }, "Buy Tokens", -1 /* HOISTED */);
 });
-var _hoisted_16 = {
-  "class": "my-2 chat__box"
-};
 var _hoisted_17 = {
-  "class": "input-group chat__box--wrapper"
+  key: 1,
+  "class": "tip_menu"
 };
 var _hoisted_18 = {
+  "class": "col-lg-6"
+};
+var _hoisted_19 = {
+  "class": "card chat_card h-100"
+};
+var _hoisted_20 = {
+  "class": "modal fade",
+  id: "tipMenuModel",
+  tabindex: "-1"
+};
+var _hoisted_21 = {
+  "class": "modal-dialog modal-lg",
+  style: {
+    "margin-top": "0"
+  }
+};
+var _hoisted_22 = {
+  "class": "modal-content",
+  style: {
+    "background": "transparent"
+  }
+};
+var _hoisted_23 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "modal-header"
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "Send Tip"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    type: "button",
+    "class": "customClose",
+    "data-bs-dismiss": "modal",
+    "aria-label": "Close"
+  }, " × ")], -1 /* HOISTED */);
+});
+var _hoisted_24 = {
+  "class": "modal-body modal-body-all",
+  style: {
+    "border-radius": "1rem"
+  }
+};
+var _hoisted_25 = {
+  "class": "card chat_card"
+};
+var _hoisted_26 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "card-header chat_card--header"
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "row"
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", {
+    "class": "nav nav-tabs chat_card--tabs d-flex",
+    id: "chat_box",
+    role: "tablist"
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", {
+    "class": "nav-item",
+    role: "presentation"
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    "class": "nav-link w-100 chat_card--btn active",
+    id: "home-tab",
+    "data-bs-toggle": "tab",
+    "data-bs-target": "#tip_menu",
+    type: "button",
+    role: "tab",
+    "aria-controls": "home",
+    "aria-selected": "true"
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+    "class": "bi bi-chat-fill"
+  }), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("    Tip Menu ")])])])])], -1 /* HOISTED */);
+});
+var _hoisted_27 = {
+  "class": "card-body position-relative chat_card--body"
+};
+var _hoisted_28 = {
+  "class": "tab-content pt-2 mt-20",
+  id: "chat_boxContent",
+  style: {
+    "height": "240px",
+    "overflow-y": "scroll"
+  }
+};
+var _hoisted_29 = {
+  "class": "tab-pane active show px-3",
+  id: "tip_menu",
+  role: "tabpanel",
+  "aria-labelledby": "contact-tab"
+};
+var _hoisted_30 = {
+  "class": "tip_box"
+};
+var _hoisted_31 = {
+  "class": "table"
+};
+var _hoisted_32 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, " ACTIVITY "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+    style: {
+      "text-align": "right"
+    }
+  }, " TOKENS ")])], -1 /* HOISTED */);
+});
+var _hoisted_33 = {
+  style: {
+    "text-align": "right"
+  }
+};
+var _hoisted_34 = {
+  "class": "token_box",
+  style: {
+    "height": "210px",
+    "background-color": "#3b3b3b"
+  }
+};
+var _hoisted_35 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "radio",
+    name: "token",
+    "class": "d-none"
+  }, null, -1 /* HOISTED */);
+});
+var _hoisted_36 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("   "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "Custom Amount:"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "text"
+  })], -1 /* HOISTED */);
+});
+var _hoisted_37 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "tip"
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", null, " Buy Token ")], -1 /* HOISTED */);
+});
+var _hoisted_38 = {
+  "class": "list-group mt-3"
+};
+var _hoisted_39 = {
+  "class": "badge badge-primary badge-pill"
+};
+var _hoisted_40 = {
+  "class": "my-2 chat__box"
+};
+var _hoisted_41 = {
+  "class": "input-group chat__box--wrapper"
+};
+var _hoisted_42 = {
   "class": "input-group-append"
 };
-var _hoisted_19 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_43 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
     "class": "bi bi-send"
   }, null, -1 /* HOISTED */);
 });
-var _hoisted_20 = [_hoisted_19];
+var _hoisted_44 = [_hoisted_43];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_2, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.messages, function (msg, i) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", {
@@ -7257,7 +7466,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         'color': msg.level_data ? msg.level_data.color : ''
       })
     }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(msg.level_data ? msg.level_data.name : null), 5 /* TEXT, STYLE */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button class=\"btn btn-primary btn-sm\">{{  Reply }}</button> ")])], 8 /* PROPS */, _hoisted_6), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(msg.msg), 1 /* TEXT */)]);
-  }), 128 /* KEYED_FRAGMENT */))]), $data.hasNotPermission && !$options.authUser ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" To chat, "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+  }), 128 /* KEYED_FRAGMENT */))]), $data.hasNotPermission ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [!$options.authUser ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" To chat, "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
     href: "#",
     onClick: _cache[0] || (_cache[0] = function () {
       return $options.showLoginModel && $options.showLoginModel.apply($options, arguments);
@@ -7267,26 +7476,46 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[1] || (_cache[1] = function () {
       return $options.showLoginModel && $options.showLoginModel.apply($options, arguments);
     })
-  }, " create a free account.")]), _hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      <span>With tokens, you get to</span>"), _hoisted_15])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  }, " create a free account."), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      <span>With tokens, you get to</span>"), _hoisted_15, _hoisted_16])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.authUser ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+    href: "#",
+    "data-bs-toggle": "modal",
+    "data-bs-target": "#tipMenuModel",
+    onClick: _cache[2] || (_cache[2] = function ($event) {
+      return $options.showtipMenu();
+    })
+  }, "Full tip menu "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" is available "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("tip model start"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, [_hoisted_23, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_24, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_25, [_hoisted_26, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_27, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_28, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_29, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_30, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_31, [_hoisted_32, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.host_tip_menus, function (value2, index2) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
+      key: index2
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(value2.menu_title), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_33, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(value2.token), 1 /* TEXT */)]);
+  }), 128 /* KEYED_FRAGMENT */))])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_34, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.host_tip_menus, function (value3, index3) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", {
+      key: index3
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(value3.token) + " ", 1 /* TEXT */), _hoisted_35])]);
+  }), 128 /* KEYED_FRAGMENT */))]), _hoisted_36, _hoisted_37])])])])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_38, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.host_tip_menus, function (value, index) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", {
+      "class": "list-group-item d-flex bg-dark-1 text-white justify-content-between align-items-center",
+      key: index
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(value.menu_title) + " ", 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_39, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(value.token), 1 /* TEXT */)]);
+  }), 128 /* KEYED_FRAGMENT */))])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_40, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_41, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
     "class": "form-control chat__box--input",
     placeholder: "Public message",
     "aria-label": "Public message",
     "aria-describedby": "basic-addon2",
-    "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
+    "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
       return $data.message = $event;
     }),
-    onKeyup: _cache[3] || (_cache[3] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withKeys)(function () {
+    onKeyup: _cache[4] || (_cache[4] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withKeys)(function () {
       return $options.send && $options.send.apply($options, arguments);
     }, ["enter"]))
-  }, null, 544 /* HYDRATE_EVENTS, NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.message]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  }, null, 544 /* HYDRATE_EVENTS, NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.message]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_42, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "btn input-group-text chat__box--btn",
     type: "button",
-    onClick: _cache[4] || (_cache[4] = function () {
+    onClick: _cache[5] || (_cache[5] = function () {
       return $options.send && $options.send.apply($options, arguments);
     }),
     id: "basic-addon2"
-  }, _hoisted_20)])])])]);
+  }, _hoisted_44)])])])]);
 }
 
 /***/ }),
@@ -11755,10 +11984,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   })), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(this.totalLikes), 1 /* TEXT */)]), $data.isStreamStarted ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_24, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "button",
+    "class": "bg-dark ms-2",
     onClick: _cache[4] || (_cache[4] = function () {
       return $options.placeCall && $options.placeCall.apply($options, arguments);
     })
-  }, " Start Private ")])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.isStreamStarted ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_25, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  }, " Join me free now ")])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.isStreamStarted ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_25, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "data-bs-toggle": "modal",
     "data-bs-target": "#sendtipModal",
     onClick: _cache[5] || (_cache[5] = function ($event) {
@@ -13085,7 +13315,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_ChatUser = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("ChatUser");
   var _component_Message = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Message");
   var _component_IncomingCallModal = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("IncomingCallModal");
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("section", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"col\"> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [_hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("section", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"col\"> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [_hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <select id = \"videoDevices\" ></select> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     onClick: _cache[0] || (_cache[0] = function () {
       return $options.muteMic && $options.muteMic.apply($options, arguments);
     }),
@@ -15134,7 +15364,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.messages__box[data-v-7d1cd16c] {\n  transition: 0.5s all;\n}\n.toast[data-v-7d1cd16c] {\n  background-color: #2b2b2b;\n}\n.toast-header[data-v-7d1cd16c] {\n  background-color: #282323;\n}\n.btn-close[data-v-7d1cd16c] {\n  color:#fff\n}\n.badge[data-v-7d1cd16c] {\n  font-size:16px;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.messages__box[data-v-7d1cd16c] {\n  transition: 0.5s all;\n}\n.toast[data-v-7d1cd16c] {\n  background-color: #2b2b2b;\n}\n.toast-header[data-v-7d1cd16c] {\n  background-color: #282323;\n}\n.btn-close[data-v-7d1cd16c] {\n  color:#fff\n}\n.badge[data-v-7d1cd16c] {\n  font-size:16px;\n}\n.tip_menu[data-v-7d1cd16c] {\n  width: 100%;\n}\n.bg-dark-1[data-v-7d1cd16c] {\n  background-color: #343434;\n}\n.token_box label[data-v-7d1cd16c] {\n    background: lightgray;\n    padding: 8px;\n    font-size: 18px;\n    font-weight: 600;\n    min-width: 100px;\n    text-align: center;\n    border-radius: 12px;\n}\n.token_box ul[data-v-7d1cd16c] {\n    -webkit-padding-start: 0px;\n            padding-inline-start: 0px;\n    display: flex;\n    overflow-x: scroll;\n}\n.token_box ul li[data-v-7d1cd16c] {\n    list-style: none;\n    margin-top: 15px;\n    margin-right: 15px;\n    margin-bottom: 15px;\n}\n.token_box input[data-v-7d1cd16c] {\n    width: 75%;\n    margin-left: 35px;\n    height: 45px;\n    border-radius: 27px;\n    background: #000;\n    border-color: #000;\n    color: #fff;\n    text-align: center;\n}\n.token_box button[data-v-7d1cd16c] {\n    margin-bottom: 0px;\n    border: 2px solid #a1a1a1;\n    border-radius: 20px;\n    padding: 10px 25px;\n    background: #79943d;\n    color: #fff;\n    margin-left: 10px;\n}\n\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

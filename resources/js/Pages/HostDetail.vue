@@ -84,18 +84,20 @@
                                         {{ this.totalLikes }}
                                     </div>
                                     <div class="private" v-if="isStreamStarted">
+
                                         <button
                                             type="button"
+                                            class="bg-dark ms-2"
                                             @click="placeCall"
                                         >
-                                            Start Private
+                                            Join me free now
                                         </button>
                                     </div>
                                     <div class="tip" v-if="isStreamStarted">
                                         <button
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#sendtipModal"
-                                            @click="removeBackdrop()"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#sendtipModal"
+                                        @click="removeBackdrop()"
                                         >
                                             Send Tip
                                         </button>
@@ -1212,6 +1214,17 @@ export default {
         },
     },
     methods: {
+       async getLiveUserCount() {
+            await axios.get('https://www.linkedin.com/oauth/v2/authorization', {
+            headers: {
+                'username': 'header value',
+            },
+            }).then(response => {
+            console.log("INFO: " + response);
+            }).catch(error => {
+            console.log("ERROR: " + error);
+            });
+        },
         setActiveTab(tab) {
             this.activeTab = tab;
         },
@@ -1317,14 +1330,14 @@ export default {
                 this.options.uid
             );
 
-            // if (this.options.role === "audience") {
-            //     $("#mic-btn").prop("disabled", true);
-            //     $("#video-btn").prop("disabled", true);
-            //     // add event listener to play remote tracks when remote user publishs.
-            //     this.client.on("user-published", this.handleUserPublished);
-            //     this.client.on("user-joined", this.handleUserJoined);
-            //     this.client.on("user-left", this.handleUserLeft);
-            // }
+            if (this.options.role === "host") {
+                // $("#mic-btn").prop("disabled", true);
+                // $("#video-btn").prop("disabled", true);
+                // add event listener to play remote tracks when remote user publishs.
+                this.client.on("user-published", this.handleUserPublished);
+                this.client.on("user-joined", this.handleUserJoined);
+                this.client.on("user-left", this.handleUserLeft);
+            }
             // join the channel
         },
         async subscribe(user, mediaType) {
