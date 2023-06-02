@@ -43,14 +43,38 @@
                                         class="full-screen"
                                         v-show="isStreamStarted"
                                     >
-                                        <input
+                                <button
+                                    type="button"
+                                    id="full-screen-btn"
+                                    class="btn btn-link btn-sm"
+                                    data-bs-toggle="dropdown"
+                                        >
+                                        <i class="bi bi-gear"></i>
+                                        <span class="me-2 font-size-14 dropdown-toggle d-none"></span>
+                                    </button>
+                                   
+                                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile pt-0"
+                                        data-popper-placement="bottom-end">
+                                    <li> <a class="dropdown-item" href="#">Auto <span class="badge badge-pill">HD</span></a></li>
+                                      <li>
+                                     <hr class="dropdown-divider"></li>
+                                     <li> <a class="dropdown-item" href="#" @click="setVideoQuality(480,480,30)">720p <span class="badge badge-pill">HD</span></a></li>
+                                     <li> <a class="dropdown-item" href="#" @click="setVideoQuality(640,360,15)">360p </a></li>
+                                    </ul>
+
+                                    <i class="bi bi-volume-down font-size-16" @click="showVolme" v-if="displayVolume"></i>
+                                        <i class="bi bi-volume-down font-size-16" @click="hideVolume" v-if="!displayVolume"></i>
+                                        <span id="showVolumeBtn">
+                                            <input
                                             type="range"
                                             min="0"
                                             id="localAudioVolume"
                                             max="100"
                                             value="100"
+                                            class="transofrm"
                                             @input="setVolumn"
                                         />
+                                        </span>
                                         <button
                                             @click="openFullscreen"
                                             type="button"
@@ -59,11 +83,11 @@
                                         >
                                             <i
                                                 style="
-                                                    transform: rotate(45deg);
+                                                 transform: rotate(45deg);
                                                     font-size: 1.1rem;
                                                 "
                                                 id="full-screen-icon"
-                                                class="fas fa-arrows-alt"
+                                                class="bi bi-fullscreen"
                                             ></i>
                                         </button>
                                     </div>
@@ -1080,6 +1104,7 @@ export default {
             callPlaced: false,
             outgoingCaller: "",
             activeTab: "",
+            displayVolume: true,
         };
     },
     // created() {
@@ -1129,10 +1154,13 @@ export default {
         };
 
         this.client.on("user-published", (user, mediaType) => {
+            console.log(user, 'published');
             let remoteUser = this.client.remoteUsers;
             // console.error("published", this.client.remoteUsers[0].uid);
             this.subscribe(remoteUser[0], mediaType);
             this.isStreamStarted = true;
+            this.setVideoQuality();
+
             // this.subscribe(remoteUser[0], "audio");
         });
         this.client.on("user-left", (evt) => {
@@ -1214,6 +1242,34 @@ export default {
         },
     },
     methods: {
+        async setVideoQuality(width=360, height=360, frameRate=30) {
+            let  videoTrack = {
+                localVideoTrack:null
+            }
+            videoTrack.localVideoTrack =
+                    await AgoraRTC.createCameraVideoTrack({
+                        encoderConfig: 
+                        {
+                        width: width,
+                        // Specify a value range and an ideal value
+                        height: height,
+                        frameRate: frameRate,
+                        bitrateMin: 400, bitrateMax: 600,
+                        },
+                        optimizationMode:'motion'                        
+                    });
+
+                // // publish local tracks to channel
+                // await this.client.publish(Object.values(videoTrack));
+        },
+        showVolme() {
+                this.displayVolume =  false;
+                document.getElementById('showVolumeBtn').style.display='block';
+        },
+        hideVolume() {
+                this.displayVolume =  true;
+                document.getElementById('showVolumeBtn').style.display='none';
+        },
        async getLiveUserCount() {
             await axios.get('https://www.linkedin.com/oauth/v2/authorization', {
             headers: {
@@ -1408,6 +1464,15 @@ export default {
 </script>
 
 <style>
+.badge-pill {
+    background-color: #a2262e;
+}
+.font-size-14 {
+    font-size: 14px;
+}
+.dropdown-menu-arrow::before {
+    display: none
+}
 .stream__offline--text {
     display: flex;
     justify-content: center;
@@ -1433,6 +1498,47 @@ export default {
     position: absolute;
     width: 100%;
     bottom: 0;
+}
+
+/*Chrome*/
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    input[type='range'] {
+      overflow: hidden;
+      width: 80px;
+      -webkit-appearance: none;
+      background-color: #9a905d;
+    }
+    
+    input[type='range']::-webkit-slider-runnable-track {
+      height: 10px;
+      -webkit-appearance: none;
+      color: #a2262e;
+      margin-top: -1px;
+    }
+    
+    input[type='range']::-webkit-slider-thumb {
+      width: 10px;
+      -webkit-appearance: none;
+      height: 10px;
+      cursor: ew-resize;
+      background: #434343;
+      box-shadow: -80px 0 0 80px #a2262e;
+    }
+
+}
+/** FF*/
+input[type="range"]::-moz-range-progress {
+  background-color: #a2262e; 
+}
+input[type="range"]::-moz-range-track {  
+  background-color: #9a905d;
+}
+/* IE*/
+input[type="range"]::-ms-fill-lower {
+  background-color: #a2262e; 
+}
+input[type="range"]::-ms-fill-upper {  
+  background-color: #9a905d;
 }
 
 .action_box .like {
@@ -1476,6 +1582,9 @@ export default {
     background: none;
 }
 
+.font-size-16 {
+    font-size: 25px;
+}
 .hostPageTabs li button.active {
     background: none;
     color: #fff;
@@ -1570,8 +1679,8 @@ export default {
 .full-screen {
     position: absolute;
     width: 100%;
-    top: 0;
-    right: -6px;
+    top: 5px;
+    right: 16px;
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -1655,6 +1764,10 @@ export default {
     padding: 1rem 1rem;
 }
 
+
+#showVolumeBtn {
+    display: none;
+}
 .PrfileDiv2 {
     background-color: #26272b;
     width: 40%;

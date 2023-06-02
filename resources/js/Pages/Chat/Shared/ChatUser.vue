@@ -109,7 +109,7 @@ export default {
                 if (snap.exists()) {
                     let data = snap.val();
                     this.isOnline = data.is_online;
-                    console.log(this.userData );
+                    // console.log(this.userData );
                     this.$emit("updateUserOnlineStatus", {
                         user_id: this.userData.uuid,
                         is_online: data.is_online || 0,
