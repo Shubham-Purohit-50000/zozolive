@@ -38,16 +38,20 @@
                                                 class="fas fa-video"
                                             ></i>
                                         </button>
-                                    </div>
-                                    <div class="full-screen">
-                                        <input
+
+                                        <i class="bi bi-volume-down font-size-16" @click="showVolme" v-if="displayVolume"></i>
+                                        <i class="bi bi-volume-down font-size-16" @click="hideVolume" v-if="!displayVolume"></i>
+                                        <span id="showVolumeBtn">
+                                            <input
                                             type="range"
                                             min="0"
                                             id="localAudioVolume"
                                             max="100"
                                             value="100"
+                                            class="transofrm"
                                             @input="setVolumn"
                                         />
+                                        </span>
                                         <button
                                             @click="openFullscreen"
                                             type="button"
@@ -56,14 +60,15 @@
                                         >
                                             <i
                                                 style="
-                                                    transform: rotate(45deg);
+                                                 transform: rotate(45deg);
                                                     font-size: 1.1rem;
                                                 "
                                                 id="full-screen-icon"
-                                                class="fas fa-arrows-alt"
+                                                class="bi bi-fullscreen"
                                             ></i>
                                         </button>
                                     </div>
+                                  
                                 </div>
                             </div>
                             <div class="w-100"></div>
@@ -374,6 +379,7 @@ export default {
             channelUid: "",
             incomingCall: false,
             videoDevicesDropDown: null,
+            displayVolume: true,
         };
     },
     created() {
@@ -476,6 +482,16 @@ export default {
         });
     },
     methods: {
+        showVolme() {
+                this.displayVolume =  false;
+                document.getElementById('showVolumeBtn').style.display='block';
+            
+        },
+
+        hideVolume() {
+                this.displayVolume =  true;
+                document.getElementById('showVolumeBtn').style.display='none';
+        },
         initUserOnlineListeners() {
             Echo.channel("agora-online-channel").listen(
                 ".broadcastAs",
@@ -709,6 +725,7 @@ export default {
         },
 
         async join() {
+            
             var channel = this.authUser.uuid;
             var role = "host";
             var app_id = "c2725af707a64a6eba4806f5cb712ed9";
@@ -721,6 +738,7 @@ export default {
             };
             // create Agora client
             this.client.setClientRole(this.options.role);
+           
             // $("#mic-btn").prop("disabled", false);
             // $("#video-btn").prop("disabled", false);
             if (this.options.role === "audience") {
@@ -742,8 +760,12 @@ export default {
                 $("#mic-btn").prop("disabled", false);
                 $("#video-btn").prop("disabled", false);
                 this.client.on("user-published", this.handleUserPublished);
-                this.client.on("user-joined", this.handleUserJoined);
+                this.client.on("user-joined", (user) => {
+                    const id = user.uid;
+                });
                 this.client.on("user-left", this.handleUserLeft);
+
+                
                 // create local audio and video tracks
                 this.localTracks.audioTrack =
                     await AgoraRTC.createMicrophoneAudioTrack();
@@ -751,13 +773,15 @@ export default {
                     await AgoraRTC.createCameraVideoTrack({
                         encoderConfig: 
                         {
-                        width: 640,
+                        width: { ideal: 480, min: 360, max: 600 },
                         // Specify a value range and an ideal value
-                        height: { ideal: 480, min: 400, max: 500 },
-                        frameRate: 15,
+                        height: { ideal: 480, min: 360, max: 600 },
+                        frameRate: { max: 30, min: 15 },
                         bitrateMin: 600, bitrateMax: 1000,
                         },
+                        optimizationMode:'motion'                        
                     });
+                    
                 // showMuteButton();
                 // play local video track
                 this.localTracks.videoTrack.play("local-player");
@@ -872,6 +896,9 @@ export default {
     font-size: 1.2rem;
     color: #fff;
 }
+#showVolumeBtn {
+    display: none;
+}
 .player {
     width: 100%;
     height: 500px;
@@ -903,8 +930,8 @@ export default {
 }
 .stream_toggle_btn {
     position: absolute;
-    width: 100%;
     bottom: 0.3rem;
+    right: 20px;
 }
 .full-screen {
     position: absolute;
@@ -926,6 +953,51 @@ export default {
 }
 .messages__box{
   margin-left: 1rem;
+}
+
+.font-size-16 {
+    font-size: 25px;
+}
+
+/*Chrome*/
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    input[type='range'] {
+      overflow: hidden;
+      width: 80px;
+      -webkit-appearance: none;
+      background-color: #9a905d;
+    }
+    
+    input[type='range']::-webkit-slider-runnable-track {
+      height: 10px;
+      -webkit-appearance: none;
+      color: #a2262e;
+      margin-top: -1px;
+    }
+    
+    input[type='range']::-webkit-slider-thumb {
+      width: 10px;
+      -webkit-appearance: none;
+      height: 10px;
+      cursor: ew-resize;
+      background: #434343;
+      box-shadow: -80px 0 0 80px #a2262e;
+    }
+
+}
+/** FF*/
+input[type="range"]::-moz-range-progress {
+  background-color: #a2262e; 
+}
+input[type="range"]::-moz-range-track {  
+  background-color: #9a905d;
+}
+/* IE*/
+input[type="range"]::-ms-fill-lower {
+  background-color: #a2262e; 
+}
+input[type="range"]::-ms-fill-upper {  
+  background-color: #9a905d;
 }
 @media screen and (max-width: 991px){
   .stream_wrapper{
