@@ -177,6 +177,7 @@ class UserController extends Controller
         return view('admin.user.profile-update')->with('user', auth()->user());
     }
 
+    
     public function sendTip(Request $req){
         $user = User::where('uuid', $req->user_id)->first();
         if($user->token < $req->token_amount){
@@ -186,7 +187,7 @@ class UserController extends Controller
             ]);
             die();
         }
-
+        
         $host = User::where('uuid', $req->host_id)->first();
         $user->token = $user->token - $req->token_amount;
         $host->token = $host->token + $req->token_amount;
@@ -194,12 +195,19 @@ class UserController extends Controller
         $user->save();
         $host->update();
         $host->save();
-
+        
         return response()->json(
             [
                 'status'=>'success',
                 'msg'=>'Tip sent successfully!',
-            ]
-        );
+                ]
+            );
+        }
+
+        public function uploadLiveImage($id, Request $request)
+        {
+            // dd($id, $request['live_image']);
+           
+        }
     }
-}
+    

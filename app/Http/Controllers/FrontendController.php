@@ -525,7 +525,8 @@ class FrontendController extends Controller
     }   
 
     public function userLevel($token){
-
+        $token = (int)$token;
+        // dd($token);
         $level = array();
         $add_amount = 0;
         for($i=1; $i<=50; $i++) {
@@ -584,4 +585,16 @@ class FrontendController extends Controller
             'data' => $level_data,
         ]);
     }
+
+    public function setUserToken($id){
+        $user = User::where('uuid', $id)->first();
+        if( $user->token > 0) {
+            $user->token = $user->token-1;
+        } else {
+            $user->token = 0;
+        }
+        $user->save();
+
+    }   
+    
 }

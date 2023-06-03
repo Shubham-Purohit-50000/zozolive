@@ -24,6 +24,7 @@
   <div class="toast-header">
     <!-- <img src="..." class="rounded me-2" alt="..."> -->
     <span class="badge me-auto" :style="{'background-color':msg.level_data ? msg.level_data.color : ''}">Level : {{ msg.level_data ? msg.level_data.level : null  }}</span>
+    <span class="badge  badge-pill badge-primary"><span class="text-white">Tk : </span>{{ msg.user_token }}</span> 
   
     <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close" @click="closeToast(msg.user_token)">
       <i class=" bi bi-x-lg"></i>
@@ -39,8 +40,8 @@
       </li>
     </ul>
   
-    <div v-if="hasNotPermission">
-          <div class="public__chat--alert">
+    <div>
+          <div class="public__chat--alert" v-if="tipMenuDisplay">
       <div v-if="!authUser" class="text-center"> To chat, <a href="#" @click="showLoginModel">log in</a> or 
         <a href="#" @click="showLoginModel"> create a free account.</a> 
       <!--      <span>With tokens, you get to</span>-->
@@ -48,7 +49,7 @@
       <button class="btn public__chat--alert_btn">Buy Tokens</button>
       </div>
      
-      <div class="tip_menu" v-if="authUser">
+      <div class="tip_menu" v-if="authUser && authUserLevelData.token > 0">
        <a  href="#" data-bs-toggle="modal"
         data-bs-target="#tipMenuModel"
         @click="showtipMenu()">Full tip menu </a>  is available 
@@ -146,8 +147,7 @@
                                                                                 ACTIVITY
                                                                             </th>
                                                                             <th
-                                                                                style="
-                                                                                    text-align: right"
+                                                                                style="text-align: right"
                                                                             >
                                                                                 TOKENS
                                                                             </th>
@@ -227,7 +227,7 @@
     </div>
   
     </div>
-    <div class="my-2 chat__box">
+    <div class="my-2 chat__box" v-if="authUser && authUserLevelData.token > 0">
       <div class="input-group chat__box--wrapper">
         <input
             type="text"
@@ -275,6 +275,7 @@ export default {
       hasNotPermission: true,
       authUserLevelData: {},
       host_tip_menus: [],
+      tipMenuDisplay: true,
     };
   },
   created() {
@@ -353,6 +354,18 @@ export default {
             console.log(error);
         }
     },
+    
+    setUserToken() {
+      try {
+           axios.post("/user/"+this.authUser.uuid).then((resp)=> {
+            this.getUserLevels();
+            this.tipMenuDisplay = false;
+            });
+           
+        } catch (error) {
+            console.log(error);
+        }
+    },
     send() {
       const date = new Date();
       // console.log("condition", this.authUser && this.authUser.token > 0);
@@ -388,6 +401,7 @@ export default {
                     .set(msgClone);
                 if(this.message) {
                   this.getUserLevels();
+                  this.setUserToken();
                 }
                 this.message = "";
               } else {
@@ -405,6 +419,8 @@ export default {
                 this.ref.child(this.chatKey).child(this.hostDetail?.uuid).set(data);
                 if(this.message) {
                   this.getUserLevels();
+                  this.setUserToken();
+
                 }
               }
               this.message = "";

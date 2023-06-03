@@ -58,7 +58,8 @@
                                     <li> <a class="dropdown-item" href="#">Auto <span class="badge badge-pill">HD</span></a></li>
                                       <li>
                                      <hr class="dropdown-divider"></li>
-                                     <li> <a class="dropdown-item" href="#" @click="setVideoQuality(480,480,30)">720p <span class="badge badge-pill">HD</span></a></li>
+                                     <li> <a class="dropdown-item" href="#" @click="setVideoQuality(1280,720,30)">720p <span class="badge badge-pill">HD</span></a></li>
+                                     <li> <a class="dropdown-item" href="#" @click="setVideoQuality(480,480,30)">480p <span class="badge badge-pill">HD</span></a></li>
                                      <li> <a class="dropdown-item" href="#" @click="setVideoQuality(640,360,15)">360p </a></li>
                                     </ul>
 
@@ -1242,7 +1243,7 @@ export default {
         },
     },
     methods: {
-        async setVideoQuality(width=360, height=360, frameRate=30) {
+        async setVideoQuality(width=1280, height=720, frameRate=30) {
             let  videoTrack = {
                 localVideoTrack:null
             }
@@ -1254,7 +1255,7 @@ export default {
                         // Specify a value range and an ideal value
                         height: height,
                         frameRate: frameRate,
-                        bitrateMin: 400, bitrateMax: 600,
+                        bitrateMin: 600, bitrateMax: 2000,
                         },
                         optimizationMode:'motion'                        
                     });
