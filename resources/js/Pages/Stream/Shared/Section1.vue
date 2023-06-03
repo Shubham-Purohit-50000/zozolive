@@ -92,7 +92,14 @@
                                     class="start_stream_btn"
                                 >
                                     Start
-                                </button>
+                                </button> 
+                                <!-- <button
+                                    @click="addScreenshot()"
+                                    v-if="isStreamStarted"
+                                    class="start_stream_btn"
+                                >
+                                    screenshot
+                                </button> -->
                                 <button
                                     @click="stopStream"
                                     v-else
@@ -482,6 +489,32 @@ export default {
         });
     },
     methods: {
+        addScreenshot() {
+            var video = $('video')[0];
+            var canvas = document.createElement('canvas');
+            var context = canvas.getContext('2d');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            var screenshotContainer = $('#screenshotContainer');
+            screenshotContainer.empty(); // Clear previous screenshots
+            screenshotContainer.append(canvas);
+
+            var image = canvas.toDataURL('image/png', 1.0).replace('image/png', 'image/octet-stream');
+            console.log(image);
+            if(image) {
+            try {
+             axios.post("/upload/"+this.authUser.uuid+"/live-image", {
+                live_image:image,
+            }).then((resp)=> {
+                // console.log(resp);
+                });
+                
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+        },
         showVolme() {
                 this.displayVolume =  false;
                 document.getElementById('showVolumeBtn').style.display='block';
@@ -773,11 +806,11 @@ export default {
                     await AgoraRTC.createCameraVideoTrack({
                         encoderConfig: 
                         {
-                        width: { ideal: 480, min: 360, max: 600 },
+                        width: { ideal: 480, min: 480, max: 1280 },
                         // Specify a value range and an ideal value
-                        height: { ideal: 480, min: 360, max: 600 },
+                        height: { ideal: 480, min: 360, max: 720 },
                         frameRate: { max: 30, min: 15 },
-                        bitrateMin: 600, bitrateMax: 1000,
+                        bitrateMin: 600, bitrateMax: 2000,
                         },
                         optimizationMode:'motion'                        
                     });
@@ -792,6 +825,10 @@ export default {
                     "Successfully published.",
                     Object.values(this.localTracks)
                 );
+
+                // Set thumbnil 
+                this.addScreenshot();
+               
             }
 
             this.isStreamStarted = true;
