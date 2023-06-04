@@ -354,18 +354,6 @@ export default {
             console.log(error);
         }
     },
-    
-    setUserToken() {
-      try {
-           axios.post("/user/"+this.authUser.uuid).then((resp)=> {
-            this.getUserLevels();
-            this.tipMenuDisplay = false;
-            });
-           
-        } catch (error) {
-            console.log(error);
-        }
-    },
     send() {
       const date = new Date();
       // console.log("condition", this.authUser && this.authUser.token > 0);
@@ -401,7 +389,7 @@ export default {
                     .set(msgClone);
                 if(this.message) {
                   this.getUserLevels();
-                  this.setUserToken();
+                  // this.setUserToken();
                 }
                 this.message = "";
               } else {
@@ -419,7 +407,7 @@ export default {
                 this.ref.child(this.chatKey).child(this.hostDetail?.uuid).set(data);
                 if(this.message) {
                   this.getUserLevels();
-                  this.setUserToken();
+                  // this.setUserToken();
 
                 }
               }
@@ -441,6 +429,19 @@ export default {
 </script>
 
 <style scoped>
+
+.public__chat--alert {
+  position: relative;
+
+}
+
+#chat_boxContent .chat__box .chat__box--wrapper {
+  background-color: #242424;
+}
+
+#chat_boxContent .chat__box {
+  position: relative;
+}
 .messages__box {
   transition: 0.5s all;
 }

@@ -207,6 +207,15 @@ export default {
     },
   },
   methods: {
+    setUserToken() {
+      try {
+           axios.post("/user/"+this.authUser.uuid).then((resp)=> {
+            });
+           
+        } catch (error) {
+            console.log(error);
+        }
+    },
     send() {
       const date = new Date();
       // console.log("condition", this.authUser && this.authUser.token > 0);
@@ -235,6 +244,9 @@ export default {
                       .child(this.chatKey)
                       .child("message")
                       .set(msgClone);
+                  
+                  this.setUserToken();
+
                   this.message = "";
                 } else {
                   const data = {
@@ -253,6 +265,8 @@ export default {
                       .child(this.mainKey)
                       .child(this.childKey)
                       .set(data);
+
+                  this.setUserToken();
                   this.message = "";
                 }
               });

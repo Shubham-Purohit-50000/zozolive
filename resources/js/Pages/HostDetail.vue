@@ -59,7 +59,7 @@
                                       <li>
                                      <hr class="dropdown-divider"></li>
                                      <li> <a class="dropdown-item" href="#" @click="setVideoQuality(1280,720,30)">720p <span class="badge badge-pill">HD</span></a></li>
-                                     <li> <a class="dropdown-item" href="#" @click="setVideoQuality(480,480,30)">480p <span class="badge badge-pill">HD</span></a></li>
+                                     <li> <a class="dropdown-item" href="#" @click="setVideoQuality(480,480,30)">480p </a></li>
                                      <li> <a class="dropdown-item" href="#" @click="setVideoQuality(640,360,15)">360p </a></li>
                                     </ul>
 
@@ -108,12 +108,12 @@
 
                                         {{ this.totalLikes }}
                                     </div>
-                                    <div class="private" v-if="isStreamStarted">
+                                    <div class="private" v-if="isStreamStarted && !authUser">
 
                                         <button
                                             type="button"
                                             class="bg-dark ms-2"
-                                            @click="placeCall"
+                                            @click="showLoginModel()"
                                         >
                                             Join me free now
                                         </button>
@@ -1243,6 +1243,9 @@ export default {
         },
     },
     methods: {
+        showLoginModel() {
+        $("#basicModal").modal("show");
+        },
         async setVideoQuality(width=1280, height=720, frameRate=30) {
             let  videoTrack = {
                 localVideoTrack:null
