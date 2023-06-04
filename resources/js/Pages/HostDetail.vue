@@ -1565,6 +1565,9 @@ input[type="range"]::-ms-fill-upper {
     background: #821e25;
     color: #fff;
 }
+.action_box .private button:hover{
+     background: #821e25 !important;
+}
 
 .action_box .tip button {
     margin-bottom: 0px;
