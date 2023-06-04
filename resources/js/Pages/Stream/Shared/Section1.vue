@@ -175,7 +175,7 @@
                                         aria-selected="false"
                                     >
                                         <i class="bi bi-people-fill"></i>
-                                        &nbsp;&nbsp; {{ totalWatching }}
+                                        &nbsp;&nbsp; {{ total_watching }}
                                     </button>
                                 </li>
                             </ul>
@@ -343,7 +343,7 @@ export default {
         authuserid: {
             type: String,
         },
-        agora_id: {
+        agoraId: {
             type: String,
         },
         appCertificate: {
@@ -387,6 +387,7 @@ export default {
             incomingCall: false,
             videoDevicesDropDown: null,
             displayVolume: true,
+            total_watching: 0,
         };
     },
     created() {
@@ -489,6 +490,26 @@ export default {
         });
     },
     methods: {
+        async getRemoteUsers() {
+           
+            // axios.post("model/generate-token").then((resp)=> {
+            //   let token = resp.data.token;
+            //   console.log(token);
+            //     });
+                
+            await axios.get('https://api.agora.io/dev/v1/channel/user/'+this.agoraId+'/'+ this.options.channel, {
+            response_type: 'code',
+            headers:{Authorization:'Basic MDdhN2ZmNjRjNDk5NDI1Yjk4MTAzMzc1MTFiMTFlNTk6YTM3M2U2OTBiZTY4NDdjY2I0NDg1OWU2NzJmNjcxYjA='},
+                }).then(response => {
+                    let values = Object.values(response.data);
+                    if(values) {
+                     this.total_watching = values[1].audience_total;
+                    }
+               
+                }).catch(error => {
+                console.log("ERROR: " + error);
+         });
+        },
         addScreenshot() {
             var video = $('video')[0];
             var canvas = document.createElement('canvas');
@@ -806,9 +827,9 @@ export default {
                     await AgoraRTC.createCameraVideoTrack({
                         encoderConfig: 
                         {
-                        width: { ideal: 480, min: 480, max: 1280 },
+                        width: { ideal: 600, min: 480, max: 1280 },
                         // Specify a value range and an ideal value
-                        height: { ideal: 480, min: 360, max: 720 },
+                        height: { ideal: 600, min: 360, max: 720 },
                         frameRate: { max: 30, min: 15 },
                         bitrateMin: 600, bitrateMax: 2000,
                         },
@@ -828,7 +849,8 @@ export default {
 
                 // Set thumbnil 
                 this.addScreenshot();
-               
+               // Get all remote users 
+               this.getRemoteUsers() 
             }
 
             this.isStreamStarted = true;
