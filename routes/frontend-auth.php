@@ -62,7 +62,7 @@ Route::view('sample-stream', 'sample-stream');
 
 //-------------hostTipMenu code----------------------------------------
 Route::get('host-tip-menu', [HostController::class, 'hostTipMenu']);
-Route::get('host/create/host-tip-menu', [HostController::class, 'CreateHostTipMenu']);
+Route::post('host/create/host-tip-menu', [HostController::class, 'CreateHostTipMenu']);
 Route::get('host/delete/host-tip-menu', [HostController::class, 'removeHostTipMenu']);
 Route::post('user/send-tip', [UserController::class, 'sendTip']);
 

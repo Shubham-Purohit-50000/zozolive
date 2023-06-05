@@ -5364,7 +5364,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       goalToken: "",
       todayTopic: "",
       isLoading: false,
-      topicError: ""
+      topicError: "",
+      activity_name: "Love",
+      token_amount: null,
+      host_tip_menus: []
     };
   },
   computed: {
@@ -5378,38 +5381,86 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.goal = (_this$authUser = this.authUser) === null || _this$authUser === void 0 ? void 0 : (_this$authUser$model = _this$authUser.model) === null || _this$authUser$model === void 0 ? void 0 : _this$authUser$model.goal;
       this.goalToken = (_this$authUser2 = this.authUser) === null || _this$authUser2 === void 0 ? void 0 : (_this$authUser2$model = _this$authUser2.model) === null || _this$authUser2$model === void 0 ? void 0 : _this$authUser2$model.goal_token;
       this.todayTopic = (_this$authUser3 = this.authUser) === null || _this$authUser3 === void 0 ? void 0 : (_this$authUser3$model = _this$authUser3.model) === null || _this$authUser3$model === void 0 ? void 0 : _this$authUser3$model.today_topic;
+      this.getHostTipMenu();
     }
   },
   methods: {
-    saveGoal: function saveGoal() {
+    getHostTipMenu: function getHostTipMenu() {
       var _this = this;
+      try {
+        axios.get("/host-tip-menu/?host_id=" + this.authUser.uuid).then(function (resp) {
+          // console.log(resp);
+          _this.host_tip_menus = resp.data.host_tip_menu;
+          var values = _this.host_tip_menus.find(function (node) {
+            return node.menu_title === 'Love';
+          });
+          _this.token_amount = values.token;
+          _this.activity_name = values.menu_title;
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    setActivity: function setActivity(event) {
+      if (event.target.value) {
+        var values = this.host_tip_menus.find(function (node) {
+          return node.menu_title === event.target.value;
+        });
+        if (values) {
+          this.token_amount = values.token;
+          this.activity_name = values.menu_title;
+        } else {
+          this.token_amount = null;
+        }
+      }
+    },
+    saveHostTipMenu: function saveHostTipMenu() {
+      var _this2 = this;
+      if (this.activity_name && this.token_amount > 0) {
+        try {
+          axios.post("/host/create/host-tip-menu", {
+            host_id: this.authUser.uuid,
+            menu_title: this.activity_name,
+            token: this.token_amount
+          }).then(function (resp) {
+            // this.activity_name = 'Love';
+            // this.token_amount = null;
+            _this2.getHostTipMenu();
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    },
+    saveGoal: function saveGoal() {
+      var _this3 = this;
       this.isLoading = true;
       if (this.goal && this.goalToken) {
         axios.post("/goals", {
           goal: this.goal,
           goal_token: this.goalToken
         }).then(function (res) {
-          _this.isLoading = false;
+          _this3.isLoading = false;
           console.log("res", res.data);
         });
       }
     },
     saveTopic: function saveTopic() {
-      var _this2 = this;
+      var _this4 = this;
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
         var res;
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) switch (_context.prev = _context.next) {
             case 0:
-              if (!_this2.todayTopic) {
+              if (!_this4.todayTopic) {
                 _context.next = 12;
                 break;
               }
-              _this2.isLoading = true;
+              _this4.isLoading = true;
               _context.prev = 2;
               _context.next = 5;
               return axios.post("/save-topic", {
-                today_topic: _this2.todayTopic
+                today_topic: _this4.todayTopic
               });
             case 5:
               res = _context.sent;
@@ -5418,9 +5469,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             case 8:
               _context.prev = 8;
               _context.t0 = _context["catch"](2);
-              _this2.topicError = _context.t0.response;
+              _this4.topicError = _context.t0.response;
             case 11:
-              _this2.isLoading = false;
+              _this4.isLoading = false;
             case 12:
             case "end":
               return _context.stop();
@@ -13276,7 +13327,107 @@ var _hoisted_26 = /*#__PURE__*/_withScopeId(function () {
   }, " Describe your chat room and everything that happens in it. Share the type of activities you will perform in the chat room and announce shows. Keep it show/profile related. ", -1 /* HOISTED */);
 });
 var _hoisted_27 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"card\" data-v-33019a0c><div class=\"card-body\" data-v-33019a0c><div class=\"card-title\" style=\"display:flex;justify-content:space-between;padding:20px 0 0px 0 !important;\" data-v-33019a0c><span data-v-33019a0c><h6 style=\"color:#f8f8f8 !important;\" data-v-33019a0c><i class=\"bi bi-camera-reels\" data-v-33019a0c></i>Record Show </h6></span></div><hr data-v-33019a0c><div class=\"row\" data-v-33019a0c><div class=\"col-md-9\" data-v-33019a0c><span data-v-33019a0c><p style=\"color:#f8f8f8 !important;\" data-v-33019a0c> Allow recording public Shows </p><p class=\"p-text\" style=\"color:#5b5b5b;\" data-v-33019a0c> Set the price for users to record your public shows. Users&#39; recordings go to their collections. By allowing to record public shows, you agree to our Terms ol Use </p></span></div><div class=\"col-md-3\" style=\"display:flex;justify-content:end;\" data-v-33019a0c><div class=\"form-check form-switch\" data-v-33019a0c><input class=\"form-check-input\" type=\"checkbox\" id=\"flexSwitchCheckChecked\" checked data-v-33019a0c></div></div><!-- &lt;div&gt;\n                                                        &lt;button class=&quot;emailButton&quot; style=&quot;height: 30px;&quot;&gt;+ Add Goal&lt;/button&gt;\n                                                &lt;/div&gt; --></div><div class=\"row\" data-v-33019a0c><div class=\"col-md-12\" data-v-33019a0c><span data-v-33019a0c><p style=\"color:#f8f8f8 !important;\" data-v-33019a0c> Price, tk/min </p><select class=\"inputBox\" style=\"width:16%;font-size:small;\" data-v-33019a0c><option value=\"volvo\" style=\"font-size:small;\" data-v-33019a0c> 150 tk </option><option value=\"saab\" style=\"font-size:small;\" data-v-33019a0c> 150 tk </option><option value=\"opel\" style=\"font-size:small;\" data-v-33019a0c> 150 tk </option><option value=\"audi\" style=\"font-size:small;\" data-v-33019a0c> 150 tk </option></select></span></div></div><div class=\"row\" data-v-33019a0c><p class=\"card-text\" style=\"color:#5b5b5b;font-size:13px;\" data-v-33019a0c> If you start a Private show, the recording of your public show stops for evervone, </p><div class=\"d-flex\" data-v-33019a0c><button class=\"saveButton\" style=\"background-color:#859e4f;\" data-v-33019a0c> Save </button><button class=\"saveButton ml-2\" style=\"background-color:#5b5b5b;\" data-v-33019a0c> Cancel </button></div></div><hr style=\"margin-top:1rem;\" data-v-33019a0c><div class=\"row\" data-v-33019a0c><div class=\"col-md-9\" data-v-33019a0c><span data-v-33019a0c><p style=\"color:#f8f8f8 !important;\" data-v-33019a0c> Allow recording public Shows </p></span></div><div class=\"col-md-3\" style=\"display:flex;justify-content:end;\" data-v-33019a0c><div class=\"form-check form-switch\" data-v-33019a0c><input class=\"form-check-input\" type=\"checkbox\" id=\"flexSwitchCheckChecked\" checked data-v-33019a0c></div></div></div><p class=\"card-text\" style=\"color:#5b5b5b;font-size:13px;\" data-v-33019a0c> Your viewers can save recorded shows to their collection. You also get the recording and can make it available for tokens in you profile <br data-v-33019a0c> NOTE: Exclusive Private show recordings are available only to the user </p></div></div><div class=\"card\" data-v-33019a0c><div class=\"card-body\" data-v-33019a0c><div class=\"card-title\" style=\"display:flex;justify-content:space-between;padding:20px 0 0px 0 !important;\" data-v-33019a0c><span data-v-33019a0c><h6 style=\"color:#f8f8f8 !important;\" data-v-33019a0c><i class=\"bi bi-chat-left-quote\" data-v-33019a0c></i>who can chat </h6></span></div><hr data-v-33019a0c><div class=\"col-md-12\" data-v-33019a0c><select class=\"inputBox\" style=\"font-size:small;\" data-v-33019a0c><option value=\"volvo\" style=\"font-size:small;\" data-v-33019a0c> REgistered users with verified emails </option><option value=\"saab\" style=\"font-size:small;\" data-v-33019a0c> 150 tk </option><option value=\"opel\" style=\"font-size:small;\" data-v-33019a0c> 150 tk </option><option value=\"audi\" style=\"font-size:small;\" data-v-33019a0c> 150 tk </option></select></div><div class=\"d-flex\" data-v-33019a0c><button class=\"saveButton\" style=\"background-color:#859e4f;\" data-v-33019a0c> Save </button><button class=\"saveButton ml-2\" style=\"background-color:#5b5b5b;\" data-v-33019a0c> Cancel </button></div><hr data-v-33019a0c><p class=\"card-text\" style=\"color:#5b5b5b;font-size:13px;\" data-v-33019a0c> With this setting, you decide if your room chat is for everyone, or only for - select few. Show more </p></div></div>", 2);
-var _hoisted_29 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"col-md-4\" data-v-33019a0c><div class=\"card\" data-v-33019a0c><div class=\"card-body\" data-v-33019a0c><div class=\"card-title\" style=\"display:flex;justify-content:space-between;padding:20px 0 0px 0 !important;\" data-v-33019a0c><span data-v-33019a0c><h6 style=\"color:#f8f8f8 !important;\" data-v-33019a0c><i class=\"bi bi-list\" data-v-33019a0c></i>Tip menu </h6></span></div><hr data-v-33019a0c><div class=\"row\" data-v-33019a0c><div class=\"col-md-12\" data-v-33019a0c><select class=\"inputBox\" style=\"font-size:small;\" data-v-33019a0c><option value=\"volvo\" style=\"font-size:small;\" data-v-33019a0c> Preset 1 </option><option value=\"saab\" style=\"font-size:small;\" data-v-33019a0c> 150 tk </option><option value=\"opel\" style=\"font-size:small;\" data-v-33019a0c> 150 tk </option><option value=\"audi\" style=\"font-size:small;\" data-v-33019a0c> 150 tk </option></select></div><div class=\"row mt-1\" data-v-33019a0c><div class=\"col-md-6\" data-v-33019a0c><p class=\"card-text\" style=\"color:#5b5b5b;font-size:13px;\" data-v-33019a0c> Activity </p></div><div class=\"col-md-4\" data-v-33019a0c><p class=\"card-text\" style=\"color:#5b5b5b;font-size:13px;\" data-v-33019a0c> PRICE , tk </p></div><div class=\"col-md-1\" data-v-33019a0c></div></div><div class=\"row\" data-v-33019a0c><div class=\"col-md-6 ml-1 pr-0\" data-v-33019a0c><p class=\"card-text\" style=\"color:#5b5b5b;font-size:13px;\" data-v-33019a0c><input class=\"inputBox\" type=\"text\" data-v-33019a0c></p></div><div class=\"col-md-4 pl-2 pr-0\" data-v-33019a0c><p class=\"card-text\" style=\"color:#5b5b5b;font-size:13px;\" data-v-33019a0c><input class=\"inputBox\" type=\"text\" data-v-33019a0c></p></div><div class=\"col-md-1 close_btn\" data-v-33019a0c><h3 data-v-33019a0c><i class=\"bi bi-x\" data-v-33019a0c></i></h3></div></div></div><div class=\"d-flex\" data-v-33019a0c><button class=\"saveButton\" style=\"background-color:#859e4f;\" data-v-33019a0c> Save &amp; active </button><button class=\"saveButton ml-2\" style=\"background-color:#5b5b5b;\" data-v-33019a0c> Cancel </button></div><hr data-v-33019a0c><p class=\"card-text\" style=\"color:#5b5b5b;font-size:13px;\" data-v-33019a0c> Viewers in your room pay for activities they want to see you perform. Save time by creating several presets fre different occasions. Show more </p></div></div><div class=\"card\" data-v-33019a0c><div class=\"card-body\" data-v-33019a0c><div class=\"card-title\" style=\"display:flex;justify-content:space-between;padding:20px 0 0px 0 !important;\" data-v-33019a0c><span data-v-33019a0c><h6 style=\"color:#f8f8f8 !important;\" data-v-33019a0c><i class=\"bi bi-crown\" data-v-33019a0c></i>King of the room </h6></span></div><hr data-v-33019a0c><div class=\"row\" data-v-33019a0c><div class=\"col-md-12\" data-v-33019a0c><select class=\"inputBox\" style=\"font-size:small;\" data-v-33019a0c><option value=\"volvo\" style=\"font-size:small;\" data-v-33019a0c> Coustom Amount </option><option value=\"saab\" style=\"font-size:small;\" data-v-33019a0c> 150 tk </option><option value=\"opel\" style=\"font-size:small;\" data-v-33019a0c> 150 tk </option><option value=\"audi\" style=\"font-size:small;\" data-v-33019a0c> 150 tk </option></select></div></div><div class=\"row mt-10\" style=\"margin-top:1rem;\" data-v-33019a0c><div class=\"col-md-6\" data-v-33019a0c><input class=\"inputBox\" style=\"width:100%;\" data-v-33019a0c></div></div><div class=\"d-flex\" data-v-33019a0c><button class=\"saveButton\" style=\"background-color:#859e4f;\" data-v-33019a0c> Save </button><button class=\"saveButton ml-2\" style=\"background-color:#5b5b5b;\" data-v-33019a0c> Cancel </button></div><hr data-v-33019a0c><p class=\"card-text\" style=\"color:#5b5b5b;font-size:13px;\" data-v-33019a0c> With this setting, you decide if your room chat is for everyone, or only for - select few. Show more </p></div></div></div>", 1);
+var _hoisted_29 = {
+  "class": "col-md-4"
+};
+var _hoisted_30 = {
+  "class": "card"
+};
+var _hoisted_31 = {
+  "class": "card-body"
+};
+var _hoisted_32 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "card-title",
+    style: {
+      "display": "flex",
+      "justify-content": "space-between",
+      "padding": "20px 0 0px 0 !important"
+    }
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h6", {
+    style: {
+      "color": "#f8f8f8 !important"
+    }
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+    "class": "bi bi-list"
+  }), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Tip menu ")])])], -1 /* HOISTED */);
+});
+var _hoisted_33 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("hr", null, null, -1 /* HOISTED */);
+});
+var _hoisted_34 = {
+  "class": "row"
+};
+var _hoisted_35 = {
+  "class": "col-md-12"
+};
+var _hoisted_36 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+    "class": "card-text",
+    style: {
+      "color": "#5b5b5b",
+      "font-size": "13px"
+    }
+  }, " Activity ", -1 /* HOISTED */);
+});
+var _hoisted_37 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", {
+    value: "Love",
+    style: {
+      "font-size": "small"
+    }
+  }, " Love ", -1 /* HOISTED */);
+});
+var _hoisted_38 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", {
+    value: "Mood",
+    style: {
+      "font-size": "small"
+    }
+  }, " Mood ", -1 /* HOISTED */);
+});
+var _hoisted_39 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", {
+    value: "Kiss",
+    style: {
+      "font-size": "small"
+    }
+  }, " Kiss ", -1 /* HOISTED */);
+});
+var _hoisted_40 = [_hoisted_37, _hoisted_38, _hoisted_39];
+var _hoisted_41 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+    "class": "card-text",
+    style: {
+      "color": "#5b5b5b",
+      "font-size": "13px"
+    }
+  }, " PRICE , tk ", -1 /* HOISTED */);
+});
+var _hoisted_42 = {
+  "class": "d-flex"
+};
+var _hoisted_43 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    "class": "saveButton ml-2",
+    style: {
+      "background-color": "#5b5b5b"
+    }
+  }, " Cancel ", -1 /* HOISTED */);
+});
+var _hoisted_44 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("hr", null, null, -1 /* HOISTED */);
+});
+var _hoisted_45 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+    "class": "card-text",
+    style: {
+      "color": "#5b5b5b",
+      "font-size": "13px"
+    }
+  }, " Viewers in your room pay for activities they want to see you perform. Save time by creating several presets fre different occasions. Show more ", -1 /* HOISTED */);
+});
+var _hoisted_46 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"card\" data-v-33019a0c><div class=\"card-body\" data-v-33019a0c><div class=\"card-title\" style=\"display:flex;justify-content:space-between;padding:20px 0 0px 0 !important;\" data-v-33019a0c><span data-v-33019a0c><h6 style=\"color:#f8f8f8 !important;\" data-v-33019a0c><i class=\"bi bi-crown\" data-v-33019a0c></i>King of the room </h6></span></div><hr data-v-33019a0c><div class=\"row\" data-v-33019a0c><div class=\"col-md-12\" data-v-33019a0c><select class=\"inputBox\" style=\"font-size:small;\" data-v-33019a0c><option value=\"volvo\" style=\"font-size:small;\" data-v-33019a0c> Coustom Amount </option><option value=\"saab\" style=\"font-size:small;\" data-v-33019a0c> 150 tk </option><option value=\"opel\" style=\"font-size:small;\" data-v-33019a0c> 150 tk </option><option value=\"audi\" style=\"font-size:small;\" data-v-33019a0c> 150 tk </option></select></div></div><div class=\"row mt-10\" style=\"margin-top:1rem;\" data-v-33019a0c><div class=\"col-md-6\" data-v-33019a0c><input class=\"inputBox\" style=\"width:100%;\" data-v-33019a0c></div></div><div class=\"d-flex\" data-v-33019a0c><button class=\"saveButton\" style=\"background-color:#859e4f;\" data-v-33019a0c> Save </button><button class=\"saveButton ml-2\" style=\"background-color:#5b5b5b;\" data-v-33019a0c> Cancel </button></div><hr data-v-33019a0c><p class=\"card-text\" style=\"color:#5b5b5b;font-size:13px;\" data-v-33019a0c> With this setting, you decide if your room chat is for everyone, or only for - select few. Show more </p></div></div>", 1);
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Section1 = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Section1");
   var _component_loading = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("loading");
@@ -13330,9 +13481,35 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     style: {
       "background-color": "#859e4f"
     }
-  }, " Save "), _hoisted_24]), _hoisted_25, _hoisted_26])]), _hoisted_27]), _hoisted_29]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_loading, {
+  }, " Save "), _hoisted_24]), _hoisted_25, _hoisted_26])]), _hoisted_27]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_29, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_30, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_31, [_hoisted_32, _hoisted_33, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_34, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_35, [_hoisted_36, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
+    name: "activity",
+    "onUpdate:modelValue": _cache[5] || (_cache[5] = function ($event) {
+      return $data.activity_name = $event;
+    }),
+    "class": "inputBox",
+    style: {
+      "font-size": "small"
+    },
+    onChange: _cache[6] || (_cache[6] = function ($event) {
+      return $options.setActivity($event);
+    })
+  }, _hoisted_40, 544 /* HYDRATE_EVENTS, NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.activity_name]]), _hoisted_41, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    "class": "inputBox",
+    "onUpdate:modelValue": _cache[7] || (_cache[7] = function ($event) {
+      return $data.token_amount = $event;
+    }),
+    type: "text"
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.token_amount]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"row mt-1\">\n                                <div class=\"col-md-6\">\n                                 \n                                </div>\n                                <div class=\"col-md-4\">\n                                   \n                                </div>\n                                <div class=\"col-md-1\"></div>\n                            </div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"row\">\n                                <div class=\"col-md-6 ml-1 pr-0\">\n                                    <p\n                                        class=\"card-text\"\n                                        style=\"color: #5b5b5b; font-size: 13px\"\n                                    >\n                                        <input class=\"inputBox\"  type=\"text\" />\n                                    </p>\n                                </div>\n                                <div class=\"col-md-4 pl-2 pr-0\">\n                                    <p\n                                        class=\"card-text\"\n                                        style=\"color: #5b5b5b; font-size: 13px\"\n                                    >\n                                       \n                                    </p>\n                                </div>\n                                <div class=\"col-md-1 close_btn\">\n                                    <h3><i class=\"bi bi-x\"></i></h3>\n                                </div>\n                            </div> ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_42, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    "class": "saveButton",
+    style: {
+      "background-color": "#859e4f"
+    },
+    onClick: _cache[8] || (_cache[8] = function () {
+      return $options.saveHostTipMenu && $options.saveHostTipMenu.apply($options, arguments);
+    })
+  }, " Save & active "), _hoisted_43]), _hoisted_44, _hoisted_45])]), _hoisted_46])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_loading, {
     active: $data.isLoading,
-    "onUpdate:active": _cache[5] || (_cache[5] = function ($event) {
+    "onUpdate:active": _cache[9] || (_cache[9] = function ($event) {
       return $data.isLoading = $event;
     }),
     "can-cancel": true,
