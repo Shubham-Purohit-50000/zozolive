@@ -13363,7 +13363,7 @@ var _hoisted_35 = {
 };
 var _hoisted_36 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
-    "class": "card-text",
+    "class": "card-text mb-0 mt-2",
     style: {
       "color": "#5b5b5b",
       "font-size": "13px"
@@ -13397,7 +13397,7 @@ var _hoisted_39 = /*#__PURE__*/_withScopeId(function () {
 var _hoisted_40 = [_hoisted_37, _hoisted_38, _hoisted_39];
 var _hoisted_41 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
-    "class": "card-text",
+    "class": "card-text mb-0 mt-2",
     style: {
       "color": "#5b5b5b",
       "font-size": "13px"

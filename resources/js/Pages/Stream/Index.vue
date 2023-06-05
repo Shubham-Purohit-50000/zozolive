@@ -522,7 +522,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <p
-                                        class="card-text"
+                                        class="card-text mb-0 mt-2"
                                         style="color: #5b5b5b; font-size: 13px"
                                     >
                                         Activity
@@ -554,7 +554,7 @@
                                 </select>
 
                                 <p
-                                        class="card-text"
+                                        class="card-text mb-0 mt-2"
                                         style="color: #5b5b5b; font-size: 13px"
                                     >
                                         PRICE , tk
