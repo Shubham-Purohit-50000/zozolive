@@ -49,7 +49,7 @@
       <button class="btn public__chat--alert_btn">Buy Tokens</button>
       </div>
      
-      <div class="tip_menu" v-if="authUser && authUserLevelData.token > 0">
+      <div class="tip_menu" v-if="authUser && authUserLevelData.token > 0 && !sended_tip">
        <a  href="#" data-bs-toggle="modal"
         data-bs-target="#tipMenuModel"
         @click="showtipMenu()">Full tip menu </a>  is available 
@@ -72,6 +72,7 @@
                                         <div class="modal-header">
                                             <span>Send Tip</span>
                                             <button
+                                                ref="cancelButton"
                                                 type="button"
                                                 class="customClose"
                                                 data-bs-dismiss="modal"
@@ -175,16 +176,20 @@
                                                         class="token_box"
                                                         style="height: 210px; background-color: #3b3b3b"
                                                     >
-                                                        <ul>
+                                                    <ul>
                                                             <li v-for="(value3, index3) in host_tip_menus" 
                                                               :key="index3">
-                                                                <label>
-                                                                    {{ value3.token }}
+                                                              
+                                                                <label :class="[tip_menu_token_amount ? 'border-dark' : '']">
                                                                     <input
-                                                                        type="radio"
-                                                                        name="token"
-                                                                        class="d-none"
+                                                                    :id="'token'+index3"
+                                                                    v-model="tip_menu_token_amount"
+                                                                    type="radio"
+                                                                    name="token"
+                                                                    :value="value3.token"
+                                                                    class="d-none"
                                                                     />
+                                                                    {{ value3.token }}
                                                                 </label>
                                                             </li>
                                                         </ul>
@@ -194,12 +199,13 @@
                                                                 Amount:</span
                                                             >
                                                             <input
+                                                                v-model="tip_menu_token_amount"
                                                                 type="text"
                                                             />
                                                         </div>
 
                                                         <div class="tip">
-                                                            <button>
+                                                            <button @click="sendUserTip">
                                                                 Buy Token
                                                             </button>
                                                         </div>
@@ -276,6 +282,8 @@ export default {
       authUserLevelData: {},
       host_tip_menus: [],
       tipMenuDisplay: true,
+      tip_menu_token_amount: 20,
+      sended_tip: false,
     };
   },
   created() {
@@ -312,6 +320,31 @@ export default {
     this.getHostTipMenu();
   },
   methods: {
+    sendUserTip() {
+            try {
+                axios.post("/user/send-tip", {
+                    user_id: this.authUser.uuid,
+                    host_id: this.hostDetail.uuid,
+                    token_amount: this.tip_menu_token_amount,
+                }).then((resp)=>{
+                    this.$refs.cancelButton.click();
+                   
+                    if(resp.data.status!=='success') {
+                      window.location.href = "/buy-token";
+                      
+                    } else {
+                      this.message = 'tipped ' + this.tip_menu_token_amount + ' tk';
+                      this.send();
+                      this.sended_tip = true;
+                    }
+                   
+                  
+                });
+                } catch (error) {
+                    console.log(error);
+                }
+           
+        },
     showtipMenu() {
             $(".modal-backdrop.fade.show").removeClass("modal-backdrop");
         },
@@ -392,7 +425,6 @@ export default {
                     .set(msgClone);
                 if(this.message) {
                   this.getUserLevels();
-                  // this.setUserToken();
                 }
                 this.message = "";
               } else {
@@ -410,7 +442,6 @@ export default {
                 this.ref.child(this.chatKey).child(this.hostDetail?.uuid).set(data);
                 if(this.message) {
                   this.getUserLevels();
-                  // this.setUserToken();
 
                 }
               }
@@ -490,9 +521,10 @@ export default {
     margin-bottom: 15px;
 }
 
+
 .token_box input {
     width: 75%;
-    margin-left: 35px;
+    margin-left: 15px;
     height: 45px;
     border-radius: 27px;
     background: #000;
@@ -508,7 +540,20 @@ export default {
     padding: 10px 25px;
     background: #79943d;
     color: #fff;
-    margin-left: 10px;
+    margin-left: 0px;
 }
 
+.token_box label {
+    background: #191919;
+    padding: 8px;
+    font-size: 18px;
+    font-weight: 600;
+    min-width: 60px;
+    text-align: center;
+    border-radius: 12px;
+    cursor: pointer;
+}
+.border-dark {
+    border: 2px solid #396220 !important;
+}
 </style>

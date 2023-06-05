@@ -118,11 +118,11 @@
                                             Join me free now
                                         </button>
                                     </div>
-                                    <div class="tip" v-if="isStreamStarted">
+                                    <div class="tip"  v-if="isStreamStarted">
                                         <button
                                         data-bs-toggle="modal"
                                         data-bs-target="#sendtipModal"
-                                        @click="removeBackdrop()"
+                                        @click="getHostTipMenu()"
                                         >
                                             Send Tip
                                         </button>
@@ -150,6 +150,7 @@
                                         <div class="modal-header">
                                             <span>Send Tip</span>
                                             <button
+                                             ref="cancelButton" 
                                                 type="button"
                                                 class="customClose"
                                                 data-bs-dismiss="modal"
@@ -244,8 +245,7 @@
                                                     <div
                                                         class="tab-content pt-2 mt-20"
                                                         id="chat_boxContent"
-                                                        style="
-                                                            height: 240px;
+                                                        style="height: 240px;
                                                             overflow-y: scroll;
                                                         "
                                                     >
@@ -276,223 +276,14 @@
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                        <tr>
+                                                                        <tr v-for="(value, index) in host_tip_menus" 
+                                                                        :key="index">
                                                                             <td>
-                                                                                Test
-                                                                                data
+                                                                                {{ value.menu_title }}
                                                                             </td>
-                                                                            <td
-                                                                                style="
-                                                                                    text-align: right;
-                                                                                "
+                                                                            <td style="text-align: right;"
                                                                             >
-                                                                                650
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>
-                                                                                Test
-                                                                                data
-                                                                            </td>
-                                                                            <td
-                                                                                style="
-                                                                                    text-align: right;
-                                                                                "
-                                                                            >
-                                                                                650
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>
-                                                                                Test
-                                                                                data
-                                                                            </td>
-                                                                            <td
-                                                                                style="
-                                                                                    text-align: right;
-                                                                                "
-                                                                            >
-                                                                                650
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>
-                                                                                Test
-                                                                                data
-                                                                            </td>
-                                                                            <td
-                                                                                style="
-                                                                                    text-align: right;
-                                                                                "
-                                                                            >
-                                                                                650
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>
-                                                                                Test
-                                                                                data
-                                                                            </td>
-                                                                            <td
-                                                                                style="
-                                                                                    text-align: right;
-                                                                                "
-                                                                            >
-                                                                                650
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>
-                                                                                Test
-                                                                                data
-                                                                            </td>
-                                                                            <td
-                                                                                style="
-                                                                                    text-align: right;
-                                                                                "
-                                                                            >
-                                                                                650
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>
-                                                                                Test
-                                                                                data
-                                                                            </td>
-                                                                            <td
-                                                                                style="
-                                                                                    text-align: right;
-                                                                                "
-                                                                            >
-                                                                                650
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>
-                                                                                Test
-                                                                                data
-                                                                            </td>
-                                                                            <td
-                                                                                style="
-                                                                                    text-align: right;
-                                                                                "
-                                                                            >
-                                                                                650
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>
-                                                                                Test
-                                                                                data
-                                                                            </td>
-                                                                            <td
-                                                                                style="
-                                                                                    text-align: right;
-                                                                                "
-                                                                            >
-                                                                                650
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>
-                                                                                Test
-                                                                                data
-                                                                            </td>
-                                                                            <td
-                                                                                style="
-                                                                                    text-align: right;
-                                                                                "
-                                                                            >
-                                                                                650
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>
-                                                                                Test
-                                                                                data
-                                                                            </td>
-                                                                            <td
-                                                                                style="
-                                                                                    text-align: right;
-                                                                                "
-                                                                            >
-                                                                                650
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>
-                                                                                Test
-                                                                                data
-                                                                            </td>
-                                                                            <td
-                                                                                style="
-                                                                                    text-align: right;
-                                                                                "
-                                                                            >
-                                                                                650
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>
-                                                                                Test
-                                                                                data
-                                                                            </td>
-                                                                            <td
-                                                                                style="
-                                                                                    text-align: right;
-                                                                                "
-                                                                            >
-                                                                                650
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>
-                                                                                Test
-                                                                                data
-                                                                            </td>
-                                                                            <td
-                                                                                style="
-                                                                                    text-align: right;
-                                                                                "
-                                                                            >
-                                                                                650
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>
-                                                                                Test
-                                                                                data
-                                                                            </td>
-                                                                            <td
-                                                                                style="
-                                                                                    text-align: right;
-                                                                                "
-                                                                            >
-                                                                                650
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>
-                                                                                Test
-                                                                                data
-                                                                            </td>
-                                                                            <td
-                                                                                style="
-                                                                                    text-align: right;
-                                                                                "
-                                                                            >
-                                                                                650
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>
-                                                                                Test
-                                                                                data
-                                                                            </td>
-                                                                            <td
-                                                                                style="text-align: right;"
-                                                                            >
-                                                                                650
+                                                                            <span class="badge badge-primary badge-pill">{{ value.token }}</span>
                                                                             </td>
                                                                         </tr>
                                                                     </tbody>
@@ -501,110 +292,33 @@
                                                         </div>
                                                     </div>
                                                     <div
-                                                        class="token_box"
-                                                        style="
-                                                            height: 210px;
-                                                            background-color: #3b3b3b;
-                                                        "
+                                                        class="token_box ms-2"
+                                                        style=" height: 210px; background-color: #3b3b3b; "
                                                     >
-                                                        <ul>
-                                                            <li>
-                                                                <label>
-                                                                    20
+                                                    <ul>
+                                                            <li v-for="(value3, index3) in host_tip_menus" 
+                                                              :key="index3">
+                                                              
+                                                                <label :class="[tip_menu_token_amount ? 'border-dark' : '']">
                                                                     <input
-                                                                        type="radio"
-                                                                        name="token"
-                                                                        class="d-none"
+                                                                    :id="'token'+index3"
+                                                                    v-model="tip_menu_token_amount"
+                                                                    type="radio"
+                                                                    name="token"
+                                                                    :value="value3.token"
+                                                                    class="d-none"
                                                                     />
-                                                                </label>
-                                                            </li>
-                                                            <li>
-                                                                <label>
-                                                                    20
-                                                                    <input
-                                                                        type="radio"
-                                                                        name="token"
-                                                                        class="d-none"
-                                                                    />
-                                                                </label>
-                                                            </li>
-                                                            <li>
-                                                                <label>
-                                                                    20
-                                                                    <input
-                                                                        type="radio"
-                                                                        name="token"
-                                                                        class="d-none"
-                                                                    />
-                                                                </label>
-                                                            </li>
-                                                            <li>
-                                                                <label>
-                                                                    20
-                                                                    <input
-                                                                        type="radio"
-                                                                        name="token"
-                                                                        class="d-none"
-                                                                    />
-                                                                </label>
-                                                            </li>
-                                                            <li>
-                                                                <label>
-                                                                    20
-                                                                    <input
-                                                                        type="radio"
-                                                                        name="token"
-                                                                        class="d-none"
-                                                                    />
-                                                                </label>
-                                                            </li>
-                                                            <li>
-                                                                <label>
-                                                                    20
-                                                                    <input
-                                                                        type="radio"
-                                                                        name="token"
-                                                                        class="d-none"
-                                                                    />
-                                                                </label>
-                                                            </li>
-                                                            <li>
-                                                                <label>
-                                                                    20
-                                                                    <input
-                                                                        type="radio"
-                                                                        name="token"
-                                                                        class="d-none"
-                                                                    />
-                                                                </label>
-                                                            </li>
-                                                            <li>
-                                                                <label>
-                                                                    20
-                                                                    <input
-                                                                        type="radio"
-                                                                        name="token"
-                                                                        class="d-none"
-                                                                    />
-                                                                </label>
-                                                            </li>
-                                                            <li>
-                                                                <label>
-                                                                    20
-                                                                    <input
-                                                                        type="radio"
-                                                                        name="token"
-                                                                        class="d-none"
-                                                                    />
+                                                                    {{ value3.token }}
                                                                 </label>
                                                             </li>
                                                         </ul>
                                                         <div>
-                                                            &nbsp;&nbsp;<span
+                                                            <span
                                                                 >Custom
                                                                 Amount:</span
                                                             >
                                                             <input
+                                                                v-model="tip_menu_token_amount"
                                                                 type="text"
                                                             />
                                                         </div>
@@ -1086,6 +800,7 @@ export default {
         return {
             db: "",
             chatKey: "public-chat",
+            tip_menu_token_amount: 20,
             messages: [],
             isLike: this.$props.like,
             totalLikes: this.$props.totalLike,
@@ -1106,6 +821,7 @@ export default {
             activeTab: "",
             displayVolume: true,
             total_watching: true,
+            host_tip_menus: [],
         };
     },
     // created() {
@@ -1392,6 +1108,20 @@ export default {
             console.log(tokenRes.data);
             this.totalLikes = tokenRes.data ?? 0;
         },
+
+        getHostTipMenu() {
+            try {
+                this.removeBackdrop();
+                axios.get("/host-tip-menu/?host_id="+this.hostDetail.uuid).then((resp)=> {
+                    // console.log(resp);
+                    this.host_tip_menus = resp.data.host_tip_menu;
+                });
+                
+            } catch (error) {
+                console.log(error);
+            }
+         },
+
         removeBackdrop() {
             $(".modal-backdrop.fade.show").removeClass("modal-backdrop");
         },
@@ -1653,13 +1383,17 @@ input[type="range"]::-ms-fill-upper {
 }
 
 .token_box label {
-    background: lightgray;
+    background: #191919;
     padding: 8px;
     font-size: 18px;
     font-weight: 600;
-    min-width: 100px;
+    min-width: 60px;
     text-align: center;
     border-radius: 12px;
+    cursor: pointer;
+}
+.border-dark {
+    border: 2px solid #396220 !important;
 }
 
 .token_box ul {
@@ -1677,7 +1411,7 @@ input[type="range"]::-ms-fill-upper {
 
 .token_box input {
     width: 75%;
-    margin-left: 35px;
+    margin-left: 15px;
     height: 45px;
     border-radius: 27px;
     background: #000;
@@ -1693,7 +1427,7 @@ input[type="range"]::-ms-fill-upper {
     padding: 10px 25px;
     background: #79943d;
     color: #fff;
-    margin-left: 10px;
+    margin-left: 0px;
 }
 
 #remote-playerlist {
