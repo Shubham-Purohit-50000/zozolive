@@ -597,4 +597,25 @@ class FrontendController extends Controller
 
     }   
     
+    public function storeLiveImage(Request $request){
+
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        $imageName = auth()->id().'.'.$request->image->extension();
+        $request->image->move(public_path('live_images'), $imageName);
+
+        $host = User::where('uuid',$request->host_id)->first();
+        
+        auth()->user()->update([
+            'live_image' => $imageName,
+        ]);
+      
+        return response()->json([
+            'status' => true
+        ]);
+
+    }
+    
 }
