@@ -66,4 +66,4 @@ Route::post('host/create/host-tip-menu', [HostController::class, 'CreateHostTipM
 Route::get('host/delete/host-tip-menu', [HostController::class, 'removeHostTipMenu']);
 Route::post('user/send-tip', [UserController::class, 'sendTip']);
 
-Route::post('upload/{uuid}/live-image', [UserController::class, 'uploadLiveImage']);
+Route::post('upload/{uuid}/live-image', [UserController::class, 'storeLiveImage']);

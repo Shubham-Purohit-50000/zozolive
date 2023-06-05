@@ -5713,12 +5713,12 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       var screenshotContainer = $('#screenshotContainer');
       screenshotContainer.empty(); // Clear previous screenshots
       screenshotContainer.append(canvas);
-      var image = canvas.toDataURL('image/png', 1.0).replace('image/png', 'image/octet-stream');
+      var image = canvas.toDataURL('image/png', 1.0);
       console.log(image);
       if (image) {
         try {
           axios.post("/upload/" + this.authUser.uuid + "/live-image", {
-            live_image: image
+            image: image
           }).then(function (resp) {
             // console.log(resp);
           });

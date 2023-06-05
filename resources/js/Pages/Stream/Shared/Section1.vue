@@ -521,16 +521,15 @@ export default {
             screenshotContainer.empty(); // Clear previous screenshots
             screenshotContainer.append(canvas);
 
-            var image = canvas.toDataURL('image/png', 1.0).replace('image/png', 'image/octet-stream');
+            var image = canvas.toDataURL('image/png', 1.0);
             console.log(image);
             if(image) {
             try {
              axios.post("/upload/"+this.authUser.uuid+"/live-image", {
-                live_image:image,
+                image:image,
             }).then((resp)=> {
                 // console.log(resp);
                 });
-                
                 } catch (error) {
                     console.log(error);
                 }
@@ -539,7 +538,6 @@ export default {
         showVolme() {
                 this.displayVolume =  false;
                 document.getElementById('showVolumeBtn').style.display='block';
-            
         },
 
         hideVolume() {
