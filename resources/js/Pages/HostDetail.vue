@@ -490,9 +490,7 @@
                                                                                 data
                                                                             </td>
                                                                             <td
-                                                                                style="
-                                                                                    text-align: right;
-                                                                                "
+                                                                                style="text-align: right;"
                                                                             >
                                                                                 650
                                                                             </td>
@@ -687,7 +685,7 @@
                                                 <i
                                                     class="bi bi-people-fill"
                                                 ></i>
-                                                &nbsp;&nbsp; {{ totalJoined }}
+                                                &nbsp;&nbsp; {{ total_watching }}
                                             </button>
                                         </li>
                                     </ul>
@@ -716,7 +714,7 @@
                                         role="tabpanel"
                                         aria-labelledby="contact-tab"
                                     >
-                                        <h6>30 Watching Now</h6>
+                                        <h6>{{  total_watching }} Watching Now</h6>
                                         <div>
                                             <span class="text-gray"
                                                 >Users with tokens:
@@ -1082,6 +1080,7 @@ export default {
         "relateds",
         "recommended",
         "channel",
+        "appId",
     ],
     data() {
         return {
@@ -1106,6 +1105,7 @@ export default {
             outgoingCaller: "",
             activeTab: "",
             displayVolume: true,
+            total_watching: true,
         };
     },
     // created() {
@@ -1236,6 +1236,9 @@ export default {
         //         } catch (error) {
         //         }
         //       });
+
+        // get audience for current host 
+        this.getRemoteUsers();
     },
     computed: {
         authUser() {
@@ -1243,6 +1246,20 @@ export default {
         },
     },
     methods: {
+        async getRemoteUsers() {
+           await axios.get('https://api.agora.io/dev/v1/channel/user/'+this.appId+'/'+ this.options.channel, {
+           response_type: 'code',
+           headers:{Authorization:'Basic MDdhN2ZmNjRjNDk5NDI1Yjk4MTAzMzc1MTFiMTFlNTk6YTM3M2U2OTBiZTY4NDdjY2I0NDg1OWU2NzJmNjcxYjA='},
+               }).then(response => {
+                   let values = Object.values(response.data);
+                   if(values) {
+                    this.total_watching = values[1].audience_total;
+                   }
+              
+               }).catch(error => {
+               console.log("ERROR: " + error);
+        });
+       },
         showLoginModel() {
         $("#basicModal").modal("show");
         },

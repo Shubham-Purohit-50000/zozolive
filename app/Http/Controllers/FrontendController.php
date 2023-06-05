@@ -147,7 +147,8 @@ class FrontendController extends Controller
             'girls'      => $girls,
             'recommended'=> $recommended,
             'relateds'   => $relateds,
-            'channel'    => $channelName
+            'channel'    => $channelName,
+            'app-id'    =>  env('AGORA_APP_ID'),
         ]);
     }
 

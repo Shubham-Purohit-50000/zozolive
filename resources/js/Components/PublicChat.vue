@@ -344,10 +344,13 @@ export default {
               this.authUserLevelData = resp.data.data;
             });
             } else {
-              axios.get("/user_level/"+this.authUser.token).then((resp)=> {
+              if(this.authUser) {
+                axios.get("/user_level/"+this.authUser.token).then((resp)=> {
               // console.log(resp);
               this.authUserLevelData = resp.data.data;
             });
+              }
+              
             }
            
         } catch (error) {
