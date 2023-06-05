@@ -7,36 +7,50 @@
   >
     <ul class="messages__box ml-2">
       <li
-          class="messages__box--message left"
+          :class="['messages__box--message']"
           v-for="(msg, i) in messages"
           :key="i"
       >
                 <!-- <span class="messages__box--user_name">{{
                     msg.send_by_user
                   }}</span> -->
-                  <span v-if="msg.user_token">
+                  <div v-if="msg.msg.includes('tipped')" class="text-center">
+                    <span v-if="msg.user_token">
                      <a  :style="{'color':msg.level_data ? msg.level_data.color : ''}" href="#" @click="showToast(authUserLevelData, msg.user_token)"> {{  msg.send_by_user }}  </a>
                   </span>
                   <span v-else>
                     {{  msg.send_by_user }} 
                   </span>
+                  {{ msg.msg }}
+                  
+                  </div>
+                
+                  <div v-else>
+                    <span v-if="msg.user_token">
+                     <a  :style="{'color':msg.level_data ? msg.level_data.color : ''}" href="#" @click="showToast(authUserLevelData, msg.user_token)"> {{  msg.send_by_user }}  </a>
+                  </span>
+                  <span v-else>
+                    {{  msg.send_by_user }} 
+                  </span>
+                  {{ msg.msg }}
+                  
+                  </div>
                   <div class="toast" :id="'liveToast'+msg.user_token" role="alert" aria-live="assertive" aria-atomic="true">
-  <div class="toast-header">
-    <!-- <img src="..." class="rounded me-2" alt="..."> -->
-    <span class="badge me-auto" :style="{'background-color':msg.level_data ? msg.level_data.color : ''}">Level : {{ msg.level_data ? msg.level_data.level : null  }}</span>
-    <span class="badge  badge-pill badge-primary"><span class="text-white">Tk : </span>{{ msg.user_token }}</span> 
-  
-    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close" @click="closeToast(msg.user_token)">
-      <i class=" bi bi-x-lg"></i>
-    </button>
-  </div>
-  <div class="toast-body">
-    <small>Subscribed Plan : <span :style="{'color':msg.level_data ? msg.level_data.color : ''}"> {{ msg.level_data ? msg.level_data.name : null  }} </span>  </small>
+                    <div class="toast-header">
+                      <!-- <img src="..." class="rounded me-2" alt="..."> -->
+                      <span class="badge me-auto" :style="{'background-color':msg.level_data ? msg.level_data.color : ''}">Level : {{ msg.level_data ? msg.level_data.level : null  }}</span>
+                      <span class="badge  badge-pill badge-primary"><span class="text-white">Tk : </span>{{ msg.user_token }}</span> 
+                    
+                      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close" @click="closeToast(msg.user_token)">
+                        <i class=" bi bi-x-lg"></i>
+                      </button>
+                    </div>
+                    <div class="toast-body">
+                      <small>Subscribed Plan : <span :style="{'color':msg.level_data ? msg.level_data.color : ''}"> {{ msg.level_data ? msg.level_data.name : null  }} </span>  </small>
 
-    <!-- <button class="btn btn-primary btn-sm">{{  Reply }}</button> -->
-  </div>
+                      <!-- <button class="btn btn-primary btn-sm">{{  Reply }}</button> -->
+                    </div>
 </div>
-        {{ msg.msg }}
       </li>
     </ul>
   
@@ -324,11 +338,11 @@ export default {
             try {
                 axios.post("/user/send-tip", {
                     user_id: this.authUser.uuid,
-                    host_id: this.hostDetail.uuid,
+                    host_id: this.hostDetail.user_id,
                     token_amount: this.tip_menu_token_amount,
                 }).then((resp)=>{
                     this.$refs.cancelButton.click();
-                   
+                   console.log(resp);
                     if(resp.data.status!=='success') {
                       window.location.href = "/buy-token";
                       
@@ -496,6 +510,9 @@ export default {
 }
 .bg-dark-1 {
   background-color: #343434;
+}
+.text-center {
+  text-align: center;
 }
 
 .token_box label {
