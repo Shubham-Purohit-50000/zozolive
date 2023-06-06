@@ -193,9 +193,14 @@ class HostController extends Controller
             ]
         );
     }
-
+    // $req->all();
     public function CreateHostTipMenu(Request $req){
-        HostTipMenu::create($req->all());
+        HostTipMenu::updateOrCreate([
+            'host_id' => $req->host_id,
+            'menu_title' => $req->menu_title,
+        ], [
+            'token' => $req->token
+        ]);
         return response()->json([
             'msg'=>'Tip Menu updated Successfully!'
         ]);
