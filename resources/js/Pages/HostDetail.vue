@@ -124,7 +124,7 @@
                                         data-bs-target="#sendtipModal"
                                         @click="getHostTipMenu()"
                                         >
-                                            Send Tip
+                                            Send Tip <i class="bi bi-geo-fill"></i>
                                         </button>
                                     </div>
                                 </div>
@@ -1552,6 +1552,12 @@ input[type="range"]::-ms-fill-upper {
 }
 #profileModal .modal-dialog{
   max-width: 100%;
+}
+
+@media (max-width: 700px) {
+    .video-group {
+    min-height: 200px;
+}
 }
 
 </style>
