@@ -5,7 +5,7 @@
       role="tabpanel"
       aria-labelledby="home-tab"
   >
-    <ul class="messages__box ml-2">
+    <ul :class="['messages__box ml-2', !sended_tip ? 'top_postion' : '']">
       <li
           :class="['messages__box--message']"
           v-for="(msg, i) in messages"
@@ -55,7 +55,7 @@
     </ul>
   
     <div>
-          <div class="public__chat--alert" v-if="tipMenuDisplay">
+          <div class="public__chat--alert" v-if="tipMenuDisplay && !sended_tip">
       <div v-if="!authUser" class="text-center"> To chat, <a href="#" @click="showLoginModel">log in</a> or 
         <a href="#" @click="showLoginModel"> create a free account.</a> 
       <!--      <span>With tokens, you get to</span>-->
@@ -66,7 +66,7 @@
       <div class="tip_menu" v-if="authUser && authUserLevelData.token > 0 && !sended_tip">
        <a  href="#" data-bs-toggle="modal"
         data-bs-target="#tipMenuModel"
-        @click="showtipMenu()">Full tip menu </a>  is available 
+        @click="showtipMenu()"><i class="bi bi-geo-fill"></i> Full tip menu </a>  is available 
         <!--tip model start-->
     <div class="col-lg-6">
                         <div class="card chat_card h-100">
@@ -247,7 +247,7 @@
     </div>
   
     </div>
-    <div class="my-2 chat__box" v-if="authUser && authUserLevelData.token > 0">
+    <div :class="['my-2 chat__box', !sended_tip ? 'top_postion_chat_box' : '']" v-if="authUser && authUserLevelData.token > 0">
       <div class="input-group chat__box--wrapper">
         <input
             type="text"
@@ -364,7 +364,7 @@ export default {
         },
     getHostTipMenu() {
       try {
-          axios.get("/host-tip-menu/?host_id="+this.hostDetail.uuid).then((resp)=> {
+          axios.get("/host-tip-menu/?host_id="+this.hostDetail.user_id).then((resp)=> {
               // console.log(resp);
               this.host_tip_menus = resp.data.host_tip_menu;
             });
@@ -395,6 +395,7 @@ export default {
                 axios.get("/user_level/"+this.authUser.token).then((resp)=> {
               // console.log(resp);
               this.authUserLevelData = resp.data.data;
+            
             });
               }
               
@@ -438,6 +439,7 @@ export default {
                     .child(this.hostDetail?.uuid)
                     .set(msgClone);
                 if(this.message) {
+                  this.sended_tip = true;
                   this.getUserLevels();
                 }
                 this.message = "";
@@ -455,6 +457,7 @@ export default {
                 ];
                 this.ref.child(this.chatKey).child(this.hostDetail?.uuid).set(data);
                 if(this.message) {
+                  this.sended_tip = true;
                   this.getUserLevels();
 
                 }
@@ -572,5 +575,46 @@ export default {
 }
 .border-dark {
     border: 2px solid #396220 !important;
+}
+
+@media (max-width: 700px) {
+    .messages__box {
+      position:absolute;
+      top:15%;
+      width: 100%;
+      height: 27rem;
+}
+.top_postion {
+  top:45% !important;
+      width: 100%;
+      height: 17rem !important;
+}
+.chat__box {
+  position:absolute;
+  top: 0;
+}
+.tip_menu[data-v-7d1cd16c] {
+  position: relative !important;
+  margin-top:70px;
+}
+#chat_boxContent .chat__box {
+  position: relative;
+    margin-top: 0px ;
+}
+.top_postion_chat_box {
+  margin-top: -230px !important;
+}
+.token_box input {
+  margin-top:0px;
+  margin-bottom: 10px;
+  margin-left: 0px;
+}
+.token_box {
+  padding-left:10px;
+}
+#chat_boxContent .chat__box .chat__box--wrapper {
+  background-color: #000;
+  border-radius: 0;
+}
 }
 </style>
