@@ -517,7 +517,124 @@
                                     <i class="bi bi-list"></i>Tip menu
                                 </h6>
                             </span>
+                             <span>
+                                <h6 style="color: #f8f8f8 !important">
+                                    <a  href="#" data-bs-toggle="modal"
+        data-bs-target="#tipMenuModel"
+        @click="showtipMenu()">  <i class="bi bi-geo-fill"></i> </a>
+                                </h6>
+                            </span>
                         </div>
+                        <div
+                                class="modal fade"
+                                id="tipMenuModel"
+                                tabindex="-1"
+                            >
+                                <div
+                                    class="modal-dialog modal-lg"
+                                    style="margin-top: 0"
+                                >
+                                    <div
+                                        class="modal-content"
+                                        style="background: transparent"
+                                    >
+                                        <div
+                                            class="modal-body modal-body-all"
+                                            style="border-radius: 1rem"
+                                        >
+                                            <div class="card chat_card">
+                                                <div
+                                                    class="card-header chat_card--header"
+                                                >
+                                                    <div class="row">
+                                                        <ul
+                                                            class="nav nav-tabs chat_card--tabs d-flex"
+                                                            id="chat_box"
+                                                            role="tablist"
+                                                        >
+                                                            <li
+                                                                class="nav-item"
+                                                                role="presentation"
+                                                            >
+                                                                <button
+                                                                    class="nav-link w-100 chat_card--btn active"
+                                                                    id="home-tab"
+                                                                    data-bs-toggle="tab"
+                                                                    data-bs-target="#tip_menu"
+                                                                    type="button"
+                                                                    role="tab"
+                                                                    aria-controls="home"
+                                                                    aria-selected="true"
+                                                                >
+                                                                    <i
+                                                                        class="bi bi-chat-fill"
+                                                                    ></i>
+                                                                    &nbsp;&nbsp;
+                                                                    Tip Menu
+                                                                </button>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div
+                                                    class="card-body position-relative chat_card--body"
+                                                >
+                                                    <div
+                                                        class="tab-content pt-2 mt-20"
+                                                        id="chat_boxContent"
+                                                        style="
+                                                            height: 240px;
+                                                            overflow-y: scroll;
+                                                        "
+                                                    >
+                                                        <div
+                                                            class="tab-pane active show px-3"
+                                                            id="tip_menu"
+                                                            role="tabpanel"
+                                                            aria-labelledby="contact-tab"
+                                                        >
+                                                            <div
+                                                                class="tip_box"
+                                                            >
+                                                                <table
+                                                                    class="table"
+                                                                >
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>
+                                                                                ACTIVITY
+                                                                            </th>
+                                                                            <th
+                                                                                style="text-align: right"
+                                                                            >
+                                                                                TOKENS
+                                                                            </th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr  v-for="(value2, index2) in host_tip_menus" 
+  :key="index2">
+                                                                      <td>
+                                                                          {{ value2.menu_title }}
+                                                                      </td>
+                                                                      <td
+                                                                          style="text-align: right"
+                                                                      >
+                                                                      {{ value2.token }}
+                                                                      </td>
+                                                                  </tr>
+                                                                  
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         <hr />
                         <div class="row">
                             <div class="col-md-12">
