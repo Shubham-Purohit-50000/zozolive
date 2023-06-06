@@ -364,7 +364,7 @@ export default {
         },
     getHostTipMenu() {
       try {
-          axios.get("/host-tip-menu/?host_id="+this.hostDetail.uuid).then((resp)=> {
+          axios.get("/host-tip-menu/?host_id="+this.hostDetail.user_id).then((resp)=> {
               // console.log(resp);
               this.host_tip_menus = resp.data.host_tip_menu;
             });

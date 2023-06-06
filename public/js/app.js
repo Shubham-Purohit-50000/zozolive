@@ -792,7 +792,7 @@ __webpack_require__.r(__webpack_exports__);
     getHostTipMenu: function getHostTipMenu() {
       var _this3 = this;
       try {
-        axios.get("/host-tip-menu/?host_id=" + this.hostDetail.uuid).then(function (resp) {
+        axios.get("/host-tip-menu/?host_id=" + this.hostDetail.user_id).then(function (resp) {
           // console.log(resp);
           _this3.host_tip_menus = resp.data.host_tip_menu;
         });
