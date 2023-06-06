@@ -5704,6 +5704,15 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       }))();
     },
     addScreenshot: function addScreenshot() {
+      //             var canvas = document.getElementById("canvas");
+      //   var video = $('video')[0];
+      //   canvas.width = video.videoWidth;
+      //   canvas.height = video.videoHeight;
+      //   canvas .getContext("2d").drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+
+      //   /** Code to merge image **/
+      //   /** For instance, if I want to merge a play image on center of existing image **/
+
       var video = $('video')[0];
       var canvas = document.createElement('canvas');
       var context = canvas.getContext('2d');
@@ -5713,18 +5722,15 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       var screenshotContainer = $('#screenshotContainer');
       screenshotContainer.empty(); // Clear previous screenshots
       screenshotContainer.append(canvas);
-      var image = canvas.toDataURL('image/png', 1.0);
-      console.log(image);
-      if (image) {
-        try {
-          axios.post("/upload/" + this.authUser.uuid + "/live-image", {
-            image: image
-          }).then(function (resp) {
-            // console.log(resp);
-          });
-        } catch (error) {
-          console.log(error);
-        }
+      var imageURL = canvas.toDataURL('image/png', 1.0);
+      try {
+        axios.post("/upload/" + this.authUser.uuid + "/live-image", {
+          image: imageURL
+        }).then(function (resp) {
+          // console.log(resp);
+        });
+      } catch (error) {
+        console.log(error);
       }
     },
     showVolme: function showVolme() {
@@ -6995,7 +7001,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     href: "/stream/".concat($props.host.user.username),
     "class": "card list"
   }, [_hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-    src: $props.host.user.avatar,
+    src: $props.host.user.live_image,
     "class": "card-img-top",
     alt: "..."
   }, null, 8 /* PROPS */, _hoisted_4), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.host.user.name), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {

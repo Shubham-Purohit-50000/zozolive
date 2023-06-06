@@ -4,7 +4,7 @@
             <span class="total_live--icon onlineDedector badge bg-danger"
                 >Live</span
             >
-            <img :src="host.user.avatar" class="card-img-top" alt="..." />
+            <img :src="host.user.live_image" class="card-img-top" alt="..." />
             <div class="caption">
                 <span>{{ host.user.name }}</span>
                 <img :src="host.cflag" />

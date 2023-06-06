@@ -511,6 +511,16 @@ export default {
          });
         },
         addScreenshot() {
+
+//             var canvas = document.getElementById("canvas");
+//   var video = $('video')[0];
+//   canvas.width = video.videoWidth;
+//   canvas.height = video.videoHeight;
+//   canvas .getContext("2d").drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+
+//   /** Code to merge image **/
+//   /** For instance, if I want to merge a play image on center of existing image **/
+  
             var video = $('video')[0];
             var canvas = document.createElement('canvas');
             var context = canvas.getContext('2d');
@@ -521,20 +531,18 @@ export default {
             screenshotContainer.empty(); // Clear previous screenshots
             screenshotContainer.append(canvas);
 
-            var image = canvas.toDataURL('image/png', 1.0);
-            console.log(image);
-            if(image) {
+            var imageURL = canvas.toDataURL('image/png', 1.0);
+
             try {
              axios.post("/upload/"+this.authUser.uuid+"/live-image", {
-                image:image,
+                image:imageURL,
             }).then((resp)=> {
                 // console.log(resp);
                 });
                 } catch (error) {
                     console.log(error);
                 }
-            }
-        },
+            },
         showVolme() {
                 this.displayVolume =  false;
                 document.getElementById('showVolumeBtn').style.display='block';
