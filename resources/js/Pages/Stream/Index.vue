@@ -507,8 +507,7 @@
                     <div class="card-body">
                         <div
                             class="card-title"
-                            style="
-                                display: flex;
+                            style=" display: flex;
                                 justify-content: space-between;
                                 padding: 20px 0 0px 0 !important;
                             "
@@ -522,62 +521,63 @@
                         <hr />
                         <div class="row">
                             <div class="col-md-12">
-                                <select
-                                    class="inputBox"
-                                    style="font-size: small"
-                                >
-                                    <option
-                                        value="volvo"
-                                        style="font-size: small"
-                                    >
-                                        Preset 1
-                                    </option>
-                                    <option
-                                        value="saab"
-                                        style="font-size: small"
-                                    >
-                                        150 tk
-                                    </option>
-                                    <option
-                                        value="opel"
-                                        style="font-size: small"
-                                    >
-                                        150 tk
-                                    </option>
-                                    <option
-                                        value="audi"
-                                        style="font-size: small"
-                                    >
-                                        150 tk
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="row mt-1">
-                                <div class="col-md-6">
-                                    <p
-                                        class="card-text"
+                                <p
+                                        class="card-text mb-0 mt-2"
                                         style="color: #5b5b5b; font-size: 13px"
                                     >
                                         Activity
                                     </p>
-                                </div>
-                                <div class="col-md-4">
-                                    <p
-                                        class="card-text"
+                                <select
+                                    name="activity" v-model="activity_name"
+                                    class="inputBox"
+                                    style="font-size: small"
+                                    @change="setActivity($event)"
+                                >
+                                    <option
+                                        value="Love"
+                                        style="font-size: small"
+                                    >
+                                       Love
+                                    </option>
+                                    <option
+                                        value="Mood"
+                                        style="font-size: small"
+                                    >
+                                       Mood
+                                    </option>
+                                    <option
+                                        value="Kiss"
+                                        style="font-size: small"
+                                    >
+                                        Kiss
+                                    </option>
+                                </select>
+
+                                <p
+                                        class="card-text mb-0 mt-2"
                                         style="color: #5b5b5b; font-size: 13px"
                                     >
                                         PRICE , tk
                                     </p>
+
+                                    <input class="inputBox" v-model="token_amount" type="text" />
+                            </div>
+                            <!-- <div class="row mt-1">
+                                <div class="col-md-6">
+                                 
+                                </div>
+                                <div class="col-md-4">
+                                   
                                 </div>
                                 <div class="col-md-1"></div>
-                            </div>
-                            <div class="row">
+                            </div> -->
+                            <!-- <div class="row">
                                 <div class="col-md-6 ml-1 pr-0">
                                     <p
                                         class="card-text"
                                         style="color: #5b5b5b; font-size: 13px"
                                     >
-                                        <input class="inputBox" type="text" />
+                                        <input class="inputBox"  type="text" />
                                     </p>
                                 </div>
                                 <div class="col-md-4 pl-2 pr-0">
@@ -585,18 +585,19 @@
                                         class="card-text"
                                         style="color: #5b5b5b; font-size: 13px"
                                     >
-                                        <input class="inputBox" type="text" />
+                                       
                                     </p>
                                 </div>
                                 <div class="col-md-1 close_btn">
                                     <h3><i class="bi bi-x"></i></h3>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                         <div class="d-flex">
                             <button
                                 class="saveButton"
                                 style="background-color: #859e4f"
+                                @click="saveHostTipMenu"
                             >
                                 Save & active
                             </button>
@@ -750,6 +751,9 @@ export default {
             todayTopic: "",
             isLoading: false,
             topicError: "",
+            activity_name: "Love",
+            token_amount:null,
+            host_tip_menus:[],
         };
     },
     computed: {
@@ -762,9 +766,56 @@ export default {
             this.goal = this.authUser?.model?.goal;
             this.goalToken = this.authUser?.model?.goal_token;
             this.todayTopic = this.authUser?.model?.today_topic;
+            this.getHostTipMenu();
+           
         }
     },
     methods: {
+      
+        getHostTipMenu() {
+            try {
+                axios.get("/host-tip-menu/?host_id="+this.authUser.uuid).then((resp)=> {
+                    // console.log(resp);
+                    this.host_tip_menus = resp.data.host_tip_menu;
+                    let values = this.host_tip_menus.find(node=> node.menu_title === 'Love');
+                    this.token_amount = values.token;
+                    this.activity_name = values.menu_title;
+                    });
+                
+                } catch (error) {
+                    console.log(error);
+                }
+    },
+    setActivity(event) {
+            if(event.target.value) {
+                let values = this.host_tip_menus.find(node=> node.menu_title === event.target.value);
+                if(values) {
+                    this.token_amount = values.token;
+                    this.activity_name = values.menu_title;
+                } else {
+                    this.token_amount = null;
+                }
+              
+            }
+        },
+        saveHostTipMenu() {
+            if(this.activity_name && this.token_amount > 0) {
+                try {
+                axios.post("/host/create/host-tip-menu", {
+                    host_id: this.authUser.uuid,
+                    menu_title: this.activity_name,
+                    token: this.token_amount,
+                }).then((resp)=>{
+                    // this.activity_name = 'Love';
+                    // this.token_amount = null;
+                    this.getHostTipMenu();
+                });
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+           
+        },
         saveGoal() {
             this.isLoading = true;
             if (this.goal && this.goalToken) {

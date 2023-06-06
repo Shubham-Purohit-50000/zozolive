@@ -403,10 +403,9 @@
                     <div class="row">
                         <div class="col-md-12">
                             <select class="inputBox" style="font-size: small;">
-                                <option value="volvo" style="font-size: small;">Preset 1</option>
-                                <option value="saab" style="font-size: small;">150 tk</option>
-                                <option value="opel" style="font-size: small;">150 tk</option>
-                                <option value="audi" style="font-size: small;">150 tk</option>
+                                <option value="volvo" style="font-size: small;">Love</option>
+                                <option value="saab" style="font-size: small;">Mood</option>
+                                <option value="opel" style="font-size: small;">Kiss</option>
                             </select>
                         </div>
                         <div class="row">

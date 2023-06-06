@@ -7,36 +7,50 @@
   >
     <ul class="messages__box ml-2">
       <li
-          class="messages__box--message left"
+          :class="['messages__box--message']"
           v-for="(msg, i) in messages"
           :key="i"
       >
                 <!-- <span class="messages__box--user_name">{{
                     msg.send_by_user
                   }}</span> -->
-                  <span v-if="msg.user_token">
+                  <div v-if="msg.msg.includes('tipped')" class="text-center">
+                    <span v-if="msg.user_token">
                      <a  :style="{'color':msg.level_data ? msg.level_data.color : ''}" href="#" @click="showToast(authUserLevelData, msg.user_token)"> {{  msg.send_by_user }}  </a>
                   </span>
                   <span v-else>
                     {{  msg.send_by_user }} 
                   </span>
+                  {{ msg.msg }}
+                  
+                  </div>
+                
+                  <div v-else>
+                    <span v-if="msg.user_token">
+                     <a  :style="{'color':msg.level_data ? msg.level_data.color : ''}" href="#" @click="showToast(authUserLevelData, msg.user_token)"> {{  msg.send_by_user }}  </a>
+                  </span>
+                  <span v-else>
+                    {{  msg.send_by_user }} 
+                  </span>
+                  {{ msg.msg }}
+                  
+                  </div>
                   <div class="toast" :id="'liveToast'+msg.user_token" role="alert" aria-live="assertive" aria-atomic="true">
-  <div class="toast-header">
-    <!-- <img src="..." class="rounded me-2" alt="..."> -->
-    <span class="badge me-auto" :style="{'background-color':msg.level_data ? msg.level_data.color : ''}">Level : {{ msg.level_data ? msg.level_data.level : null  }}</span>
-    <span class="badge  badge-pill badge-primary"><span class="text-white">Tk : </span>{{ msg.user_token }}</span> 
-  
-    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close" @click="closeToast(msg.user_token)">
-      <i class=" bi bi-x-lg"></i>
-    </button>
-  </div>
-  <div class="toast-body">
-    <small>Subscribed Plan : <span :style="{'color':msg.level_data ? msg.level_data.color : ''}"> {{ msg.level_data ? msg.level_data.name : null  }} </span>  </small>
+                    <div class="toast-header">
+                      <!-- <img src="..." class="rounded me-2" alt="..."> -->
+                      <span class="badge me-auto" :style="{'background-color':msg.level_data ? msg.level_data.color : ''}">Level : {{ msg.level_data ? msg.level_data.level : null  }}</span>
+                      <span class="badge  badge-pill badge-primary"><span class="text-white">Tk : </span>{{ msg.user_token }}</span> 
+                    
+                      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close" @click="closeToast(msg.user_token)">
+                        <i class=" bi bi-x-lg"></i>
+                      </button>
+                    </div>
+                    <div class="toast-body">
+                      <small>Subscribed Plan : <span :style="{'color':msg.level_data ? msg.level_data.color : ''}"> {{ msg.level_data ? msg.level_data.name : null  }} </span>  </small>
 
-    <!-- <button class="btn btn-primary btn-sm">{{  Reply }}</button> -->
-  </div>
+                      <!-- <button class="btn btn-primary btn-sm">{{  Reply }}</button> -->
+                    </div>
 </div>
-        {{ msg.msg }}
       </li>
     </ul>
   
@@ -49,7 +63,7 @@
       <button class="btn public__chat--alert_btn">Buy Tokens</button>
       </div>
      
-      <div class="tip_menu" v-if="authUser && authUserLevelData.token > 0">
+      <div class="tip_menu" v-if="authUser && authUserLevelData.token > 0 && !sended_tip">
        <a  href="#" data-bs-toggle="modal"
         data-bs-target="#tipMenuModel"
         @click="showtipMenu()">Full tip menu </a>  is available 
@@ -72,6 +86,7 @@
                                         <div class="modal-header">
                                             <span>Send Tip</span>
                                             <button
+                                                ref="cancelButton"
                                                 type="button"
                                                 class="customClose"
                                                 data-bs-dismiss="modal"
@@ -175,16 +190,20 @@
                                                         class="token_box"
                                                         style="height: 210px; background-color: #3b3b3b"
                                                     >
-                                                        <ul>
+                                                    <ul>
                                                             <li v-for="(value3, index3) in host_tip_menus" 
                                                               :key="index3">
-                                                                <label>
-                                                                    {{ value3.token }}
+                                                              
+                                                                <label :class="[tip_menu_token_amount ? 'border-dark' : '']">
                                                                     <input
-                                                                        type="radio"
-                                                                        name="token"
-                                                                        class="d-none"
+                                                                    :id="'token'+index3"
+                                                                    v-model="tip_menu_token_amount"
+                                                                    type="radio"
+                                                                    name="token"
+                                                                    :value="value3.token"
+                                                                    class="d-none"
                                                                     />
+                                                                    {{ value3.token }}
                                                                 </label>
                                                             </li>
                                                         </ul>
@@ -194,12 +213,13 @@
                                                                 Amount:</span
                                                             >
                                                             <input
+                                                                v-model="tip_menu_token_amount"
                                                                 type="text"
                                                             />
                                                         </div>
 
                                                         <div class="tip">
-                                                            <button>
+                                                            <button @click="sendUserTip">
                                                                 Buy Token
                                                             </button>
                                                         </div>
@@ -276,6 +296,8 @@ export default {
       authUserLevelData: {},
       host_tip_menus: [],
       tipMenuDisplay: true,
+      tip_menu_token_amount: 20,
+      sended_tip: false,
     };
   },
   created() {
@@ -312,6 +334,31 @@ export default {
     this.getHostTipMenu();
   },
   methods: {
+    sendUserTip() {
+            try {
+                axios.post("/user/send-tip", {
+                    user_id: this.authUser.uuid,
+                    host_id: this.hostDetail.user_id,
+                    token_amount: this.tip_menu_token_amount,
+                }).then((resp)=>{
+                    this.$refs.cancelButton.click();
+                   console.log(resp);
+                    if(resp.data.status!=='success') {
+                      window.location.href = "/buy-token";
+                      
+                    } else {
+                      this.message = 'tipped ' + this.tip_menu_token_amount + ' tk';
+                      this.send();
+                      this.sended_tip = true;
+                    }
+                   
+                  
+                });
+                } catch (error) {
+                    console.log(error);
+                }
+           
+        },
     showtipMenu() {
             $(".modal-backdrop.fade.show").removeClass("modal-backdrop");
         },
@@ -344,10 +391,13 @@ export default {
               this.authUserLevelData = resp.data.data;
             });
             } else {
-              axios.get("/user_level/"+this.authUser.token).then((resp)=> {
+              if(this.authUser) {
+                axios.get("/user_level/"+this.authUser.token).then((resp)=> {
               // console.log(resp);
               this.authUserLevelData = resp.data.data;
             });
+              }
+              
             }
            
         } catch (error) {
@@ -389,7 +439,6 @@ export default {
                     .set(msgClone);
                 if(this.message) {
                   this.getUserLevels();
-                  // this.setUserToken();
                 }
                 this.message = "";
               } else {
@@ -407,7 +456,6 @@ export default {
                 this.ref.child(this.chatKey).child(this.hostDetail?.uuid).set(data);
                 if(this.message) {
                   this.getUserLevels();
-                  // this.setUserToken();
 
                 }
               }
@@ -463,6 +511,9 @@ export default {
 .bg-dark-1 {
   background-color: #343434;
 }
+.text-center {
+  text-align: center;
+}
 
 .token_box label {
     background: lightgray;
@@ -487,9 +538,10 @@ export default {
     margin-bottom: 15px;
 }
 
+
 .token_box input {
     width: 75%;
-    margin-left: 35px;
+    margin-left: 15px;
     height: 45px;
     border-radius: 27px;
     background: #000;
@@ -505,7 +557,20 @@ export default {
     padding: 10px 25px;
     background: #79943d;
     color: #fff;
-    margin-left: 10px;
+    margin-left: 0px;
 }
 
+.token_box label {
+    background: #191919;
+    padding: 8px;
+    font-size: 18px;
+    font-weight: 600;
+    min-width: 60px;
+    text-align: center;
+    border-radius: 12px;
+    cursor: pointer;
+}
+.border-dark {
+    border: 2px solid #396220 !important;
+}
 </style>
