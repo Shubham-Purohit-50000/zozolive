@@ -15,7 +15,7 @@ const mutations = {
        
     },
     setHostOnline(state, payload) {
-        state.hosts = state.hosts.user.filter(node=> node.is_online===payload);
+        state.hosts = state.hosts.filter(node=> node.is_online===payload);
     },
 };
 

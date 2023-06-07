@@ -41,6 +41,7 @@
         "vue-multiselect": "^2.1.7",
         "vue-native-websocket": "^2.0.15",
         "vue-select": "^3.20.2",
+        "vue-sweetalert2": "^5.0.5",
         "vue3-emoji-picker": "^1.1.7",
         "vue3-otp-input": "^0.3.6",
         "vue3-toastify": "^0.1.6",

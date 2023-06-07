@@ -6069,7 +6069,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
             case 8:
               _this11.options.uid = _context9.sent;
               if (!(_this11.options.role === "host")) {
-                _context9.next = 28;
+                _context9.next = 29;
                 break;
               }
               $("#mic-btn").prop("disabled", false);
@@ -6126,15 +6126,22 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
               _this11.getRemoteUsers();
               // set Host status
               _this11.setHostStatus();
-            case 28:
+              _this11.showAlert();
+            case 29:
               _this11.isStreamStarted = true;
               _this11.streamBtnText = "Stop Stream";
-            case 30:
+            case 31:
             case "end":
               return _context9.stop();
           }
         }, _callee9);
       }))();
+    },
+    showAlert: function showAlert() {
+      this.$swal({
+        title: 'Hello, ' + this.authUser.name,
+        html: '<p>' + 'If you reload/refresh the page you need to start video again.' + '</div>'
+      });
     },
     setHostStatus: function setHostStatus() {
       this.$store.dispatch('updateHostStatus', {
@@ -14390,18 +14397,22 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _bootstrap__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
-/* harmony import */ var _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @inertiajs/inertia-vue3 */ "./node_modules/@inertiajs/inertia-vue3/dist/index.js");
-/* harmony import */ var _inertiajs_progress__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @inertiajs/progress */ "./node_modules/@inertiajs/progress/dist/index.js");
-/* harmony import */ var _vendor_tightenco_ziggy_dist_vue_m__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../vendor/tightenco/ziggy/dist/vue.m */ "./vendor/tightenco/ziggy/dist/vue.m.js");
-/* harmony import */ var _ziggy__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./ziggy */ "./resources/js/ziggy.js");
-/* harmony import */ var vue_chat_scroll__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vue-chat-scroll */ "./node_modules/vue-chat-scroll/dist/vue-chat-scroll.js");
-/* harmony import */ var vue_chat_scroll__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(vue_chat_scroll__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
-/* harmony import */ var _store_index_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./store/index.js */ "./resources/js/store/index.js");
+/* harmony import */ var vue_sweetalert2__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-sweetalert2 */ "./node_modules/vue-sweetalert2/dist/vue-sweetalert.umd.js");
+/* harmony import */ var vue_sweetalert2__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_sweetalert2__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var sweetalert2_dist_sweetalert2_min_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! sweetalert2/dist/sweetalert2.min.css */ "./node_modules/sweetalert2/dist/sweetalert2.min.css");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+/* harmony import */ var _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @inertiajs/inertia-vue3 */ "./node_modules/@inertiajs/inertia-vue3/dist/index.js");
+/* harmony import */ var _inertiajs_progress__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @inertiajs/progress */ "./node_modules/@inertiajs/progress/dist/index.js");
+/* harmony import */ var _vendor_tightenco_ziggy_dist_vue_m__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../vendor/tightenco/ziggy/dist/vue.m */ "./vendor/tightenco/ziggy/dist/vue.m.js");
+/* harmony import */ var _ziggy__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./ziggy */ "./resources/js/ziggy.js");
+/* harmony import */ var vue_chat_scroll__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vue-chat-scroll */ "./node_modules/vue-chat-scroll/dist/vue-chat-scroll.js");
+/* harmony import */ var vue_chat_scroll__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(vue_chat_scroll__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
+/* harmony import */ var _store_index_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./store/index.js */ "./resources/js/store/index.js");
 var _window$document$getE;
 
 // import '../css/app.css';
+
 
 
 
@@ -14413,14 +14424,14 @@ var _window$document$getE;
 // import AgoraRTC from "agora-rtc-sdk-ng";
 
 
-var store = (0,vuex__WEBPACK_IMPORTED_MODULE_8__.createStore)({
-  state: _store_index_js__WEBPACK_IMPORTED_MODULE_7__.state,
-  mutations: _store_index_js__WEBPACK_IMPORTED_MODULE_7__.mutations,
-  getters: _store_index_js__WEBPACK_IMPORTED_MODULE_7__.getters,
-  actions: _store_index_js__WEBPACK_IMPORTED_MODULE_7__.actions
+var store = (0,vuex__WEBPACK_IMPORTED_MODULE_10__.createStore)({
+  state: _store_index_js__WEBPACK_IMPORTED_MODULE_9__.state,
+  mutations: _store_index_js__WEBPACK_IMPORTED_MODULE_9__.mutations,
+  getters: _store_index_js__WEBPACK_IMPORTED_MODULE_9__.getters,
+  actions: _store_index_js__WEBPACK_IMPORTED_MODULE_9__.actions
 });
 var appName = ((_window$document$getE = window.document.getElementsByTagName('title')[0]) === null || _window$document$getE === void 0 ? void 0 : _window$document$getE.innerText) || 'Laravel';
-(0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_2__.createInertiaApp)({
+(0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_4__.createInertiaApp)({
   title: function title(_title) {
     return "".concat(_title, " - ").concat(appName);
   },
@@ -14432,20 +14443,20 @@ var appName = ((_window$document$getE = window.document.getElementsByTagName('ti
       app = _ref.app,
       props = _ref.props,
       plugin = _ref.plugin;
-    return (0,vue__WEBPACK_IMPORTED_MODULE_1__.createApp)({
+    return (0,vue__WEBPACK_IMPORTED_MODULE_3__.createApp)({
       render: function render() {
-        return (0,vue__WEBPACK_IMPORTED_MODULE_1__.h)(app, props);
+        return (0,vue__WEBPACK_IMPORTED_MODULE_3__.h)(app, props);
       }
     }).use(plugin)
     // .use(AgoraRTC)
-    .use(store).use((vue_chat_scroll__WEBPACK_IMPORTED_MODULE_6___default())).use(_vendor_tightenco_ziggy_dist_vue_m__WEBPACK_IMPORTED_MODULE_4__.ZiggyVue, _ziggy__WEBPACK_IMPORTED_MODULE_5__.Ziggy).mount(el);
+    .use(store).use((vue_sweetalert2__WEBPACK_IMPORTED_MODULE_1___default())).use((vue_chat_scroll__WEBPACK_IMPORTED_MODULE_8___default())).use(_vendor_tightenco_ziggy_dist_vue_m__WEBPACK_IMPORTED_MODULE_6__.ZiggyVue, _ziggy__WEBPACK_IMPORTED_MODULE_7__.Ziggy).mount(el);
   }
 });
 // window.Vue.prototype.$messaging = messaging;
 
 // Vue.component("viewer", require("./components/Viewer.vue").default);
 
-_inertiajs_progress__WEBPACK_IMPORTED_MODULE_3__.InertiaProgress.init({
+_inertiajs_progress__WEBPACK_IMPORTED_MODULE_5__.InertiaProgress.init({
   color: '#4B5563'
 });
 
@@ -14627,7 +14638,7 @@ var mutations = {
     });
   },
   setHostOnline: function setHostOnline(state, payload) {
-    state.hosts = state.hosts.user.filter(function (node) {
+    state.hosts = state.hosts.filter(function (node) {
       return node.is_online === payload;
     });
   }
