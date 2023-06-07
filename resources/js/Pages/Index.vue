@@ -9,7 +9,7 @@
         </div>
         <section class="section">
             <div class="row align-items-top" v-if="hosts && hosts.length">
-                <HostItem v-for="host in hosts" :key="host.uuid" :host="host" />
+                <HostItem v-for="host in getHostData" :key="host.uuid" :host="host" />
             </div>
           <div v-else>
             <h3 class="text-center">Not Found</h3>
@@ -33,7 +33,13 @@ import UserLayout from "@/Layouts/UserLayout.vue";
 export default {
     components: { HostItem, UserLayout },
     props: ["hosts"],
+    mounted() {
+        this.$store.commit("setAllHosts", this.hosts);
+    },
     computed: {
+        getHostData() {
+            return this.$store.state.hosts;
+        },
         authUser() {
             console.warn('auth',this.$page.props);
             return this.$page?.props.auth?.user;
@@ -42,7 +48,7 @@ export default {
             console.warn('role',this.$page);
             return this.$page?.props.auth?.user_role;
         },
-    }
+    },
 };
 </script>
 

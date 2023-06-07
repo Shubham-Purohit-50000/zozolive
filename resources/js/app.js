@@ -10,12 +10,13 @@ import { Ziggy } from "./ziggy";
 import VueChatScroll from "vue-chat-scroll";
 // import AgoraRTC from "agora-rtc-sdk-ng";
 import { createStore } from "vuex";
-import { state, mutations, getters } from "./store/index.js";
+import { state, mutations, getters, actions } from "./store/index.js";
 
 const store = createStore({
     state: state,
     mutations: mutations,
     getters: getters,
+    actions: actions,
 });
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 
