@@ -439,6 +439,7 @@ export default {
         },
     },
     async mounted() {
+        this.setHostOffline();
         this.ref
             .child(this.chatKey)
             .child(this.hostKey)
@@ -857,11 +858,27 @@ export default {
                 this.addScreenshot();
                // Get all remote users 
                this.getRemoteUsers() 
+               // set Host status
+                this.setHostStatus();
             }
 
             this.isStreamStarted = true;
             this.streamBtnText = "Stop Stream";
         },
+
+        setHostStatus() {
+			this.$store.dispatch('updateHostStatus',{
+				is_online: 1,
+				user_id: this.authUser.uuid,
+				hosts: this.authUser.uuid,
+			});
+		},
+        setHostOffline() {
+			this.$store.dispatch('updateHostStatus',{
+				is_online: 0,
+				user_id: this.authUser.uuid,
+			});
+		},
         async subscribe(user, mediaType) {
             const uid = user.uid;
             // subscribe to a remote user
@@ -904,6 +921,7 @@ export default {
         },
 
         async stopStream() {
+            this.setHostOffline();
             for (let trackName in this.localTracks) {
                 var track = this.localTracks[trackName];
                 if (track) {
@@ -926,6 +944,7 @@ export default {
             $("#leave").attr("disabled", true);
             // hideMuteButton();
             console.log("Client successfully left channel.");
+            
         },
         openFullscreen() {
             const elem = document.querySelector(".agora_video_player");
