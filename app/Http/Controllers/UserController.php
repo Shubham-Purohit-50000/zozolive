@@ -178,30 +178,27 @@ class UserController extends Controller
     }
 
     
-    public function sendTip(Request $req){
-        $user = User::where('uuid', $req->user_id)->first();
-        if($user->token < $req->token_amount){
-            return response()->json([
-                'status'=>'error',
-                'msg'=>'User dont have have sufficient token!',
-            ]);
-            die();
-        }
-        
-        $host = User::where('uuid', $req->host_id)->first();
-        $user->token = $user->token - $req->token_amount;
-        $host->token = $host->token + $req->token_amount;
-        $user->update();
-        $user->save();
-        $host->update();
-        $host->save();
-        
-        return response()->json(
-            [
-                'status'=>'success',
-                'msg'=>'Tip sent successfully!',
-                ]
-            );
+        public function sendTip(Request $req){
+            $user = User::where('uuid', $req->user_id)->first();
+            if($user->token < $req->token_amount){
+                return response()->json([
+                    'status'=>'error',
+                    'msg'=>'User dont have have sufficient token!',
+                ]);
+                die();
+            }
+            
+            $host = User::where('uuid', $req->host_id)->first();
+            $user->token = $user->token - $req->token_amount;
+            $host->token = $host->token + $req->token_amount;
+            $user->update();
+            
+            return response()->json(
+                [
+                    'status'=>'success',
+                    'msg'=>'Tip sent successfully!',
+                    ]
+                );
         }
 
         public function storeLiveImage(Request $request){
@@ -222,5 +219,22 @@ class UserController extends Controller
             ]);
     
         }
+
+        public function userToken($user_id){
+            $user = User::where('uuid', $user_id)->first();
+            //dd($user);
+            return view('admin.user.token-history', [
+                'user'          => $user
+            ]);
+        }
+
+        public function updateToken(Request $request, $user_id){
+            $user = User::where('uuid', $user_id)->first();
+            $user->token = $request->token;
+            $user->update();
+
+            return back()->with('success', 'Token Updated Successfully');
+        }
+
     }
     
