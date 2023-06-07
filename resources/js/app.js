@@ -1,5 +1,7 @@
 import './bootstrap';
 // import '../css/app.css';
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
 
 import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/inertia-vue3';
@@ -28,6 +30,7 @@ createInertiaApp({
             .use(plugin)
             // .use(AgoraRTC)
             .use(store)
+            .use(VueSweetalert2)
             .use(VueChatScroll)
             .use(ZiggyVue, Ziggy)
             .mount(el);

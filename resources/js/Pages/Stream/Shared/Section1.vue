@@ -860,12 +860,19 @@ export default {
                this.getRemoteUsers() 
                // set Host status
                 this.setHostStatus();
+                this.showAlert();
             }
 
             this.isStreamStarted = true;
+
             this.streamBtnText = "Stop Stream";
         },
-
+        showAlert() {
+            this.$swal({
+                title:'Hello, ' + this.authUser.name,
+                html:'<p>'+ 'If you reload/refresh the page you need to start video again.' + '</div>',
+            });   
+        },
         setHostStatus() {
 			this.$store.dispatch('updateHostStatus',{
 				is_online: 1,
