@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Host;
 use App\Models\User;
 use App\Models\Role;
 use Kreait\Firebase\Factory;
@@ -202,15 +203,6 @@ class UserController extends Controller
         }
 
         public function storeLiveImage(Request $request){
-
-            // // $request->validate([
-            // //     'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            // // ]);
-    
-            // $imageName = auth()->id().'.'.$request->image;
-            // // $request->image->move(public_path('live_images'), $imageName);
-    
-            // // $host = User::where('uuid',$request->host_id)->first();
             $user = $request->user();
             $user->live_image =  $request->image;
             $user->save();
@@ -219,6 +211,7 @@ class UserController extends Controller
             ]);
     
         }
+<<<<<<< HEAD
 
         public function userToken($user_id){
             $user = User::where('uuid', $user_id)->first();
@@ -236,5 +229,17 @@ class UserController extends Controller
             return back()->with('success', 'Token Updated Successfully');
         }
 
+=======
+        
+        
+        public function updateUserStatus(Request $request){
+            $host = Host::where('user_id', $request->user_id)->first();
+            $host->is_online =  $request->is_online;
+            $host->save();
+            return response()->json([
+                'host' =>  $host
+            ]);
+        }
+>>>>>>> 85a0d37de1351ead41ea8497464187616ea6022b
     }
     

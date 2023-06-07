@@ -886,6 +886,7 @@ export default {
             this.getHostTipMenu();
            
         }
+
     },
     methods: {
       

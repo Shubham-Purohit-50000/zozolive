@@ -4818,7 +4818,13 @@ __webpack_require__.r(__webpack_exports__);
     UserLayout: _Layouts_UserLayout_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   props: ["hosts"],
+  mounted: function mounted() {
+    this.$store.commit("setAllHosts", this.hosts);
+  },
   computed: {
+    getHostData: function getHostData() {
+      return this.$store.state.hosts;
+    },
     authUser: function authUser() {
       var _this$$page, _this$$page$props$aut;
       console.warn('auth', this.$page.props);
@@ -5623,6 +5629,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
+            _this.setHostOffline();
             _this.ref.child(_this.chatKey).child(_this.hostKey).on("value", function (msg) {
               try {
                 var data = msg.val();
@@ -5650,9 +5657,9 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
             //         }
             //     );
             // });
-            _context.next = 6;
+            _context.next = 7;
             return _this.generateToken();
-          case 6:
+          case 7:
             _this.token = _context.sent;
             _this.localTracks = {
               videoTrack: null,
@@ -5670,7 +5677,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
               //After requesting a new token
               _this.client.renewToken(token);
             });
-          case 11:
+          case 12:
           case "end":
             return _context.stop();
         }
@@ -6062,7 +6069,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
             case 8:
               _this11.options.uid = _context9.sent;
               if (!(_this11.options.role === "host")) {
-                _context9.next = 27;
+                _context9.next = 29;
                 break;
               }
               $("#mic-btn").prop("disabled", false);
@@ -6117,15 +6124,37 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
               _this11.addScreenshot();
               // Get all remote users 
               _this11.getRemoteUsers();
-            case 27:
+              // set Host status
+              _this11.setHostStatus();
+              _this11.showAlert();
+            case 29:
               _this11.isStreamStarted = true;
               _this11.streamBtnText = "Stop Stream";
-            case 29:
+            case 31:
             case "end":
               return _context9.stop();
           }
         }, _callee9);
       }))();
+    },
+    showAlert: function showAlert() {
+      this.$swal({
+        title: 'Hello, ' + this.authUser.name,
+        html: '<p>' + 'If you reload/refresh the page you need to start video again.' + '</div>'
+      });
+    },
+    setHostStatus: function setHostStatus() {
+      this.$store.dispatch('updateHostStatus', {
+        is_online: 1,
+        user_id: this.authUser.uuid,
+        hosts: this.authUser.uuid
+      });
+    },
+    setHostOffline: function setHostOffline() {
+      this.$store.dispatch('updateHostStatus', {
+        is_online: 0,
+        user_id: this.authUser.uuid
+      });
     },
     subscribe: function subscribe(user, mediaType) {
       var _this12 = this;
@@ -6180,6 +6209,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         return _regeneratorRuntime().wrap(function _callee11$(_context11) {
           while (1) switch (_context11.prev = _context11.next) {
             case 0:
+              _this13.setHostOffline();
               for (trackName in _this13.localTracks) {
                 track = _this13.localTracks[trackName];
                 if (track) {
@@ -6194,9 +6224,9 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
               _this13.remoteUsers = {};
               $("#remote-playerlist").html("");
               // leave the channel
-              _context11.next = 5;
+              _context11.next = 6;
               return _this13.client.leave();
-            case 5:
+            case 6:
               _this13.isStreamStarted = false;
               $("#local-player-name").text("");
               $("#host-join").attr("disabled", false);
@@ -6204,7 +6234,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
               $("#leave").attr("disabled", true);
               // hideMuteButton();
               console.log("Client successfully left channel.");
-            case 11:
+            case 12:
             case "end":
               return _context11.stop();
           }
@@ -12479,7 +12509,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_UserLayout = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("UserLayout");
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_UserLayout, null, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [!$options.authUser || $options.authUser && $options.authRole == 'user' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, _hoisted_5)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("section", _hoisted_6, [$props.hosts && $props.hosts.length ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_7, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.hosts, function (host) {
+      return [!$options.authUser || $options.authUser && $options.authRole == 'user' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, _hoisted_5)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("section", _hoisted_6, [$props.hosts && $props.hosts.length ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_7, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.getHostData, function (host) {
         return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_HostItem, {
           key: host.uuid,
           host: host
@@ -14367,18 +14397,22 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _bootstrap__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
-/* harmony import */ var _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @inertiajs/inertia-vue3 */ "./node_modules/@inertiajs/inertia-vue3/dist/index.js");
-/* harmony import */ var _inertiajs_progress__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @inertiajs/progress */ "./node_modules/@inertiajs/progress/dist/index.js");
-/* harmony import */ var _vendor_tightenco_ziggy_dist_vue_m__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../vendor/tightenco/ziggy/dist/vue.m */ "./vendor/tightenco/ziggy/dist/vue.m.js");
-/* harmony import */ var _ziggy__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./ziggy */ "./resources/js/ziggy.js");
-/* harmony import */ var vue_chat_scroll__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vue-chat-scroll */ "./node_modules/vue-chat-scroll/dist/vue-chat-scroll.js");
-/* harmony import */ var vue_chat_scroll__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(vue_chat_scroll__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
-/* harmony import */ var _store_index_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./store/index.js */ "./resources/js/store/index.js");
+/* harmony import */ var vue_sweetalert2__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-sweetalert2 */ "./node_modules/vue-sweetalert2/dist/vue-sweetalert.umd.js");
+/* harmony import */ var vue_sweetalert2__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_sweetalert2__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var sweetalert2_dist_sweetalert2_min_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! sweetalert2/dist/sweetalert2.min.css */ "./node_modules/sweetalert2/dist/sweetalert2.min.css");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+/* harmony import */ var _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @inertiajs/inertia-vue3 */ "./node_modules/@inertiajs/inertia-vue3/dist/index.js");
+/* harmony import */ var _inertiajs_progress__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @inertiajs/progress */ "./node_modules/@inertiajs/progress/dist/index.js");
+/* harmony import */ var _vendor_tightenco_ziggy_dist_vue_m__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../vendor/tightenco/ziggy/dist/vue.m */ "./vendor/tightenco/ziggy/dist/vue.m.js");
+/* harmony import */ var _ziggy__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./ziggy */ "./resources/js/ziggy.js");
+/* harmony import */ var vue_chat_scroll__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vue-chat-scroll */ "./node_modules/vue-chat-scroll/dist/vue-chat-scroll.js");
+/* harmony import */ var vue_chat_scroll__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(vue_chat_scroll__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
+/* harmony import */ var _store_index_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./store/index.js */ "./resources/js/store/index.js");
 var _window$document$getE;
 
 // import '../css/app.css';
+
 
 
 
@@ -14390,13 +14424,14 @@ var _window$document$getE;
 // import AgoraRTC from "agora-rtc-sdk-ng";
 
 
-var store = (0,vuex__WEBPACK_IMPORTED_MODULE_8__.createStore)({
-  state: _store_index_js__WEBPACK_IMPORTED_MODULE_7__.state,
-  mutations: _store_index_js__WEBPACK_IMPORTED_MODULE_7__.mutations,
-  getters: _store_index_js__WEBPACK_IMPORTED_MODULE_7__.getters
+var store = (0,vuex__WEBPACK_IMPORTED_MODULE_10__.createStore)({
+  state: _store_index_js__WEBPACK_IMPORTED_MODULE_9__.state,
+  mutations: _store_index_js__WEBPACK_IMPORTED_MODULE_9__.mutations,
+  getters: _store_index_js__WEBPACK_IMPORTED_MODULE_9__.getters,
+  actions: _store_index_js__WEBPACK_IMPORTED_MODULE_9__.actions
 });
 var appName = ((_window$document$getE = window.document.getElementsByTagName('title')[0]) === null || _window$document$getE === void 0 ? void 0 : _window$document$getE.innerText) || 'Laravel';
-(0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_2__.createInertiaApp)({
+(0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_4__.createInertiaApp)({
   title: function title(_title) {
     return "".concat(_title, " - ").concat(appName);
   },
@@ -14408,20 +14443,20 @@ var appName = ((_window$document$getE = window.document.getElementsByTagName('ti
       app = _ref.app,
       props = _ref.props,
       plugin = _ref.plugin;
-    return (0,vue__WEBPACK_IMPORTED_MODULE_1__.createApp)({
+    return (0,vue__WEBPACK_IMPORTED_MODULE_3__.createApp)({
       render: function render() {
-        return (0,vue__WEBPACK_IMPORTED_MODULE_1__.h)(app, props);
+        return (0,vue__WEBPACK_IMPORTED_MODULE_3__.h)(app, props);
       }
     }).use(plugin)
     // .use(AgoraRTC)
-    .use(store).use((vue_chat_scroll__WEBPACK_IMPORTED_MODULE_6___default())).use(_vendor_tightenco_ziggy_dist_vue_m__WEBPACK_IMPORTED_MODULE_4__.ZiggyVue, _ziggy__WEBPACK_IMPORTED_MODULE_5__.Ziggy).mount(el);
+    .use(store).use((vue_sweetalert2__WEBPACK_IMPORTED_MODULE_1___default())).use((vue_chat_scroll__WEBPACK_IMPORTED_MODULE_8___default())).use(_vendor_tightenco_ziggy_dist_vue_m__WEBPACK_IMPORTED_MODULE_6__.ZiggyVue, _ziggy__WEBPACK_IMPORTED_MODULE_7__.Ziggy).mount(el);
   }
 });
 // window.Vue.prototype.$messaging = messaging;
 
 // Vue.component("viewer", require("./components/Viewer.vue").default);
 
-_inertiajs_progress__WEBPACK_IMPORTED_MODULE_3__.InertiaProgress.init({
+_inertiajs_progress__WEBPACK_IMPORTED_MODULE_5__.InertiaProgress.init({
   color: '#4B5563'
 });
 
@@ -14586,18 +14621,49 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "mutations": () => (/* binding */ mutations),
 /* harmony export */   "state": () => (/* binding */ state)
 /* harmony export */ });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
+
 var state = {
-  chatKey: ""
+  chatKey: "",
+  is_host_online: false,
+  hosts: []
 };
 var mutations = {
   updateChatKey: function updateChatKey(state, payload) {
     state.chatKey = payload;
+  },
+  setAllHosts: function setAllHosts(state, payload) {
+    state.hosts = payload.filter(function (node) {
+      return node.is_online === 1;
+    });
+  },
+  setHostOnline: function setHostOnline(state, payload) {
+    state.hosts = state.hosts.filter(function (node) {
+      return node.is_online === payload;
+    });
   }
 };
-var actions = {};
+var actions = {
+  updateHostStatus: function updateHostStatus(_ref, data) {
+    var commit = _ref.commit;
+    return new Promise(function (resolve) {
+      axios__WEBPACK_IMPORTED_MODULE_0__["default"].post('/user/status/' + data.user_id, {
+        is_online: data.is_online,
+        user_id: data.user_id
+      }).then(function (resp) {
+        commit('setHostOnline', data.is_online);
+      }).then(function () {
+        resolve();
+      });
+    });
+  }
+};
 var getters = {
   getChatKey: function getChatKey(state) {
     return state.chatKey;
+  },
+  getHostStatus: function getHostStatus(state) {
+    return state.is_host_online;
   }
 };
 
