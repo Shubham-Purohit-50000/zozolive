@@ -213,4 +213,5 @@ class HostController extends Controller
             'msg'=>'Tip Menu removed Successfully!',
         ]);
     }
+
 }

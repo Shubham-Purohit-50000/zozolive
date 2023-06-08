@@ -9,6 +9,7 @@
                 <x-table-heading name="Name" />
                 <x-table-heading name="E-Mail" />
                 <x-table-heading name="Role" />
+                <x-table-heading name="Token" />
                 <x-table-heading name="Is Active" />
                 <x-table-heading name="Action" />
             </tr>
@@ -20,6 +21,7 @@
                     <td>{{ $user->name }}</td>
                     <td class="text-lowercase">{{ $user->email }}</td>
                     <td class="text-lowercase">{{ $user->role->name ?? '' }}</td>
+                    <td class="text-lowercase"><a href="{{url('user/token', ['userid'=>$user->uuid])}}" target="_blank">{{ $user->token ?? '' }}</a></td>
                     <td>
                         @if (currentUserId() != $user->uuid)
                             <x-link url="{{ 'update-user-status/' . $user->uuid }}"

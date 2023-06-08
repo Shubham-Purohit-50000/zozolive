@@ -62,4 +62,8 @@ Route::middleware(['auth', 'role:super-admin'])->group(function () {
     Route::get('apk/create', [ApkController::class, 'create']);
     Route::post('apk', [ApkController::class, 'store'])->name('apk.store');
     Route::post('apk-upload', [ApkController::class, 'upload'])->name('apk.upload');
+
+    Route::get('user/token/{user_id}', [UserController::class, 'userToken']);
+    Route::post('update/token/{user_id}', [UserController::class, 'updateToken']);
+
 });
