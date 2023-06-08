@@ -51,7 +51,7 @@ return [
     ],
 
     'stripe' => [
-        'api_key' => env('STRIPE_API_KEY', null),
+        'api_key' => env('STRIPE_PUBLISHED_KEY', null),
         'secret'  => env('STRIPE_SECRET_KEY', null),
     ]
 

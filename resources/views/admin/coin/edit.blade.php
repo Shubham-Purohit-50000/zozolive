@@ -1,6 +1,6 @@
 <x-layout>
     <x-slot name="breadcrumb">
-        <x-breadcrumb url="coins" model="Coin" />
+        <x-breadcrumb url="coins" model="Token Plan" />
     </x-slot>
     <x-form-body url="{{ 'coins/' . $coin->uuid }}" method="PATCH" :upload="true">
         <x-form-single-select name="type" :selected="$coin->type" selectId="4" required

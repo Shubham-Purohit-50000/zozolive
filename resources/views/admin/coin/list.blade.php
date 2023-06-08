@@ -1,6 +1,6 @@
 <x-layout>
     <x-slot name="breadcrumb">
-        <x-breadcrumb model="Coin" />
+        <x-breadcrumb model="Token Plans" />
     </x-slot>
     <x-table url="coins/create">
         <thead>

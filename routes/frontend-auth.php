@@ -2,10 +2,11 @@
 
 use App\Http\Controllers\AgoraController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\FrontendController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\HostController;
 use App\Http\Controllers\ModelAuthController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\StreamController;
 use App\Http\Controllers\WebrtcStreamingController;
 use Illuminate\Support\Facades\Route;
@@ -57,14 +58,13 @@ Route::middleware('auth')->group(function () {
     Route::post('model/generate-token', [AgoraController::class, 'generateHostToken']);
     Route::post('goals', [HostController::class, 'updateGoal']);
     Route::post('save-topic', [HostController::class, 'updateTopic']);
+    Route::post('update-ticket-show-price', [HostController::class, 'updateTicketShowPrice']);
 });
+// Route::get('stripe', [PaymentController::class, 'stripePage']);
+// Route::post('stripe', [PaymentController::class, 'stripePage'])->name('stripe.post');
+// Route::get('/checkout', [CheckoutController::class, 'showCheckoutPage'])->name('checkout');
+Route::post('/checkout', [CheckoutController::class, 'createCheckoutSession'])->name('checkout');
+Route::get('/checkout/success', [CheckoutController::class, 'handleSuccess'])->name('checkout.success');
+Route::get('/checkout/cancel', [CheckoutController::class, 'handleCancel'])->name('checkout.cancel');
+
 Route::view('sample-stream', 'sample-stream');
-
-//-------------hostTipMenu code----------------------------------------
-Route::get('host-tip-menu', [HostController::class, 'hostTipMenu']);
-Route::post('host/create/host-tip-menu', [HostController::class, 'CreateHostTipMenu']);
-Route::get('host/delete/host-tip-menu', [HostController::class, 'removeHostTipMenu']);
-Route::post('user/send-tip', [UserController::class, 'sendTip']);
-Route::post('user/status/{uuid}', [UserController::class, 'updateUserStatus']);
-
-Route::post('upload/{uuid}/live-image', [UserController::class, 'storeLiveImage']);
