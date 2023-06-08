@@ -13,8 +13,8 @@
           <span>{{ selectedUser.name }}</span>
           <span
               class="online_status_label"
-              :class="isOnline ? 'text-green' : 'text-red'"
-          >{{ isOnline ? "ONLINE" : "OFFLINE" }}</span
+              :class="selectedUser.is_online ? 'text-green' : 'text-red'"
+          >{{ selectedUser.is_online ? "ONLINE" : "OFFLINE" }}</span
           >
         </div>
         <div
@@ -410,7 +410,7 @@ export default {
           .child("message")
           .get();
       // .then((snap) => {
-      if (snap.exists()) {
+      if (snap.exists() && snap) {
         this.messages = Object.values(snap.val());
       }
     },

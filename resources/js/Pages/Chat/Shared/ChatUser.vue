@@ -16,7 +16,7 @@
             }}</span>
             <span
                 class="online__status d-block"
-                :class="isOnline ? 'bg-green' : 'bg-red'"
+                :class="user.is_online ? 'bg-green' : 'bg-red'"
             ></span>
         </div>
         <div class="">
@@ -151,7 +151,7 @@ export default {
                 });
         },
         selectUser(e) {
-            this.userData.is_online = this.isOnline;
+            // this.userData.is_online = this.isOnline;
             this.$emit("userSelected", this.userData);
             this.selectedUserId = this.userData.uuid;
             this.$store.commit("updateChatKey", this.chatKey);
