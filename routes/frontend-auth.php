@@ -59,6 +59,7 @@ Route::middleware('auth')->group(function () {
     Route::post('goals', [HostController::class, 'updateGoal']);
     Route::post('save-topic', [HostController::class, 'updateTopic']);
     Route::post('update-ticket-show-price', [HostController::class, 'updateTicketShowPrice']);
+    Route::get('buy-token', [FrontendController::class, 'buyToken']);
 });
 // Route::get('stripe', [PaymentController::class, 'stripePage']);
 // Route::post('stripe', [PaymentController::class, 'stripePage'])->name('stripe.post');
@@ -68,3 +69,5 @@ Route::get('/checkout/success', [CheckoutController::class, 'handleSuccess'])->n
 Route::get('/checkout/cancel', [CheckoutController::class, 'handleCancel'])->name('checkout.cancel');
 
 Route::view('sample-stream', 'sample-stream');
+
+Route::get('buy-token', [FrontendController::class, 'buyToken']);
