@@ -211,7 +211,6 @@ class UserController extends Controller
             ]);
     
         }
-<<<<<<< HEAD
 
         public function userToken($user_id){
             $user = User::where('uuid', $user_id)->first();
@@ -229,7 +228,6 @@ class UserController extends Controller
             return back()->with('success', 'Token Updated Successfully');
         }
 
-=======
         
         
         public function updateUserStatus(Request $request){
@@ -240,6 +238,5 @@ class UserController extends Controller
                 'host' =>  $host
             ]);
         }
->>>>>>> 85a0d37de1351ead41ea8497464187616ea6022b
     }
     
