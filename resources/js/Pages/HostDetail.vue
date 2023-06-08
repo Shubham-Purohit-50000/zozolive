@@ -25,7 +25,7 @@
             <section class="section">
                 <div class="row align-items-top">
                     <div class="col-lg-6">
-                        <div class="card h-100">
+                        <div class="card mb-1 h-100">
                             <div
                                 class="card-body"
                                 style="padding: 0; background: #3b3b3b"
@@ -130,9 +130,18 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Display Goals-->
+                        <div class="progress" v-if=" hostDetail.goal_token > 0 &&  hostDetail.goal">
+                        <div class="progress-bar bg-progress" role="progressbar" 
+                        :style="{'width': percentage +'%', 'aria-valuenow':percentage, 'aria-valuemin' : 0, 'aria-valuemax':100  }">
+                        <!-- aria-valuenow="25" aria-valuemin="0" aria-valuemax="100 -->
+                        <span class="ms-2 p-absolute"><i class="bi bi-bullseye"></i>  Goal: {{ hostDetail.goal_token + ' tk ' + hostDetail.goal }}</span> 
+                        </div>
+                        </div>
                     </div>
                     <div class="col-lg-6">
-                        <div class="card chat_card h-100">
+                        <div class="card chat_card h-100 mt-3rem">
                             <div
                                 class="modal fade"
                                 id="sendtipModal"
@@ -460,7 +469,7 @@
                     </div>
                 </div>
             </section>
-            <section class="section">
+            <section class="section mt-5">
                 <ul
                     class="nav nav-tabs nav-tabs-bordered hostPageTabs"
                     id="borderedTab"
@@ -957,6 +966,9 @@ export default {
         this.getRemoteUsers();
     },
     computed: {
+         percentage(percent, total) {
+            return ((this.hostDetail.goal_token/ this.hostDetail.user.token) *100).toFixed(2)
+         },
         authUser() {
             return this.$page.props.auth?.user;
         },
@@ -1215,6 +1227,9 @@ export default {
 </script>
 
 <style>
+.mt-3rem {
+    margin-top: 0px;
+}
 .badge-pill {
     background-color: #a2262e;
 }
@@ -1250,7 +1265,19 @@ export default {
     width: 100%;
     bottom: 0;
 }
+.progress {
+    background-color: #3f3838;
+    height: 30px;
+    display: block;
+}
+.p-absolute {
+    position: absolute;
+}
 
+.bg-progress {
+    background-color: #91102e;
+    height: 100%;
+}
 /*Chrome*/
 @media screen and (-webkit-min-device-pixel-ratio:0) {
     input[type='range'] {
@@ -1557,6 +1584,9 @@ input[type="range"]::-ms-fill-upper {
 @media (max-width: 700px) {
     .video-group {
     min-height: 200px;
+}
+.mt-3rem {
+    margin-top: 3rem !important;
 }
 }
 

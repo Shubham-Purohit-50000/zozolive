@@ -326,7 +326,7 @@ import ChatUser from "@/Pages/Chat/Shared/ChatUser.vue";
 import Message from "@/Pages/Chat/Shared/Message.vue";
 import firebase from "@/firebase";
 import IncomingCallModal from "@/Pages/Chat/Shared/IncomingCallModal.vue";
-
+import Swal from 'sweetalert2';
 export default {
     name: "Section1",
     components: {
@@ -438,7 +438,49 @@ export default {
             return 0;
         },
     },
+
     async mounted() {
+        $(document).mouseleave(function() {
+            // To disable f5
+            /* jQuery < 1.7 */
+        $(document).bind("keydown", disableF5);
+        /* OR jQuery >= 1.7 */
+        $(document).on("keydown", disableF5);
+
+        // To re-enable f5
+        /* jQuery < 1.7 */
+        $(document).unbind("keydown", disableF5);
+       /* OR jQuery >= 1.7 */
+       $(document).off("keydown", disableF5);
+       // Mouse has left the screen
+        console.log('Mouse left the screen');
+        // Swal.fire({
+        // title: 'Are you stoping video streaming ?',
+        // showDenyButton: true,
+        // showCancelButton: false,
+        // confirmButtonText: 'Yes',
+        // denyButtonText: 'No',
+        // customClass: {
+        //     actions: 'my-actions',
+        //     cancelButton: 'order-1 right-gap',
+        //     confirmButton: 'order-2',
+        //     denyButton: 'order-3',
+        // }
+        // }).then((result) => {
+        // if (result.isConfirmed) {
+        //    window.location.reload();
+        // } else if (result.isDenied) {
+        //     Swal.fire('Thanks', '', 'info')
+        // }
+        // })
+        // Additional actions you want to perform
+        });
+
+        // slight update to account for browsers not supporting e.which
+        function disableF5(e) { if ((e.which || e.keyCode) == 116) e.preventDefault(); };
+
+
+
         this.setHostOffline();
         this.ref
             .child(this.chatKey)
@@ -603,25 +645,26 @@ export default {
             this.totalUnread = this.totalUnread - data.oldVal + data.newVal;
         },
         updateUserOnlineStatus(data) {
-            let index = this.allUsers.findIndex(
-                (item) => item.uuid == data.user_id
-            );
-            if (index != -1) {
-                this.allUsers[index].is_online = data.is_online;
-            }
-            this.allUsers.sort((newItem, oldItem) => {
-                let new_is_online = newItem.is_online || false;
-                let old_is_online = oldItem.is_online || false;
-                if (
-                    new_is_online === old_is_online &&
-                    (newItem.send_at || oldItem.send_at)
-                ) {
-                    return (
-                        new Date(oldItem.send_at) - new Date(newItem.send_at)
-                    );
-                }
-                return old_is_online - new_is_online;
-            });
+            // let index = this.allUsers.findIndex(
+            //     (item) => item.uuid == data.user_id
+            // );
+            
+            // if (index != -1) {
+            //     this.allUsers[index].is_online = data.is_online;
+            // }
+            // this.allUsers.sort((newItem, oldItem) => {
+            //     let new_is_online = newItem.is_online;
+            //     let old_is_online = oldItem.is_online;
+            //     if (
+            //         new_is_online === old_is_online &&
+            //         (newItem.send_at || oldItem.send_at)
+            //     ) {
+            //         return (
+            //             new Date(oldItem.send_at) - new Date(newItem.send_at)
+            //         );
+            //     }
+            //     return old_is_online - new_is_online;
+            // });
         },
         scrollBottom() {
             const element = document.querySelector(".messages__box");
@@ -677,7 +720,8 @@ export default {
         userSelected(data) {
             this.privateChatKey = this.authUser.uuid + "&&" + data.uuid;
             this.$store.commit("updateChatKey", this.privateChatKey);
-            this.selectedUser = data;
+            this.selectedUser = this.users.find(node=> node.uuid ===data.uuid);
+            console.log(this.selectedUser );
         },
         updateUserList(data) {
             let index = this.allUsers.findIndex(
@@ -860,7 +904,8 @@ export default {
                this.getRemoteUsers() 
                // set Host status
                 this.setHostStatus();
-                this.showAlert();
+                // this.showAlert();
+                // localStorage.setItem("showAlert", "Yes");
             }
 
             this.isStreamStarted = true;
@@ -868,10 +913,29 @@ export default {
             this.streamBtnText = "Stop Stream";
         },
         showAlert() {
-            this.$swal({
-                title:'Hello, ' + this.authUser.name,
-                html:'<p>'+ 'If you reload/refresh the page you need to start video again.' + '</div>',
-            });   
+            Swal.fire({
+  title: 'Do you want to save the changes?',
+  showDenyButton: true,
+  showCancelButton: true,
+  confirmButtonText: 'Yes',
+  denyButtonText: 'No',
+  customClass: {
+    actions: 'my-actions',
+    cancelButton: 'order-1 right-gap',
+    confirmButton: 'order-2',
+    denyButton: 'order-3',
+  }
+}).then((result) => {
+  if (result.isConfirmed) {
+    Swal.fire('Saved!', '', 'success')
+  } else if (result.isDenied) {
+    Swal.fire('Changes are not saved', '', 'info')
+  }
+})
+            // this.$swal({
+            //     title:'Hello, ' + this.authUser.name,
+            //     html:'<p>'+ 'If you reload/refresh the page you need to start video again.' + '</div>',
+            // });   
         },
         setHostStatus() {
 			this.$store.dispatch('updateHostStatus',{
