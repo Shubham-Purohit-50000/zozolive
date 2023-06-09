@@ -456,25 +456,25 @@ export default {
         console.log('Mouse left the screen');
 
 
-        // Swal.fire({
-        // title: 'Are you stoping video streaming ?',
-        // showDenyButton: true,
-        // showCancelButton: false,
-        // confirmButtonText: 'Yes',
-        // denyButtonText: 'No',
-        // customClass: {
-        //     actions: 'my-actions',
-        //     cancelButton: 'order-1 right-gap',
-        //     confirmButton: 'order-2',
-        //     denyButton: 'order-3',
-        // }
-        // }).then((result) => {
-        // if (result.isConfirmed) {
-        //    window.location.reload();
-        // } else if (result.isDenied) {
-        //     Swal.fire('Thanks', '', 'info')
-        // }
-        // })
+        Swal.fire({
+        title: 'Are you stoping video streaming ?',
+        showDenyButton: true,
+        showCancelButton: false,
+        confirmButtonText: 'Yes',
+        denyButtonText: 'No',
+        customClass: {
+            actions: 'my-actions',
+            cancelButton: 'order-1 right-gap',
+            confirmButton: 'order-2',
+            denyButton: 'order-3',
+        }
+        }).then((result) => {
+        if (result.isConfirmed) {
+           window.location.reload();
+        } else if (result.isDenied) {
+            Swal.fire('Thanks', '', 'info')
+        }
+        })
 
 
         // Additional actions you want to perform
