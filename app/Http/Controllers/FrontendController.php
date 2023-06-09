@@ -120,7 +120,7 @@ class FrontendController extends Controller
 
         $relateds = [];
         $girls = Host::with('user', 'specific')->whereHas('user', function ($query) use ($username) {
-            return $query->where('username', '!=', $username)->where('is_active', 1)->where('gender', 'female');
+            return $query->where('username', '!=', $username)->where('is_active', 1)->where('is_online', 1)->where('gender', 'female');
         })->get()
         ->map(function ($item) {
             $item->user->avatar = $item->user?->avatar ? storageUrl($item->user->avatar) : '';
@@ -128,10 +128,10 @@ class FrontendController extends Controller
         });
 
         if ($hostDetail) {
-            $relateds = $hosts->where('specific_id', $hostDetail->specific_id);
+            $relateds = $hosts->where('specific_id', $hostDetail->specific_id)->where('is_online', 1);
         }
 
-        $recommended = $hosts;
+        $recommended = $hosts->where('is_online', 1);
 
         $ip = $request->ip();
 

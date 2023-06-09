@@ -454,6 +454,8 @@ export default {
        $(document).off("keydown", disableF5);
        // Mouse has left the screen
         console.log('Mouse left the screen');
+
+
         Swal.fire({
         title: 'Are you stoping video streaming ?',
         showDenyButton: true,
@@ -473,6 +475,8 @@ export default {
             Swal.fire('Thanks', '', 'info')
         }
         })
+
+
         // Additional actions you want to perform
         });
 
@@ -555,15 +559,15 @@ export default {
         },
         addScreenshot() {
 
-//             var canvas = document.getElementById("canvas");
-//   var video = $('video')[0];
-//   canvas.width = video.videoWidth;
-//   canvas.height = video.videoHeight;
-//   canvas .getContext("2d").drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+            //             var canvas = document.getElementById("canvas");
+            //   var video = $('video')[0];
+            //   canvas.width = video.videoWidth;
+            //   canvas.height = video.videoHeight;
+            //   canvas .getContext("2d").drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
 
-//   /** Code to merge image **/
-//   /** For instance, if I want to merge a play image on center of existing image **/
-  
+            //   /** Code to merge image **/
+            //   /** For instance, if I want to merge a play image on center of existing image **/
+            
             var video = $('video')[0];
             var canvas = document.createElement('canvas');
             var context = canvas.getContext('2d');
@@ -911,31 +915,6 @@ export default {
             this.isStreamStarted = true;
 
             this.streamBtnText = "Stop Stream";
-        },
-        showAlert() {
-            Swal.fire({
-  title: 'Do you want to save the changes?',
-  showDenyButton: true,
-  showCancelButton: true,
-  confirmButtonText: 'Yes',
-  denyButtonText: 'No',
-  customClass: {
-    actions: 'my-actions',
-    cancelButton: 'order-1 right-gap',
-    confirmButton: 'order-2',
-    denyButton: 'order-3',
-  }
-}).then((result) => {
-  if (result.isConfirmed) {
-    Swal.fire('Saved!', '', 'success')
-  } else if (result.isDenied) {
-    Swal.fire('Changes are not saved', '', 'info')
-  }
-})
-            // this.$swal({
-            //     title:'Hello, ' + this.authUser.name,
-            //     html:'<p>'+ 'If you reload/refresh the page you need to start video again.' + '</div>',
-            // });   
         },
         setHostStatus() {
 			this.$store.dispatch('updateHostStatus',{

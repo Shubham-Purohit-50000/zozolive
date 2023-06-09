@@ -3,7 +3,7 @@
         <button class="profile">Profile</button>
         <button class="level">League & Level</button>
         <hr />
-        <div class="profilebackgroundImage">
+        <div :class="[ userRole === 'user' ? 'profilebackgroundImage' : 'profilebackgroundImage_host']">
             <div class="header-content">
                 <div class="circleModal">
                     <img
@@ -31,8 +31,7 @@
                         display: flex;
                         justify-content: space-between;
                         margin-bottom: 30px;
-                    "
-                >
+                    " >
                     <div>
                         <h5>My Information</h5>
                     </div>
@@ -254,7 +253,18 @@ export default {
 }
 
 .profilebackgroundImage {
-    background-image: url("/img/messages-1.jpg");
+    background-image: url("/img/user_cover.jpg");
+    border-top-left-radius: calc(0.42rem - 1px);
+    border-top-right-radius: calc(0.42rem - 1px);
+    height: 30rem;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 0;
+    position: relative;
+}
+.profilebackgroundImage_host {
+    background-image: url("/img/host_cover.jpg");
     border-top-left-radius: calc(0.42rem - 1px);
     border-top-right-radius: calc(0.42rem - 1px);
     height: 30rem;
