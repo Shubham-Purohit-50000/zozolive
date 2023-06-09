@@ -8,6 +8,7 @@ use App\Http\Controllers\HostController;
 use App\Http\Controllers\ModelAuthController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\StreamController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\WebrtcStreamingController;
 use Illuminate\Support\Facades\Route;
 
@@ -67,5 +68,6 @@ Route::middleware('auth')->group(function () {
 Route::post('/checkout', [CheckoutController::class, 'createCheckoutSession'])->name('checkout');
 Route::get('/checkout/success', [CheckoutController::class, 'handleSuccess'])->name('checkout.success');
 Route::get('/checkout/cancel', [CheckoutController::class, 'handleCancel'])->name('checkout.cancel');
-
+Route::post('/user/status/{uuid}', [UserController::class, 'updateUserStatus']);
+Route::post('/upload/{uuid}/live-image', [UserController::class, 'storeLiveImage']);
 Route::view('sample-stream', 'sample-stream');
