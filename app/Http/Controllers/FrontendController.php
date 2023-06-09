@@ -25,6 +25,7 @@ use Inertia\Response;
 use Inertia\ResponseFactory;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Str;
+use App\Models\TokenSpent;
 
 class FrontendController extends Controller
 {
@@ -591,6 +592,15 @@ class FrontendController extends Controller
         $user = User::where('uuid', $id)->first();
         if( $user->token > 0) {
             $user->token = $user->token-1;
+
+            $tokenSpent = new TokenSpent();
+            $tokenSpent->create([
+                'user_id' => $req->user_id,
+                'host_id' => $req->host_id,
+                'token' => $req->token_amount,
+                'type' => 'spend_tip',
+            ]);
+
         } else {
             $user->token = 0;
         }

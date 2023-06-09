@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Host;
 use App\Models\User;
 use App\Models\Role;
+use App\Models\TokenSpent;
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\ServiceAccount;
 use Illuminate\Http\Request;
@@ -188,11 +189,19 @@ class UserController extends Controller
                 ]);
                 die();
             }
-            
+
             $host = User::where('uuid', $req->host_id)->first();
             $user->token = $user->token - $req->token_amount;
             $host->token = $host->token + $req->token_amount;
             $user->update();
+
+            $tokenSpent = new TokenSpent();
+            $tokenSpent->create([
+                'user_id' => $req->user_id,
+                'host_id' => $req->host_id,
+                'token' => $req->token_amount,
+                'type' => 'spend_tip',
+            ]);
             
             return response()->json(
                 [
@@ -227,7 +236,6 @@ class UserController extends Controller
 
             return back()->with('success', 'Token Updated Successfully');
         }
-
         
         
         public function updateUserStatus(Request $request){
