@@ -69,5 +69,3 @@ Route::get('/checkout/success', [CheckoutController::class, 'handleSuccess'])->n
 Route::get('/checkout/cancel', [CheckoutController::class, 'handleCancel'])->name('checkout.cancel');
 
 Route::view('sample-stream', 'sample-stream');
-
-Route::get('buy-token', [FrontendController::class, 'buyToken']);
