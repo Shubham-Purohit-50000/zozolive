@@ -1124,7 +1124,7 @@ export default {
         getHostTipMenu() {
             try {
                 this.removeBackdrop();
-                axios.get("/host-tip-menu/?host_id="+this.hostDetail.uuid).then((resp)=> {
+                axios.get("/host-tip-menu/?host_id="+this.hostDetail.user_id).then((resp)=> {
                     // console.log(resp);
                     this.host_tip_menus = resp.data.host_tip_menu;
                 });
@@ -1507,7 +1507,7 @@ input[type="range"]::-ms-fill-upper {
 }
 
 .profilebackgroundImage {
-    background-image: url("/img/messages-1.jpg");
+    background-image: url("/img/host_cover.jpg");
     border-top-left-radius: calc(0.42rem - 1px);
     border-top-right-radius: calc(0.42rem - 1px);
     height: 30rem;
