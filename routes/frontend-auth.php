@@ -10,6 +10,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\StreamController;
 use App\Http\Controllers\WebrtcStreamingController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 
 Route::controller(FrontendController::class)->group(function () {
     Route::post('generate-username', 'generateUsername');
@@ -60,6 +61,13 @@ Route::middleware('auth')->group(function () {
     Route::post('save-topic', [HostController::class, 'updateTopic']);
     Route::post('update-ticket-show-price', [HostController::class, 'updateTicketShowPrice']);
     Route::get('buy-token', [FrontendController::class, 'buyToken']);
+    Route::post('/user/status/{uuid}', [UserController::class, 'updateUserStatus']);
+    Route::post('/upload/{uuid}/live-image', [UserController::class, 'storeLiveImage']);
+
+    //-------------------------------------- code to upload host gallery
+    Route::post('/host/gallery', [HostController::class, 'uploadGallery']);
+    Route::get('/host/remove/gallary-image/{id}', [HostController::class, 'removeGallery']);
+    Route::get('/host/gallery/{id}', [HostController::class, 'indexGallery']);
 });
 // Route::get('stripe', [PaymentController::class, 'stripePage']);
 // Route::post('stripe', [PaymentController::class, 'stripePage'])->name('stripe.post');
@@ -69,3 +77,7 @@ Route::get('/checkout/success', [CheckoutController::class, 'handleSuccess'])->n
 Route::get('/checkout/cancel', [CheckoutController::class, 'handleCancel'])->name('checkout.cancel');
 
 Route::view('sample-stream', 'sample-stream');
+
+
+Route::get('/host/remove/gallery-image/{gallery_id}', [HostController::class, 'removeGallery']);
+Route::get('/host/gallery/{id}', [HostController::class, 'indexGallery']);

@@ -58,6 +58,7 @@ class FrontendController extends Controller
                 return $query->where('name', 'like', "%$search%");
             })->where('is_active', 1)->pluck('uuid')->toArray();
         });
+        
         $languageId = null;
         if($request->language){
             $languageId = Language::withoutEvents(function() use($request){
@@ -598,7 +599,7 @@ class FrontendController extends Controller
                 'user_id' => $req->user_id,
                 'host_id' => $req->host_id,
                 'token' => $req->token_amount,
-                'type' => 'spend_tip',
+                'type' => 'private_chat',
             ]);
 
         } else {

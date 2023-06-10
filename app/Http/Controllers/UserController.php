@@ -9,6 +9,8 @@ use App\Models\TokenSpent;
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\ServiceAccount;
 use Illuminate\Http\Request;
+use App\Models\Recharge;
+use App\Models\Coin;
 
 class UserController extends Controller
 {
@@ -222,17 +224,34 @@ class UserController extends Controller
         }
 
         public function userToken($user_id){
+            $coin = Coin::all()->pluck('coin', 'uuid');
+            //dd($coin);
             $user = User::where('uuid', $user_id)->first();
+            $recharge = Recharge::where('user_id', $user_id)->latest()->get();
             //dd($user);
             return view('admin.user.token-history', [
-                'user'          => $user
+                'user'=> $user,
+                'recharge'=>$recharge,
+                'coin' => $coin
             ]);
         }
 
         public function updateToken(Request $request, $user_id){
+
+            $coin = Coin::where('uuid', $request->coin_id)->first();
+
             $user = User::where('uuid', $user_id)->first();
-            $user->token = $request->token;
+            $user->token += $coin->coin;
             $user->update();
+
+            Recharge::create([
+                'user_id' => $user_id,
+                'coin_id' => $request->coin_id,
+                'amount' => $coin->amount,
+                'coin' => $coin->coin,
+                'status' => 'paid',
+                'type' => 'offline',
+            ]);
 
             return back()->with('success', 'Token Updated Successfully');
         }
