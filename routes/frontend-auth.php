@@ -79,5 +79,5 @@ Route::get('/checkout/cancel', [CheckoutController::class, 'handleCancel'])->nam
 Route::view('sample-stream', 'sample-stream');
 
 
-Route::get('/host/remove/gallery-image/{gallery_id}', [HostController::class, 'removeGallery']);
-Route::get('/host/gallery/{id}', [HostController::class, 'indexGallery']);
+// Route::get('/host/remove/gallery-image/{gallery_id}', [HostController::class, 'removeGallery']);
+// Route::get('/host/gallery/{id}', [HostController::class, 'indexGallery']);
