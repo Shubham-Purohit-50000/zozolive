@@ -118,6 +118,16 @@
                                             Join me free now
                                         </button>
                                     </div>
+                                     <div class="private" v-if="isStreamStarted && authUser">
+
+                                        <button
+                                            type="button"
+                                            class="bg-dark ms-2"
+                                            @click="placeCall()"
+                                        >
+                                            Private Call
+                                        </button>
+                                    </div>
                                     <div class="tip"  v-if="isStreamStarted">
                                         <button
                                         data-bs-toggle="modal"

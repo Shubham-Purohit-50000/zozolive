@@ -71,3 +71,10 @@ Route::get('/checkout/cancel', [CheckoutController::class, 'handleCancel'])->nam
 Route::post('/user/status/{uuid}', [UserController::class, 'updateUserStatus']);
 Route::post('/upload/{uuid}/live-image', [UserController::class, 'storeLiveImage']);
 Route::view('sample-stream', 'sample-stream');
+
+
+//-------------hostTipMenu code----------------------------------------
+Route::get('host-tip-menu', [HostController::class, 'hostTipMenu']);
+Route::post('host/create/host-tip-menu', [HostController::class, 'CreateHostTipMenu']);
+Route::get('host/delete/host-tip-menu', [HostController::class, 'removeHostTipMenu']);
+Route::post('user/send-tip', [UserController::class, 'sendTip']);
