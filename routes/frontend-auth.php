@@ -88,3 +88,5 @@ Route::post('user/send-tip', [UserController::class, 'sendTip']);
 Route::post('user/host/gallery', [HostController::class, 'uploadGallery']);
 Route::get('host/remove/gallary-image/{id}', [HostController::class, 'removeGallery']);
 Route::get('host/gallery/{id}', [HostController::class, 'indexGallery']);
+// Route::get('/host/remove/gallery-image/{gallery_id}', [HostController::class, 'removeGallery']);
+// Route::get('/host/gallery/{id}', [HostController::class, 'indexGallery']);
