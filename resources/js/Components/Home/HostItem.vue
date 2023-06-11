@@ -1,7 +1,7 @@
 <template>
     <div class="col-lg-2 col-6">
         <a :href="`/stream/${host.user.username}`" class="card list">
-            <span class="total_live--icon onlineDedector badge bg-danger"
+            <span class="total_live--icon onlineDedector badge bg-success"
                 >Live</span
             >
             <img :src="host.user.live_image" class="card-img-top" alt="..." />
@@ -23,7 +23,7 @@ export default {
 .onlineDedector {
     position: absolute;
     font-size: 10px;
-    background: red !important;
+    background: rgb(11, 162, 64) !important;
     margin: 5px;
 }
 </style>

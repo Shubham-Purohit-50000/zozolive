@@ -508,22 +508,22 @@ class FrontendController extends Controller
 
         $request->validate([
             'image1' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'image2' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            // 'image2' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
       
         $imageName1 = time().'.'.$request->image1->extension();  
         $request->image1->move(public_path('images'), $imageName1);
 
-        $imageName2 = time().'.'.$request->image2->extension();  
-        $request->image2->move(public_path('images'), $imageName2);
+        // $imageName2 = time().'.'.$request->image2->extension();  
+        // $request->image2->move(public_path('images'), $imageName2);
 
-        auth()->user()->update([
-            'profile_image' => $imageName1,
-            'background_image' => $imageName2,
+        $request->user()->update([
+            'profile_image' => $imageName1
         ]);
       
         return response()->json([
-            'msg' => 'Profile image has been updated successfully at '.$imageName1
+            'msg' => 'Profile image has been updated successfully at '.$imageName1,
+            'profile_image' => $imageName1,
         ]);
     }   
 

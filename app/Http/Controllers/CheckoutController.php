@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Coin;
 use App\Models\Recharge;
+use Exception;
 use Illuminate\Http\Request;
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
@@ -15,8 +16,13 @@ class CheckoutController extends Controller
 
     public function __construct()
     {
-        Stripe::setApiKey(config('services.stripe.secret'));
-        $this->stripe = new StripeClient(config('services.stripe.secret'));
+        try {
+            Stripe::setApiKey(config('services.stripe.secret'));
+            $this->stripe = new StripeClient(config('services.stripe.secret'));
+        } catch(Exception){
+
+        }
+       
     }
 
     // public function showCheckoutPage()

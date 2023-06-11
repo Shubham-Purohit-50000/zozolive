@@ -8,9 +8,10 @@ use App\Http\Controllers\HostController;
 use App\Http\Controllers\ModelAuthController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\StreamController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\WebrtcStreamingController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
+
 
 Route::controller(FrontendController::class)->group(function () {
     Route::post('generate-username', 'generateUsername');
@@ -81,9 +82,20 @@ Route::middleware('auth')->group(function () {
 Route::post('/checkout', [CheckoutController::class, 'createCheckoutSession'])->name('checkout');
 Route::get('/checkout/success', [CheckoutController::class, 'handleSuccess'])->name('checkout.success');
 Route::get('/checkout/cancel', [CheckoutController::class, 'handleCancel'])->name('checkout.cancel');
-
+Route::post('/user/status/{uuid}', [UserController::class, 'updateUserStatus']);
+Route::post('/upload/{uuid}/live-image', [UserController::class, 'storeLiveImage']);
 Route::view('sample-stream', 'sample-stream');
 
 
+//-------------hostTipMenu code----------------------------------------
+Route::get('host-tip-menu', [HostController::class, 'hostTipMenu']);
+Route::post('host/create/host-tip-menu', [HostController::class, 'CreateHostTipMenu']);
+Route::get('host/delete/host-tip-menu', [HostController::class, 'removeHostTipMenu']);
+Route::post('user/send-tip', [UserController::class, 'sendTip']);
+
+//-------------------------------------- code to upload host gallery
+Route::post('user/host/gallery', [HostController::class, 'uploadGallery']);
+Route::get('host/remove/gallary-image/{id}', [HostController::class, 'removeGallery']);
+Route::get('host/gallery/{id}', [HostController::class, 'indexGallery']);
 // Route::get('/host/remove/gallery-image/{gallery_id}', [HostController::class, 'removeGallery']);
 // Route::get('/host/gallery/{id}', [HostController::class, 'indexGallery']);
