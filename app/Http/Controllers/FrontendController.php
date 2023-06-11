@@ -589,16 +589,19 @@ class FrontendController extends Controller
         ]);
     }
 
-    public function setUserToken($id){
+    public function setUserToken(Request $req, $id){
+        // return response()->json($req->all());
         $user = User::where('uuid', $id)->first();
+        $host = User::where('uuid', $req->host_id)->first();
         if( $user->token > 0) {
             $user->token = $user->token-1;
-
+            $host->token = $host->token+1;
+            //here we have to add this token in host
             $tokenSpent = new TokenSpent();
             $tokenSpent->create([
-                'user_id' => $req->user_id,
-                'host_id' => $req->host_id,
-                'token' => $req->token_amount,
+                'user_id' => $id,
+                'host_id' => $req->host_id, // I need host_id here
+                'token' => 1,
                 'type' => 'private_chat',
             ]);
 
@@ -606,7 +609,7 @@ class FrontendController extends Controller
             $user->token = 0;
         }
         $user->save();
-
+        $host->save();
     }   
     
     public function storeLiveImage(Request $request){

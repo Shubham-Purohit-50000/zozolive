@@ -64,6 +64,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/user/status/{uuid}', [UserController::class, 'updateUserStatus']);
     Route::post('/upload/{uuid}/live-image', [UserController::class, 'storeLiveImage']);
 
+    //---------------------------- send tip code---------------------------
+    Route::get('host-tip-menu', [HostController::class, 'hostTipMenu']);
+    Route::post('host/create/host-tip-menu', [HostController::class, 'CreateHostTipMenu']);
+    Route::get('host/delete/host-tip-menu', [HostController::class, 'removeHostTipMenu']);
+    Route::post('user/send-tip', [UserController::class, 'sendTip']);
+
     //-------------------------------------- code to upload host gallery
     Route::post('/host/gallery', [HostController::class, 'uploadGallery']);
     Route::get('/host/remove/gallary-image/{id}', [HostController::class, 'removeGallery']);
