@@ -56,8 +56,16 @@ Route::view('/profile-modal', 'frontend.profileModal');
 Route::view('/setting', 'frontend.setting');
 Route::view('/tokens-history', 'frontend.tokensHistory');
 
-// call history
-Route::get('/call-history', [CallHistoryController::class, 'callHistory']);
+// call history or token history code
+Route::get('/call-history', [CallHistoryController::class, 'callHistory']); // need to change this also
+Route::prefix('checker')->group(function () {
+    Route::post('user/token/private-chat-history', [CallHistoryController::class, 'privateChatHistory']);
+    Route::get('user/token/recharge-history', [CallHistoryController::class, 'userTransactionHistory']);
+    Route::get('user/token/sent-tip-history', [CallHistoryController::class, 'sendTipHistory']);
+});
+
+
+
 Route::view('/payment-settings', 'frontend.PaymentSettings');
 Route::view('/studio-modal', 'frontend.studioModal');
 Route::view('/modal-control', 'frontend.modalControl');

@@ -210,7 +210,7 @@ export default {
     setUserToken() {
       try {
            axios.post("/user/"+this.authUser.uuid, {
-            host_id:this.hostDetail.uuid
+            host_id:this.hostDetail.user_id
            }).then((resp)=> {
             });
            

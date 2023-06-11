@@ -207,10 +207,10 @@ class UserController extends Controller
             
             return response()->json(
                 [
-                    'status'=>'success',
-                    'msg'=>'Tip sent successfully!',
-                    ]
-                );
+                'status'=>'success',
+                'msg'=>'Tip sent successfully!',
+                ]
+            );
         }
 
         public function storeLiveImage(Request $request){
