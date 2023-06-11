@@ -37,6 +37,7 @@ class CallHistoryController extends Controller
             $end = date('Y-m-d', strtotime(trim($daterange[1]))).' 23:59:00';
         }
         $key = isRole('user') ? 'user_id' : 'host_id';
+        $role = isRole('user') ? 'user' : 'host';
         return view('frontend.call-history', [
             'calls' => CallLog::withoutEvents(function () use ($start, $end, $key) {
                 return CallLog::where($key, auth()->id())
@@ -47,7 +48,8 @@ class CallHistoryController extends Controller
             }),
             'date'  => $date,
             'start' => $start_date ?? '',
-            'end'   => $end_date ?? ''
+            'end'   => $end_date ?? '',
+            'role'   =>  $role
         ]);
     }
 }

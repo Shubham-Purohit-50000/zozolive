@@ -1,18 +1,95 @@
 @extends('layouts.front')
 @section('content')
     <section>
-        {{-- <div style="margin-bottom: 1rem;">
-            <h3>
-                Call History
-            </h3>
+    <div class="row">
+        <div class="col-md-12">
+        <div style="font-size: 1.5rem;" class="mb-3">Transaction History</div>
+        
+        </div>
+    </div>
+    
+    <div style="font-size: 1.5rem;" class="mb-3">Token History</div>
+        <div class="row">
+            <ul
+                class="nav nav-tabs chat_card--tabs d-flex"
+                id="chat_box"
+                role="tablist"
+            >
+                <li
+                    class="nav-item"
+                    role="presentation"
+                >
+                    <button
+                        class="nav-link w-100 chat_card--btn active"
+                        id="home-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#token_type"
+                        type="button"
+                        role="tab"
+                        aria-controls="home"
+                        aria-selected="true"
+                    >
+                    <i class="bi bi-wallet2"></i>
+                        Type
+                    </button>
+                </li>
+                <li
+                    class="nav-item"
+                    role="presentation"
+                >
+                    <button
+                        class="nav-link w-100 chat_card--btn"
+                        id="profile-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#privateChat"
+                        type="button"
+                        role="tab"
+                        aria-controls="profile"
+                        aria-selected="false"
+                    >
+                        <i
+                            class="bi bi-chat-heart-fill"
+                        ></i>
+                       Private Chat
+                    </button>
+                </li>
 
-        </div> --}}
+                <li
+                    class="nav-item"
+                    role="presentation"
+                >
+                    <button
+                        class="nav-link w-100 chat_card--btn"
+                        id="profile-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#report"
+                        type="button"
+                        role="tab"
+                        aria-controls="profile"
+                        aria-selected="false"
+                    >
+                    <i class="bi bi-file-bar-graph"></i>
+                      Income Report
+                    </button>
+                </li>
+            </ul>
+  </div>
 
-        <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                <form class="d-flex justify-content-between call_history_filter"
+            <div
+                class="tab-content pt-2 mt-20"
+            >
+                <div
+                    class="tab-pane active show"
+                    id="token_type"
+                    role="tabpanel"
+                    aria-labelledby="contact-tab"
+                >
+                    <div
+                        class="tip_box"
+                    >
+                    <form class="d-flex justify-content-between call_history_filter"
                       style="margin-top: 1.5rem; margin-bottom: 1rem;">
-                    <div style="font-size: 1.5rem;">Call History</div>
+                    <h5 >Type</h5>
                     <div class="d-flex align-items-center call_history_filter--date" style="gap: 1rem;">
                         <input placeholder="Last 30 days" name="daterange" class="inputBox1" type="text"
                                value="{{ $date }}" id="date"/>
@@ -30,9 +107,7 @@
                         @else
                             <th>User</th>
                         @endif
-                        <th>Start Time</th>
-                        <th>End Time</th>
-                        <th>Duration</th>
+                        <th>Date</th>
                         <th>Status</th>
                         <th>Token</th>
                         </thead>
@@ -46,8 +121,6 @@
                                     <td>{{ $call->user?->name }}</td>
                                 @endif
                                 <td>{{ $call->start_time }}</td>
-                                <td>{{ $call->end_time ?? 'N/A' }}</td>
-                                <td>{{ $call->duration ?? 'N/A' }}</td>
                                 <td>{{ callResponseType()[$call->call_status] ?? 'N/A' }}</td>
                                 <td>{{ $call->call_coin ?? 'N/A' }}</td>
                             </tr>
@@ -62,8 +135,9 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
-        </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
     </section>
 
 @endsection

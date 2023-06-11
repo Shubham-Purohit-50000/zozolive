@@ -195,7 +195,7 @@
                         <li>
                             <a class="dropdown-item d-flex align-items-center" href="{{ url('call-history') }}">
                                 <i class="bi bi-telephone-fill"></i>
-                                <span>Call History</span>
+                                <span>Token History</span>
                             </a>
                         </li>
                         @endrole
@@ -203,7 +203,7 @@
                         <li>
                             <a class="dropdown-item d-flex align-items-center" href="{{ url('call-history') }}">
                                 <i class="bi bi-telephone-fill"></i>
-                                <span>Call History</span>
+                                <span>Token History</span>
                             </a>
                         </li>
                         @endrole
