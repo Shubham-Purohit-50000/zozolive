@@ -11,5 +11,5 @@ class VerifyCsrfToken extends Middleware
      *
      * @var array<int, string>
      */
-    protected $except = ['agorabroadcasting/auth', 'model/login', 'model/verify-otp'];
+    protected $except = ['agorabroadcasting/auth', 'model/login', 'model/verify-otp', 'checker/*'];
 }

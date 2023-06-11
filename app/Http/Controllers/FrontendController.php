@@ -590,7 +590,6 @@ class FrontendController extends Controller
     }
 
     public function setUserToken(Request $req, $id){
-        // return response()->json($req->all());
         $user = User::where('uuid', $id)->first();
         $host = User::where('uuid', $req->host_id)->first();
         if( $user->token > 0) {

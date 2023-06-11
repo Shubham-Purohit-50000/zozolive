@@ -75,6 +75,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/host/gallery', [HostController::class, 'uploadGallery']);
     Route::get('/host/remove/gallary-image/{id}', [HostController::class, 'removeGallery']);
     Route::get('/host/gallery/{id}', [HostController::class, 'indexGallery']);
+    
 });
 // Route::get('stripe', [PaymentController::class, 'stripePage']);
 // Route::post('stripe', [PaymentController::class, 'stripePage'])->name('stripe.post');
