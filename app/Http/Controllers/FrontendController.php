@@ -508,22 +508,22 @@ class FrontendController extends Controller
 
         $request->validate([
             'image1' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'image2' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            // 'image2' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
       
         $imageName1 = time().'.'.$request->image1->extension();  
         $request->image1->move(public_path('images'), $imageName1);
 
-        $imageName2 = time().'.'.$request->image2->extension();  
-        $request->image2->move(public_path('images'), $imageName2);
+        // $imageName2 = time().'.'.$request->image2->extension();  
+        // $request->image2->move(public_path('images'), $imageName2);
 
-        auth()->user()->update([
-            'profile_image' => $imageName1,
-            'background_image' => $imageName2,
+        $request->user()->update([
+            'profile_image' => $imageName1
         ]);
       
         return response()->json([
-            'msg' => 'Profile image has been updated successfully at '.$imageName1
+            'msg' => 'Profile image has been updated successfully at '.$imageName1,
+            'profile_image' => $imageName1,
         ]);
     }   
 
@@ -589,16 +589,16 @@ class FrontendController extends Controller
         ]);
     }
 
-    public function setUserToken($id){
+    public function setUserToken(Request  $request, $id){
         $user = User::where('uuid', $id)->first();
         if( $user->token > 0) {
             $user->token = $user->token-1;
 
             $tokenSpent = new TokenSpent();
             $tokenSpent->create([
-                'user_id' => $req->user_id,
-                'host_id' => $req->host_id,
-                'token' => $req->token_amount,
+                'user_id' =>  $request->user_id,
+                'host_id' =>  $request->host_id,
+                'token' => $request->token_amount,
                 'type' => 'private_chat',
             ]);
 

@@ -217,22 +217,24 @@ class HostController extends Controller
 
     public function uploadGallery(Request $request){
 
-        if ($request->hasFile('images')) {
-            $images = $request->file('images');
+   
+        if ($request->images) {
+            $images =$request->images;
             
             foreach ($images as $image) {
-                // Generate a unique name for the image
-                $imageName = time() . '_' . $image->getClientOriginalName();
+               
+                // // Generate a unique name for the image
+                // // $imageName = time() . '_' . $image->getClientOriginalName();
                 
-                // Move the image to the desired storage location
-                $image->storeAs('public/host/gallery', $imageName);
-                
-                // You can also save the image path in the database if needed
-                $imagePath = 'storage/host/gallery/' . $imageName;
+                // // Move the image to the desired storage location
+                // // $image->storeAs('public/host/gallery',  $image);
+                // $image->move(public_path('/host/gallery'), $image);
+                // // You can also save the image path in the database if needed
+                // $imagePath = 'storage/host/gallery/' . $image;
 
                 HostGallery::create([
                     'host_id'=>$request->host_id,
-                    'image'=>$imagePath
+                    'image'=>$image
                 ]);
                 // Save the $imagePath in the database
                 
@@ -264,7 +266,9 @@ class HostController extends Controller
     }
 
     public function indexGallery($host_id){
+      
         $host_gallery = HostGallery::where('host_id', $host_id)->get();
+      
         return response()->json([
             'status'=>True,
             'gallery'=> $host_gallery,

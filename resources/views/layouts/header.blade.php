@@ -127,7 +127,8 @@
                     <a class="nav-link nav-profile d-flex align-items-center pe-0 show" href="#"
                        data-bs-toggle="dropdown" aria-expanded="true">
                         @if (auth()->user()->avatar)
-                            <img class="search-bar-toggle loginLink dotImage nav-icon" src="{{ $user->avatar }}"
+                        
+                            <img class="search-bar-toggle loginLink dotImage nav-icon" src="/images/{{  $user->profile_image }}"
                                  alt=""/>
                         @else
                             <span class="username__label">{{ substr($name, 0, 1) }}</span>
@@ -143,7 +144,7 @@
                                 @endphp
                                 @if ($user->avatar)
                                     <img class="search-bar-toggle loginLink dotImage nav-icon ml-0"
-                                         src="{{ $user->avatar }}" alt=""/>
+                                         src="/images/{{$user->profile_image }}" alt=""/>
                                     {{ $name }}
                                 @else
                                     {{-- <span class="username__label">{{ substr($name, 0, 1) }}</span> --}}

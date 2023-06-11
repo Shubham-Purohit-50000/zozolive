@@ -175,27 +175,27 @@ export default {
     },
     methods: {
         updateUserOnlineStatus(data) {
-            let index = this.allUsers.findIndex(
-                (item) => item.uuid == data.user_id
-            );
-            if (index != -1) {
-                Object.assign(this.allUsers[index], {
-                    is_online: data.is_online,
-                });
-            }
-            this.allUsers.sort((newItem, oldItem) => {
-                let new_is_online = newItem.is_online || false;
-                let old_is_online = oldItem.is_online || false;
-                if (
-                    new_is_online === old_is_online &&
-                    (newItem.send_at || oldItem.send_at)
-                ) {
-                    return (
-                        new Date(oldItem.send_at) - new Date(newItem.send_at)
-                    );
-                }
-                return old_is_online - new_is_online;
-            });
+            // let index = this.allUsers.findIndex(
+            //     (item) => item.uuid == data.user_id
+            // );
+            // if (index != -1) {
+            //     Object.assign(this.allUsers[index], {
+            //         is_online: data.is_online,
+            //     });
+            // }
+            // this.allUsers.sort((newItem, oldItem) => {
+            //     let new_is_online = newItem.is_online || false;
+            //     let old_is_online = oldItem.is_online || false;
+            //     if (
+            //         new_is_online === old_is_online &&
+            //         (newItem.send_at || oldItem.send_at)
+            //     ) {
+            //         return (
+            //             new Date(oldItem.send_at) - new Date(newItem.send_at)
+            //         );
+            //     }
+            //     return old_is_online - new_is_online;
+            // });
         },
         checkOnlineStatus() {
             this.ref

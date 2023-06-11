@@ -24,7 +24,9 @@
                 </div>
             </div>
         </div>
-        <div style="margin-top: 1rem; gap: 10px; display: flex" class="profile_edit_wrapper">
+        <div class="row">
+            <div class="col-md-12">
+                <div style="margin-top: 1rem; gap: 10px; display: flex" class="profile_edit_wrapper">
             <div class="informationDiv">
                 <div
                     style="
@@ -87,7 +89,7 @@
             </div>
             <div class="PrfileDiv2">
                 <div style="display: flex; justify-content: space-between">
-                    <div>My Photos</div>
+                    <div>Profile Photo</div>
                     <div
                         role="button"
                         v-if="user.avatar"
@@ -96,26 +98,26 @@
                         <i class="bi bi-pencil"></i>
                     </div>
                 </div>
-                <div v-if="user.avatar">
-                    <img :src="user.avatar" alt="" class="profile__img" />
+                <div v-if="user.avatar && !editAvatar">
+                    <img :src="'/images/'+user.profile_image" alt="" class="profile__img" />
                 </div>
                 <div v-else>
                     <form @submit.prevent="updateProfile2" method="post" enctype="multipart/form-data" class="row">
                         <div class="form-group col-6">
-                            <img src="previewImage1" id="fileinput2_img" class="uploading-image bg-basic m-2 rounded">
+                            <img :src="'/images/'+user.profile_image" id="fileinput2_img" class="uploading-image bg-basic m-2 rounded">
                             <input type="file" class="form-control" accept="image/jpeg" @change=uploadImage1>
                         </div>
-                        <div class="form-group col-6">
+                        <!-- <div class="form-group col-6">
                             <img src="previewImage2" id="fileinput3_img" class="uploading-image bg-basic m-2 rounded"> 
                             <input type="file" class="form-control" accept="image/jpeg" @change=uploadImage2>
-                        </div>
+                        </div> -->
                         <div class="form-group my-2">
                             <button class="btn btn-sm text-white" style="background-color: rgb(162, 38, 46)!important;" type="submit">Update</button>
                         </div>
                     </form>
 
                 </div>
-                <div class="profile__img_actions">
+                <!-- <div class="profile__img_actions">
                     <button
                         class="btn text-white"
                         @click="updateProfile"
@@ -123,9 +125,41 @@
                     >
                         Save
                     </button>
-                </div>
+                </div> -->
             </div>
         </div>
+            </div>
+
+            <!-- Photo album start-->
+            <div class="col-md-12 mt-5 ">
+                <div class="photo_album_wrapper {
+">
+                <div>
+                    <div>Upload Photos</div>
+                    <div >
+                    <form @submit.prevent="uploadAlbumPhoto" method="post" enctype="multipart/form-data" class="row">
+                        <div class="form-group col-12 d-flex">
+                                <div class="row">
+                                    <div class="d-flex col-md-2 " v-if="album_photos">
+    <div class="m-2" v-for="(image, index) in album_photos">
+      <img :src="image" style="width: 300px; height: 300px; margin:10px" />
+      <!-- <button @click="removeImage(index)">Remove image</button> -->
+    </div>
+  </div>
+                                </div>
+                        </div>
+                        <div class="form-group my-2 col-md-3 mt-3">
+                            <input type="file" id="file" class="form-control mb-3" multiple accept="image/jpeg" @change="uploadAlbum($event)">
+                            <button class="btn btn-sm text-white" style="background-color: rgb(162, 38, 46)!important;" type="submit">Upload</button>
+                        </div>
+                    </form>
+
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        
         <!-- <img src="{{ asset('img/messages-1.jpg') }}" class="card-img-top" alt="..."> -->
     </section>
 </template>
@@ -135,6 +169,13 @@
         display:flex;
         width: 5rem;
         height: 5rem;
+        background-color: #e9ecef;
+   }
+
+   .uploading-album{
+        display:flex;
+        width: 10rem;
+        height: 10rem;
         background-color: #e9ecef;
    }
  </style>
@@ -149,6 +190,12 @@ export default {
             editAvatar: false,
             previewImage1:null,
             previewImage2:null,
+            photo_album_url_1:null,
+            photo_album_url_2:null,
+            photo_album_url_3:null,
+            photo_album_url_4:null,
+            photo_album_url_5:null,
+            album_photos:[],
         };
     },
     provide() {
@@ -178,8 +225,24 @@ export default {
             let file1 = URL.createObjectURL(this.previewImage1);
             $('#fileinput2_img').attr('src', file1);
 
+        }, 
+        uploadAlbum(e){
+            var files = e.target.files || e.dataTransfer.files;
+            if (!files.length) return;
+            this.createImage(files);
+          
         },
-
+        createImage(files) {
+        var vm = this;
+        for (var index = 0; index < files.length; index++) {
+            var reader = new FileReader();
+            reader.onload = function(event) {
+            const imageUrl = event.target.result;
+            vm.album_photos.push(imageUrl);
+            }
+            reader.readAsDataURL(files[index]);
+        }
+    },
         uploadImage2(e){
             this.previewImage2 = e.target.files[0];
             let file2 = URL.createObjectURL(this.previewImage2);
@@ -194,7 +257,7 @@ export default {
                 let data = new FormData();
                 data.append('name', 'profile');
                 data.append('image1', this.previewImage1);
-                data.append('image2', this.previewImage2);
+                // data.append('image2', this.previewImage2);
 
                 axios.post(
                     URL, 
@@ -204,6 +267,54 @@ export default {
                         console.log('image upload response > ', response)
                     }
                 )
+
+                
+            //-------------------------------------------------------
+
+            // axios.post('/shub/test', this.profile, ) 
+            //     .then(res => {
+            //         if (res.status == 200) {
+            //             console.log('request handled!' + JSON.stringify(res));
+            //         }
+            //     }).catch(err => {
+            //     console.log(err);
+            // })
+            // console.log(this.profile + 'After form submit');
+        },
+
+         uploadAlbumPhoto(event){
+            //--------------------------------------------------------
+                const inputFile = document.getElementById("file");
+                // console.log(inputFile.files[0].name, inputFile.files.length);
+                // let all_images = [];
+                // all_images.push(inputFile.files[0]);
+                
+                // if(inputFile.files[1]) {
+                //     all_images.push(inputFile.files[1].name);
+                // }
+                // if(inputFile.files[2]) {
+                //     all_images.push(inputFile.files[2].name);
+                // }
+                // if(inputFile.files[3]) {
+                //     all_images.push(inputFile.files[3].name);
+                // }
+                // if(inputFile.files[4]) {
+                //     all_images.push(inputFile.files[4].name);
+                // }
+               
+                // console.log(all_images);
+                try {
+                    axios.post("user/host/gallery", {
+                    images:this.album_photos,
+                    host_id:this.user.uuid,
+                 }).then((resp)=> {
+                // console.log(resp);
+                });
+                } catch (error) {
+                    console.log(error);
+                }
+
+                
             //-------------------------------------------------------
 
             // axios.post('/shub/test', this.profile, ) 
@@ -312,6 +423,17 @@ export default {
     padding: 1rem 1rem;
 }
 .PrfileDiv2 .profile__img {
+    width: 10rem;
+    height: 6rem;
+    object-fit: cover;
+}
+
+.photo_album_wrapper {
+    background-color: #26272b;
+    width: 100%;
+    padding: 1rem 1rem;
+}
+.photo_album_wrapper .profile__img {
     width: 10rem;
     height: 6rem;
     object-fit: cover;
