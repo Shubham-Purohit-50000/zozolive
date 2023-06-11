@@ -11,5 +11,5 @@
     @if ($showLabel)
         <label for="{{ $name }}">{{ $label }}<span class="text-danger">*</span></label>
     @endif
-    {!! Form::select($name.'[]',$list,$selected , ['class'=>"form-control",$multiple,'id'=>"kt_select2_$id"]) !!}
+    {!! Form::select($name.'[]', $list, $selected, ['class'=>"form-control",$multiple,'id'=>"kt_select2_$id"]) !!}
 </div>

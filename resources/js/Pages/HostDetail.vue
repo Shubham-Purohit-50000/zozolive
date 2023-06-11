@@ -1,6 +1,7 @@
 <template>
     <div>
         <nav class="second-nav" style="margin-left: 4.3rem">
+            
             <ul class="second-nav-ul">
                 <li class="second-nav-li">
                     <div class="chip">
@@ -14,13 +15,14 @@
                     <a class="second-nav-a" href="javascript:void(0)"  data-bs-toggle="modal" data-bs-target="#profileModal"> Profile </a>
                 </li>
                 <li class="second-nav-li">
-                    <a class="second-nav-a" href="#"> Videos </a>
+                    <a class="second-nav-a" data-bs-target="#profileModal"  href="javascript:void(0)"> Videos </a>
                 </li>
                 <li class="second-nav-li">
-                    <a class="second-nav-a" href="#"> Photos </a>
+                    <a class="second-nav-a"  @click="showPhotos()"  href="javascript:void(0)"> Photos </a>
                 </li>
             </ul>
         </nav>
+        
         <main id="main" class="main">
             <section class="section">
                 <div class="row align-items-top">
@@ -479,6 +481,42 @@
                     </div>
                 </div>
             </section>
+            <section id="photo_album" class="mt-5 photo_album_area">
+                <div class="row">
+                    <div class="col-md-12">
+                        My Photos
+                    </div>
+                    <div class="col-md-12">
+                        <button type="button" class="customClose" data-bs-dismiss="modal" @click="hidePhotos" aria-label="Close" > × </button>
+                        <div class="d-flex" >
+                            
+                                            <div v-for="(gallery,index) in host_gallery_array" :key="index">
+                                                <a  href="javascript:void(0)"  data-bs-toggle="modal" :data-bs-target="'#album'+index">
+                                                     <img  class="album_photo" :src="gallery.image"/> 
+                                                    </a>
+
+                                                    <div class="modal fade" :id="'album'+index" tabindex="-1">
+                                                     <div class="modal-header ps-0">
+                                                        <button
+                                                            type="button"
+                                                            class="customClose"
+                                                            data-bs-dismiss="modal"
+                                                            aria-label="Close"
+                                                        >
+                                                            ×
+                                                        </button>
+                                                     </div>
+                                                    <div class="modal-dialog modal-xl w-100">
+                                                        <div class="modal-content" style="background: transparent">
+                                                            <img   :src="gallery.image"/> 
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                    </div>
+                </div>
+            </section>
             <section class="section mt-5">
                 <ul
                     class="nav nav-tabs nav-tabs-bordered hostPageTabs"
@@ -611,13 +649,13 @@
 
                     <div class="modal-body modal-body-all">
                         <section>
-                            <div class="profilebackgroundImage" :style="`background-image: url(${hostDetail?.cover_image})`">
+                            <div class="profilebackgroundImage" style="background-image: url('/img/host_cover.jpg')">
                                 <div class="header-content">
                                     <div class="circleModal">
                                         <img
                                             class="user__avatar"
                                             v-if="hostDetail?.user.avatar"
-                                            :src="hostDetail?.user.avatar"
+                                            :src="hostDetail ? '/images/' + hostDetail.user.profile_image : ''"
                                             alt=""
                                         />
                                         <h1
@@ -632,8 +670,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div
-                                style="
+                            <div style="
                                     margin-top: 1rem;
                                     gap: 10px;
                                     display: flex;
@@ -754,28 +791,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="PrfileDiv2">
-                                    <div
-                                        style="
-                                            display: flex;
-                                            justify-content: space-between;
-                                        "
-                                    >
-                                        <div>My Photos</div>
-                                    </div>
-                                    <div v-if="hostDetail?.user?.avatar">
-                                        <img
-                                            :src="hostDetail?.user?.avatar"
-                                            alt=""
-                                            class="profile__img"
-                                        />
-                                    </div>
-                                    <div v-else>
-                                        <p class="text-center mt=3">
-                                            Not Found
-                                        </p>
-                                    </div>
-                                </div>
+                             
                             </div>
                             <!-- <img src="{{ asset('img/messages-1.jpg') }}" class="card-img-top" alt="..."> -->
                         </section>
@@ -841,6 +857,7 @@ export default {
             displayVolume: true,
             total_watching: true,
             host_tip_menus: [],
+            host_gallery_array: [],
         };
     },
     // created() {
@@ -974,6 +991,8 @@ export default {
 
         // get audience for current host 
         this.getRemoteUsers();
+        // get Host Gallery 
+        this.getHostGallery();
     },
     computed: {
          percentage(percent, total) {
@@ -984,6 +1003,12 @@ export default {
         },
     },
     methods: {
+        showPhotos() {
+            document.getElementById("photo_album").style.display='block';
+        },
+        hidePhotos() {
+            document.getElementById("photo_album").style.display='none';
+        },
         async getRemoteUsers() {
            await axios.get('https://api.agora.io/dev/v1/channel/user/'+this.appId+'/'+ this.options.channel, {
            response_type: 'code',
@@ -1067,6 +1092,15 @@ export default {
                     }
                 }
             );
+        },
+        getHostGallery() {
+            try {
+                       axios.get("/host/gallery/" + this.hostDetail.user_id).then((resp)=> {
+                            this.host_gallery_array = resp.data.gallery;
+                        })
+                    } catch (error) {
+                        console.log(error);
+                    }
         },
         async placeCall() {
             if (this.authUser) {
@@ -1237,6 +1271,14 @@ export default {
 </script>
 
 <style>
+.album_photo {
+    width: 200px;
+    padding: 20px 0px;
+    margin-right: 20px;
+}
+.photo_album_area {
+    display:none;
+}
 .mt-3rem {
     margin-top: 0px;
 }
@@ -1288,6 +1330,8 @@ export default {
     background-color: #91102e;
     height: 100%;
 }
+
+
 /*Chrome*/
 @media screen and (-webkit-min-device-pixel-ratio:0) {
     input[type='range'] {
@@ -1555,7 +1599,7 @@ input[type="range"]::-ms-fill-upper {
 
 .informationDiv {
     background-color: #26272b;
-    width: 60%;
+    width: 40%;
     padding: 1rem 1rem;
 }
 
@@ -1565,7 +1609,7 @@ input[type="range"]::-ms-fill-upper {
 }
 .PrfileDiv2 {
     background-color: #26272b;
-    width: 40%;
+    width: 60%;
     padding: 1rem 1rem;
 }
 .PrfileDiv2 .profile__img {

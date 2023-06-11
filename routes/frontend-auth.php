@@ -12,6 +12,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\WebrtcStreamingController;
 use Illuminate\Support\Facades\Route;
 
+
 Route::controller(FrontendController::class)->group(function () {
     Route::post('generate-username', 'generateUsername');
     Route::post('register-user', 'registerUser');
@@ -61,6 +62,10 @@ Route::middleware('auth')->group(function () {
     Route::post('save-topic', [HostController::class, 'updateTopic']);
     Route::post('update-ticket-show-price', [HostController::class, 'updateTicketShowPrice']);
     Route::get('buy-token', [FrontendController::class, 'buyToken']);
+    Route::post('/user/status/{uuid}', [UserController::class, 'updateUserStatus']);
+    Route::post('/upload/{uuid}/live-image', [UserController::class, 'storeLiveImage']);
+  
+   
 });
 // Route::get('stripe', [PaymentController::class, 'stripePage']);
 // Route::post('stripe', [PaymentController::class, 'stripePage'])->name('stripe.post');
@@ -78,3 +83,8 @@ Route::get('host-tip-menu', [HostController::class, 'hostTipMenu']);
 Route::post('host/create/host-tip-menu', [HostController::class, 'CreateHostTipMenu']);
 Route::get('host/delete/host-tip-menu', [HostController::class, 'removeHostTipMenu']);
 Route::post('user/send-tip', [UserController::class, 'sendTip']);
+
+//-------------------------------------- code to upload host gallery
+Route::post('user/host/gallery', [HostController::class, 'uploadGallery']);
+Route::get('host/remove/gallary-image/{id}', [HostController::class, 'removeGallery']);
+Route::get('host/gallery/{id}', [HostController::class, 'indexGallery']);

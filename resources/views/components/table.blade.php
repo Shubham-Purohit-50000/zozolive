@@ -2,6 +2,7 @@
     'url' => null,
     'customCondtion' => null,
     'label' => 'Add New',
+    'lable2' => null,
     'customCreateButton' => null,
     'title' => 'List',
 ])

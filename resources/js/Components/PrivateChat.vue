@@ -209,7 +209,9 @@ export default {
   methods: {
     setUserToken() {
       try {
-           axios.post("/user/"+this.authUser.uuid).then((resp)=> {
+           axios.post("/user/"+this.authUser.uuid, {
+            host_id:this.hostDetail.uuid
+           }).then((resp)=> {
             });
            
         } catch (error) {

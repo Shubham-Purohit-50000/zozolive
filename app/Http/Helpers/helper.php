@@ -196,3 +196,8 @@ function get_user_level($token)
     return $level_data;
 }
 
+function date_formater($date){
+    $date = date_create($date);
+    return date_format($date,"d M, Y h:i:s a");
+}
+
