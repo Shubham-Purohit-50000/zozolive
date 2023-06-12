@@ -138,16 +138,14 @@
                     <div>Upload Photos</div>
                     <div >
                     <form @submit.prevent="uploadAlbumPhoto" method="post" enctype="multipart/form-data" class="row">
-                        <div class="form-group col-12 d-flex">
+                        <div class="form-group">
                                 <div class="row">
-                                    <div class="d-flex col-md-2 " v-if="host_gallery_array">
-    <div class="m-2" v-for="(image, index) in host_gallery_array">
+                                    <div class="m-2 col-md-2 col-12" v-for="(image, index) in host_gallery_array">
 
-      <!-- <img :src="image" style="width: 300px; height: 300px; margin:10px" v-if="image" /> -->
-      <img :src="image.image" style="width: 300px; height: 300px; margin:10px"  />
-      <button class="btn btn-primary btn-sm bg-dark" @click="removeImage(image)">Remove image</button>
-    </div>
-  </div>
+<!-- <img :src="image" style="width: 300px; height: 300px; margin:10px" v-if="image" /> -->
+<img :src="image.image" style="width: 100%; height: auto; "  />
+<button class="btn btn-primary btn-sm bg-dark" @click="removeImage(image)">Remove image</button>
+</div>
                                 </div>
                         </div>
                         <div class="form-group my-2 col-md-3 mt-3">
