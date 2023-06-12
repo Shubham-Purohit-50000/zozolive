@@ -71,10 +71,10 @@ Route::middleware('auth')->group(function () {
     Route::get('host/delete/host-tip-menu', [HostController::class, 'removeHostTipMenu']);
     Route::post('user/send-tip', [UserController::class, 'sendTip']);
 
-    //-------------------------------------- code to upload host gallery
-    Route::post('/host/gallery', [HostController::class, 'uploadGallery']);
-    Route::get('/host/remove/gallary-image/{id}', [HostController::class, 'removeGallery']);
-    Route::get('/host/gallery/{id}', [HostController::class, 'indexGallery']);
+    // //-------------------------------------- code to upload host gallery
+    // Route::post('/host/gallery', [HostController::class, 'uploadGallery']);
+    // Route::get('/host/remove/gallary-image/{id}', [HostController::class, 'removeGallery']);
+    // Route::get('/host/gallery/{id}', [HostController::class, 'indexGallery']);
     
 });
 // Route::get('stripe', [PaymentController::class, 'stripePage']);

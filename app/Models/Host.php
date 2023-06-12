@@ -92,4 +92,6 @@ class Host extends BaseModel
     {
         return $this->belongsTo(Subculture::class, 'subculture_id', 'uuid');
     }
+
+    
 }
