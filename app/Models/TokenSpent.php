@@ -16,6 +16,5 @@ class TokenSpent extends Model
     public function user()
     {
         return $this->belongsTo(Post::class, 'user_id', 'uuid');
-    }
-
+    }  
 }

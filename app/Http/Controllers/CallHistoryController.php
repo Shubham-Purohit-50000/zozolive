@@ -10,6 +10,9 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use DB;
 use App\Models\Recharge;
+use App\Models\User;
+use Illuminate\Support\Facades\DB as FacadesDB;
+use stdClass;
 
 class CallHistoryController extends Controller
 {
@@ -28,53 +31,64 @@ class CallHistoryController extends Controller
         view()->share('countries', $countries);
         view()->share('languages', $languages);
     }
-    public function callHistory(Request $request)
+    public function callHistory(Request $req)
     {
         $date = now()->subDays(6)->format('Y-m-d');
-        $start = $date . ' 00:00:00';
-        $end = now()->format('Y-m-d') .' 23:59:00';
-        if ($request->query('daterange')) {
-            $daterange = explode('-', $request->query('daterange'));
-            $start_date = trim($daterange[0]);
-            $start = date('Y-m-d', strtotime(trim($daterange[0]))) .' 00:00:00';
-            $end_date = trim($daterange[1]);
-            $end = date('Y-m-d', strtotime(trim($daterange[1]))).' 23:59:00';
-        }
-        $key = isRole('user') ? 'user_id' : 'host_id';
-        return view('frontend.call-history', [
-            'calls' => CallLog::withoutEvents(function () use ($start, $end, $key) {
-                return CallLog::where($key, auth()->id())
-                ->whereBetween('start_time', [$start, $end])
-                ->with('user', 'host')
-                ->orderByDesc('start_time')
-                ->get();
-            }),
+        // $start = $date . ' 00:00:00';
+        // $end = now()->format('Y-m-d') .' 23:59:00';
+        // if ($request->query('daterange')) {
+        //     $daterange = explode('-', $request->query('daterange'));
+        //     $start_date = trim($daterange[0]);
+        //     $start = date('Y-m-d', strtotime(trim($daterange[0]))) .' 00:00:00';
+        //     $end_date = trim($daterange[1]);
+        //     $end = date('Y-m-d', strtotime(trim($daterange[1]))).' 23:59:00';
+        // }
+        // $key = isRole('user') ? 'user_id' : 'host_id';
+       
+        $role = isRole('user') ? 'user' : 'host';
+        return inertia('Token/Index', [
+            'role'  => $role,
+            'user'  => auth()->user(),
             'date'  => $date,
-            'start' => $start_date ?? '',
-            'end'   => $end_date ?? ''
         ]);
     }
 
-    public function privateChatHistory(Request $req){
+    public function privateChatHistory(Request $req, User $user){
 
         $token_spents = TokenSpent::select('host_id', DB::raw('SUM(token) as total_token'))
-        ->where('user_id', $req->user_id)
+        ->where('user_id', $user->uuid)
         ->where('type', 'private_chat')
         ->groupBy('host_id');
 
         if($req->has('date')){
-            $token_spents->whereDate('created_at', $req->date);
+            $formet_date = Carbon::parse($req->date)->format('Y-m-d');
+            $token_spents->whereDate('created_at',  $formet_date);
         }else{
             $token_spents->whereDate('created_at', Carbon::today());
         }
         $token_spents = $token_spents->latest()->get();
-        return response()->json($token_spents);
-
+      
+        $host_array = [];
+        foreach ( $token_spents as $data) {
+            $host = User::where('uuid', $data['host_id'])->first();
+            $object = new stdClass();
+            $object->host_name = $host->name;
+            $object->total_token = $data['total_token'];
+            $object->type = $data['type'];
+            $object->created_at = Carbon::parse($data['created_at'])->format('Y-m-d');
+            $object->host_id = $data['host_id'];
+            $object->user_id = $data['user_id'];
+            array_push($host_array, $object);
+        }
+      
+        return response()->json([
+            'token_spent'=> $host_array,
+        ]);
     }
 
-    public function sendTipHistory(Request $req){
+    public function sendTipHistory(Request $req, User $user){
 
-        $token_spents = TokenSpent::where('user_id', $req->user_id)->where('type', 'spend_tip');
+        $token_spents = TokenSpent::where('user_id', $user->uuid)->where('type', 'spend_tip');
 
         if($req->has('date')){
             $token_spents->whereDate('created_at', $req->date);
@@ -82,13 +96,32 @@ class CallHistoryController extends Controller
             $token_spents->whereDate('created_at', Carbon::today());
         }
         $token_spents = $token_spents->latest()->get();
-        return response()->json($token_spents);
+        
+        $host_array = [];
+        foreach ( $token_spents as $data) {
+            $host = User::where('uuid', $data['host_id'])->first();
+            $object = new stdClass();
+            $object->host_name = $host->name;
+            $object->token = $data['token'];
+            $object->type = $data['type'];
+            $object->created_at = Carbon::parse($data['created_at'])->format('Y-m-d');
+            $object->host_id = $data['host_id'];
+            $object->user_id = $data['user_id'];
+            array_push($host_array, $object);
+        }
+       
+        return response()->json([
+            'token_spent'=> $host_array,
+        ]);
 
     }
 
-    public function userTransactionHistory(Request $req){
-        $recharge = Recharge::where('user_id', $req->user_id)->latest()->get();
-        return response()->json($recharge);
+    public function userTransactionHistory(Request $req, User $user){
+        $recharge = Recharge::where('user_id', $user->uuid)->latest()->get();
+        return response()->json([
+            'recharge'=> $recharge,
+        ]);
+        
     }
 
 }

@@ -111,7 +111,7 @@
                 </li>
                 @role('model')
                 <li class="nav-item d-block">
-                    <a href="{{ route('frontend.broadcast') }}"
+                    <a href="/live-stream/start"
                        class="search-bar-toggle loginLink outline_button nav-link nav-icon broadcast_center"
                        style="background-color: #79943D;"><i class="bi bi-play-fill d-inline-block"></i>
                         <span class="broadcast_center--text">Broadcast centre</span>
@@ -195,7 +195,7 @@
                         <li>
                             <a class="dropdown-item d-flex align-items-center" href="{{ url('call-history') }}">
                                 <i class="bi bi-telephone-fill"></i>
-                                <span>Call History</span>
+                                <span>Token History</span>
                             </a>
                         </li>
                         @endrole
@@ -203,7 +203,7 @@
                         <li>
                             <a class="dropdown-item d-flex align-items-center" href="{{ url('call-history') }}">
                                 <i class="bi bi-telephone-fill"></i>
-                                <span>Call History</span>
+                                <span>Token History</span>
                             </a>
                         </li>
                         @endrole
@@ -290,7 +290,7 @@
                         </div>
                     </li>
                     <li class="nav-item d-block mob-disnone">
-                        <a href="{{ route('frontend.broadcast') }}"
+                        <a href="{{ route('streaming.start') }}"
                            class="search-bar-toggle loginLink outline_button nav-link nav-icon"
                            style="background-color: #79943D;"><i class="bi bi-play-fill"></i>Broadcast centre</a>
                     </li>

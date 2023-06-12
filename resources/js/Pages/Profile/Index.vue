@@ -138,14 +138,14 @@
                     <div>Upload Photos</div>
                     <div >
                     <form @submit.prevent="uploadAlbumPhoto" method="post" enctype="multipart/form-data" class="row">
-                        <div class="form-group col-12 d-flex">
+                        <div class="form-group">
                                 <div class="row">
-                                    <div class="d-flex col-md-2 " v-if="album_photos">
-    <div class="m-2" v-for="(image, index) in album_photos">
-      <img :src="image" style="width: 300px; height: 300px; margin:10px" />
-      <!-- <button @click="removeImage(index)">Remove image</button> -->
-    </div>
-  </div>
+                                    <div class="m-2 col-md-2 col-12" v-for="(image, index) in host_gallery_array">
+
+<!-- <img :src="image" style="width: 300px; height: 300px; margin:10px" v-if="image" /> -->
+<img :src="image.image" style="width: 100%; height: auto; "  />
+<button class="btn btn-primary btn-sm bg-dark" @click="removeImage(image)">Remove image</button>
+</div>
                                 </div>
                         </div>
                         <div class="form-group my-2 col-md-3 mt-3">
@@ -196,7 +196,11 @@ export default {
             photo_album_url_4:null,
             photo_album_url_5:null,
             album_photos:[],
+            host_gallery_array:[],
         };
+    },
+    mounted() {
+        this.getHostGallery();
     },
     provide() {
         return {
@@ -216,6 +220,24 @@ export default {
         },
     },
     methods: {
+        getHostGallery() {
+            try {
+                       axios.get("/host/gallery/" + this.user.uuid).then((resp)=> {
+                            this.host_gallery_array = resp.data.gallery;
+                        })
+                    } catch (error) {
+                        console.log(error);
+                    }
+        },
+        removeImage(e) {
+            try {
+                       axios.get("host/remove/gallary-image/" + e.uuid).then((resp)=> {
+                        this.getHostGallery();
+                        });
+                    } catch (error) {
+                        console.log(error);
+                    }
+        },
         updateEditMode(val) {
             this.editMode = val;
         },
@@ -308,6 +330,7 @@ export default {
                     images:this.album_photos,
                     host_id:this.user.uuid,
                  }).then((resp)=> {
+                    this.getHostGallery();
                 // console.log(resp);
                 });
                 } catch (error) {
@@ -335,7 +358,10 @@ export default {
 /* .header {
     min-height: 150px;
 } */
-
+.bg-dark {
+    background-color: #511212;
+    border: 1px solid #fff;
+}
 #fileinput1 {
     display: none;
 }

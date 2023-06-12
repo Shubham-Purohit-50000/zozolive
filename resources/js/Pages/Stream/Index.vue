@@ -40,7 +40,7 @@
                         <div class="row">
                             <div class="col-md-8">
                                 <input
-                                    class="inputBox"
+                                    class="inputBox mb-2"
                                     placeholder="I love show"
                                     type="text"
                                     quoted_printable_decode
@@ -49,7 +49,7 @@
                             </div>
                             <div class="col-md-4">
                                 <input
-                                    class="inputBox"
+                                    class="inputBox mb-2"
                                     placeholder="1104"
                                     type="text"
                                     v-model="goalToken"

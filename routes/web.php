@@ -59,9 +59,9 @@ Route::view('/tokens-history', 'frontend.tokensHistory');
 // call history or token history code
 Route::get('/call-history', [CallHistoryController::class, 'callHistory']); // need to change this also
 Route::prefix('checker')->group(function () {
-    Route::post('user/token/private-chat-history', [CallHistoryController::class, 'privateChatHistory']);
-    Route::get('user/token/recharge-history', [CallHistoryController::class, 'userTransactionHistory']);
-    Route::get('user/token/sent-tip-history', [CallHistoryController::class, 'sendTipHistory']);
+    Route::get('user/token/private-chat-history/{user}', [CallHistoryController::class, 'privateChatHistory']);
+    Route::get('user/token/recharge-history/{user}', [CallHistoryController::class, 'userTransactionHistory']);
+    Route::get('user/token/sent-tip-history/{user}', [CallHistoryController::class, 'sendTipHistory']);
 });
 
 

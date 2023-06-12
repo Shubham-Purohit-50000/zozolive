@@ -18,7 +18,7 @@
                     <a class="second-nav-a" data-bs-target="#profileModal"  href="javascript:void(0)"> Videos </a>
                 </li>
                 <li class="second-nav-li">
-                    <a class="second-nav-a"  @click="showPhotos()"  href="javascript:void(0)"> Photos </a>
+                    <a class="second-nav-a"  @click="showPhotos()"  href="#photo_album"> Photos </a>
                 </li>
             </ul>
         </nav>
