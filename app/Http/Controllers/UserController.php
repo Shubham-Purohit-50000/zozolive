@@ -196,6 +196,7 @@ class UserController extends Controller
             $user->token = $user->token - $req->token_amount;
             $host->token = $host->token + $req->token_amount;
             $user->update();
+            $host->update();
 
             $tokenSpent = new TokenSpent();
             $tokenSpent->create([

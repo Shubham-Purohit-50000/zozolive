@@ -5,6 +5,7 @@ use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\WebrtcStreamingController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TicketShowController;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,6 +63,11 @@ Route::prefix('checker')->group(function () {
     Route::get('user/token/private-chat-history/{user}', [CallHistoryController::class, 'privateChatHistory']);
     Route::get('user/token/recharge-history/{user}', [CallHistoryController::class, 'userTransactionHistory']);
     Route::get('user/token/sent-tip-history/{user}', [CallHistoryController::class, 'sendTipHistory']);
+
+    //----------------- code for ticket show------------------
+    Route::post('host/start/ticket-show', [TicketShowController::class, 'start']);
+    Route::post('user/join/ticket-show', [TicketShowController::class, 'join_show']);
+    Route::post('host/end/ticket-show', [TicketShowController::class, 'end_show']);
 });
 
 
