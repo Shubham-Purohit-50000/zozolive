@@ -357,7 +357,9 @@
     .formbody label {
         color: #000;
     }
-
+    .desktop-d-none {
+        display: none !important;
+    }
     ul.dropdown-menu.dropdown-menu-end.dropdown-menu-arrow.profile.show {
         background: #202020;
     }
@@ -409,8 +411,13 @@
         .header {
             padding-left: 0px;
         }
-
+        .bi-list.toggle-sidebar-btn.color_white {
+        width: 40px !important;
+        font-size: 20px;
+    }
         .mob-disnone {
+            display: none !important;
+        }  .mob-disnone {
             display: none !important;
         }
 

@@ -8,13 +8,13 @@
             </a>
         </div>
         <section class="section">
-            <div class="row align-items-top" v-if="hosts && hosts.length">
+            <div class="row align-items-top" v-if="getHostData && getHostData.length > 0">
                 <HostItem v-for="host in getHostData" :key="host.uuid" :host="host" />
             </div>
           <div v-else>
-            <h3 class="text-center">Not Found</h3>
+            <h3 class="text-center mt-5 mb-3">No Host online...</h3>
           </div>
-            <div class="row alignitem_center" v-if="hosts && hosts.length > 5">
+            <div class="row alignitem_center" v-if="getHostData && getHostData.length > 5">
                 <div class="col-md-5 border_botton"></div>
                 <div class="col-md-2 text-center">
                     <button class="btn btn-default see-more-button">

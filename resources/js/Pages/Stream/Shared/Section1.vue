@@ -202,13 +202,14 @@
                                         :key="i"
                                     >
                                         <span
-                                            class="messages__box--user_name"
+                                            :class="[msg.role === 'host' ? 'messages__box--user_name':'']"
+                                            :style="{'color':msg.level_data ? msg.level_data.color : ''}"
                                             >{{ msg.send_by_user }}</span
                                         >
                                         {{ msg.msg }}
                                     </li>
                                 </ul>
-                                <div class="my-2 chat__box">
+                                <div class="my-2 chat__box top_postion_chat_box">
                                     <div class="input-group chat__box--wrapper">
                                         <input
                                             type="text"
@@ -690,6 +691,7 @@ export default {
                                 msg: this.message,
                                 send_by: this.authUser.uuid,
                                 send_by_user: this.authUser.name,
+                                role: 'host',
                                 // avatar: 2,
                                 send_at: date,
                             };
@@ -1137,5 +1139,45 @@ input[type="range"]::-ms-fill-upper {
   .stream_wrapper{
     height: 65vh !important;
   }
+}
+@media (max-width: 700px) {
+    .messages__box {
+      position:absolute;
+      top:15%;
+      width: 100%;
+      height: 27rem;
+}
+.top_postion {
+  top:45% !important;
+      width: 100%;
+      height: 17rem !important;
+}
+.chat__box {
+  position:absolute;
+  top: 0;
+}
+.tip_menu[data-v-7d1cd16c] {
+  position: relative !important;
+  margin-top:70px;
+}
+#chat_boxContent .chat__box {
+  position: relative;
+    margin-top: 0px ;
+}
+.top_postion_chat_box {
+  margin-top: 10px !important;
+}
+.token_box input {
+  margin-top:0px;
+  margin-bottom: 10px;
+  margin-left: 0px;
+}
+.token_box {
+  padding-left:10px;
+}
+#chat_boxContent .chat__box .chat__box--wrapper {
+  background-color: #000;
+  border-radius: 0;
+}
 }
 </style>

@@ -38,10 +38,10 @@
     <div class="card-body px-4 py-1" :style="styles">
       <!--begin::Scroll-->
       <div
-          class="scroll scroll-pull ps ps--active-y"
+          class="scroll chat_height scroll-pull ps ps--active-y"
           data-height="530"
           data-mobile-height="300"
-          style="height: 62.4vh; overflow: hidden"
+         
       >
         <!--begin::Messages-->
         <div class="messages overflow-auto" v-chat-scroll>
@@ -661,7 +661,7 @@ export default {
       this.incomingCallAudio = new Audio(
           "https://assets.mixkit.co/active_storage/sfx/1359/1359-preview.mp3"
       );
-      this.incomingCallAudio.play();
+      this.incomingCallAudio.pl>ay();
       this.outgoingCall = true;
       if (this.incomingCall == true)
         setInterval(() => {
@@ -682,7 +682,20 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.chat_height {
+  height: 62.4vh;
+    overflow: hidden;
+}
+
+@media screen and (max-width: 768px){
+  .chat_height{
+    height: 42.4vh;
+    overflow: hidden;
+  }
+}
+
+</style>
 
 <style>
 .v3-emoji-picker {
