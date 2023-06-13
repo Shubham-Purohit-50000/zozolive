@@ -1941,6 +1941,7 @@ input[type="file"]::before {
     .special-deals {
         font-size: 0.75rem;
     }
+ 
 }
 
 @media screen and (max-width: 520px) {
@@ -1949,11 +1950,16 @@ input[type="file"]::before {
         flex-direction: column;
         gap: 0.4rem;
     }
+
+    .header .toggle-sidebar-btn i {
+        font-size:16px !important;
+      
+    }
 }
 
 @media screen and (max-width: 450px) {
     header .logo {
-        font-size: 1rem;
+        font-size: 0.6rem;
     }
 
     .nav-item .loginLink {

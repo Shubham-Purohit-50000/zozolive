@@ -78,11 +78,26 @@
                         ->user()
                         ->loadCount('favorites');
                 @endphp
-                <li class="nav-item d-block mob-disnone chat__icon">
+                <li class="nav-item d-block mob-disnone  chat__icon">
                     <a href="{{ url('chat') }}">
                         <i class="bi bi-chat-left-text search-bar-toggle nav-link nav-icon  cursor-pointer"
                            style="color: #f8f8f8;     font-size: 1.1rem;"></i>
                     </a>
+                </li>
+                <li class="nav-item ms-2  me-2 d-block desktop-d-none mob-disblock chat__icon">
+                    <a href="{{ url('chat') }}">
+                        <i class="bi bi-chat-left-text search-bar-toggle nav-link nav-icon  cursor-pointer"
+                           style="color: #f8f8f8;     font-size: 1.1rem;"></i>
+                           <span style="color:#fff; font-size:12px">Chat</span>
+                    </a>
+                </li> 
+                 <li class="nav-item d-block ms-2 text-center desktop-d-none mob-disblock chat__icon">
+                 <a href="{{ url('buy-token') }}" title="Buy Token" class="buyTkn">
+                            
+                            <span class="search-bar-toggle nav-link nav-icon"
+                                  style="font-size: 0.8rem; color: #f8f8f8; margin-top:2px;margin-left:5px;">
+                                 {{ Auth::user()->token ?? 0 }} tk <br/>+ Buy Token</span> 
+            </a>    
                 </li>
                 <li class="nav-item d-block mob-disnone notification__icon">
                     <i class="bi bi-bell search-bar-toggle nav-link nav-icon  "
@@ -220,7 +235,7 @@
                     </ul>
                 </li>
             @endguest
-            <li class="nav-item d-none  mob-disblock" data-bs-toggle="dropdown" aria-expanded="false">
+            <li class="nav-item d-none mob-disnone" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="bi bi-three-dots-vertical"></i>
             </li>
             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile pt-0 text-white"
