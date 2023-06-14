@@ -66,14 +66,14 @@ export default {
         this.$store.commit("setAllHosts", this.hosts);
     },
     computed: {
-        getHostData() {
+        getHostData() { 
             return this.$store.state.hosts;
         },
         getLiveUserData() {
             return this.$store.state.hosts.filter(node=>node.is_online===1)
         },
         getOnlineUserData() {
-            return this.$store.state.hosts.filter(node=>node.user.is_online===1)
+            return this.$store.state.hosts.filter(node=>node.user.is_online===1 && node.host.is_online!==1)
         },
         getOfflineUserData() {
             return this.$store.state.hosts.filter(node=>node.user.is_online!==1 && node.is_online!==1)

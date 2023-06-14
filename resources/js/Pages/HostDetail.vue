@@ -46,7 +46,7 @@
                                         v-show="isStreamStarted"
                                     >
 
-                                    <div class="ticket_show" v-if="hostDetail.ticket_show.status===1  && !show_joined_by_user">
+                                    <div class="ticket_show" v-if="hostDetail.ticket_show && hostDetail.ticket_show.status  && !show_joined_by_user">
                                             <i class="bi bi-ticket-perforated"></i><br/>
                                             <h4
                                             class="text-center "
