@@ -101,6 +101,66 @@
                         </p>
                     </div>
                 </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div
+                            class="card-title"
+                            style="
+                                display: flex;
+                                justify-content: space-between;
+                                padding: 20px 0 0px 0 !important;
+                            "
+                        >
+                            <span>
+                                <h6 style="color: #f8f8f8 !important">Ticket Show</h6>
+                            </span>
+                            
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-8">
+                                <input id="appt-time" required  type="time" class="timepicker" name="appt-time" :v-model="ticketShowTime" />
+                               
+                            </div>
+                            <div class="col-md-4">
+                                <input
+                                    class="timepicker ps-2 mb-2"
+                                    placeholder="Enter Token"
+                                    required
+                                    type="text"
+                                    v-model="ticketShowToken"
+                                    style="width: 100%"
+                                />
+                            </div>
+                        </div>
+                        <div class="d-flex">
+                            <!-- <div class="col-md-6"> -->
+                            <button
+                                :disabled="!ticketShowTime || !ticketShowToken"
+                                @click="startTicketShow"
+                                class="saveButton"
+                                style="background-color: #859e4f"
+                            >
+                                Start
+                            </button>
+                            <button
+                                v-if="show_start.uuid"
+                                @click="stopTicketShow"
+                                class="ms-2 saveButton"
+                                style="background-color: rgb(91, 91, 91);"
+                            >
+                                Cancel
+                            </button>
+                            <!-- </div> -->
+
+                            <!-- <div class="announce col-md-6">
+                                <i class="bi bi-send-fill"></i>Announce in chat
+                            </div> -->
+                        </div>
+
+                    </div>
+                </div>
             </div>
             <div class="col-md-4">
                 <div class="card">
@@ -448,6 +508,9 @@ export default {
             activity_name: "Love",
             token_amount:null,
             host_tip_menus:[],
+            ticketShowTime: new Date(),
+            ticketShowToken:null,
+            show_start:[],
         };
     },
     computed: {
@@ -466,7 +529,31 @@ export default {
 
     },
     methods: {
-      
+        startTicketShow() {
+        
+        try {
+        axios.post("/checker/host/start/ticket-show", {
+            host_id:this.authUser.uuid,
+            token:this.ticketShowToken,
+            start_time:this.ticketShowTime,
+        }).then((resp)=> {
+            this.show_start = resp.data.ticket_show;
+            });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        stopTicketShow() {
+        try {
+        axios.post("/checker/host/end/ticket-show", {
+            show_id:this.show_start.uuid,
+        }).then((resp)=> {
+        
+            });
+            } catch (error) {
+                console.log(error);
+            }
+        },
         getHostTipMenu() {
             try {
                 axios.get("/host-tip-menu/?host_id="+this.authUser.uuid).then((resp)=> {
@@ -543,6 +630,10 @@ export default {
 </script>
 
 <style scoped>
+.timepicker {
+    width: 100%;
+    height: 35px;
+}
 .row > * {
     padding-right: 0 !important;
 }
