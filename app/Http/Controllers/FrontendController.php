@@ -110,7 +110,7 @@ class FrontendController extends Controller
             return $item;
         });
 
-        $hostDetail = Host::with('user', 'language:uuid,name', 'specific:uuid,name', 'subculture:uuid,name', 'country:id,name', 'state:id,name')
+        $hostDetail = Host::with('user','ticketShow', 'language:uuid,name', 'specific:uuid,name', 'subculture:uuid,name', 'country:id,name', 'state:id,name')
         ->whereHas('user', function ($query) use ($username) {
             return $query->where('username', $username)->where('is_active', 1);
         })->first();

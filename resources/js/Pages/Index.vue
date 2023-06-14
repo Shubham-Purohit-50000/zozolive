@@ -8,12 +8,41 @@
             </a>
         </div>
         <section class="section">
-            <div class="row align-items-top" v-if="getHostData && getHostData.length > 0">
-                <HostItem v-for="host in getHostData" :key="host.uuid" :host="host" />
+            <div class="row align-items-top">
+                <div class="col-md-12 mb-3">
+                    <h4>Live Users</h4>
+                    <hr class="mb-5"/>
+                    <div class="mb-5 align-items-top" v-if="getLiveUserData.length > 0">
+                        <HostItem v-for="host in getLiveUserData" :key="host.uuid" :host="host" />
+                    </div>
+                    <div class="mb-5" v-else>
+                        No live user found 
+                    </div>
+                </div>
+
+                <div class="col-md-12 mb-3">
+                    <h4>Online Users</h4>
+                    <hr class="mb-5"/>
+                    <div class="mb-5 align-items-top" v-if="getOnlineUserData.length > 0">
+                        <HostItem v-for="host in getOnlineUserData" :key="host.uuid" :host="host" />
+                    </div>
+                    <div class="mb-5" v-else>
+                        No Online user found 
+                    </div>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <h4>Offline Users</h4>
+                    <hr class="mb-5"/>
+                    <div class="mb-5 row align-items-top" v-if="getOfflineUserData.length > 0">
+                        <HostItem v-for="host in getOfflineUserData" :key="host.uuid" :host="host" />
+                    </div>
+                    <div class="mb-5" v-else>
+                        No Offline user found 
+                    </div>
+                </div>
+
             </div>
-          <div v-else>
-            <h3 class="text-center mt-5 mb-3">No Host online...</h3>
-          </div>
+         
             <div class="row alignitem_center" v-if="getHostData && getHostData.length > 5">
                 <div class="col-md-5 border_botton"></div>
                 <div class="col-md-2 text-center">
@@ -39,6 +68,15 @@ export default {
     computed: {
         getHostData() {
             return this.$store.state.hosts;
+        },
+        getLiveUserData() {
+            return this.$store.state.hosts.filter(node=>node.is_online===1)
+        },
+        getOnlineUserData() {
+            return this.$store.state.hosts.filter(node=>node.user.is_online===1)
+        },
+        getOfflineUserData() {
+            return this.$store.state.hosts.filter(node=>node.user.is_online!==1 && node.is_online!==1)
         },
         authUser() {
             console.warn('auth',this.$page.props);

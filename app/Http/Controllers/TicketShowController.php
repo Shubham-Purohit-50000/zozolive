@@ -8,19 +8,26 @@ use App\Models\User;
 use App\Models\TokenSpent;
 use App\Models\CallLog;
 use Auth;
+use Carbon\Carbon;
 
 class TicketShowController extends Controller
 {
     public function start(Request $request)
-    {
+    {  
+        $time_format = Carbon::parse($request->input('start_time'))->format('Y-m-d H:i:s');
+        // $end_time = Carbon::createFromFormat('Y-m-d H:i',  $time_format);
+        // dd($time_format,  $end_time);
+
         $ticket_show = TicketShow::create([
             'host_id' => $request->host_id,
             'token' => $request->token,
-            'start_time' => $request->start_time,
+            'start_time' => $time_format,
             'status' => '1'
         ]);
 
-        return response()->json($ticket_show);
+        return response()->json([
+            'ticket_show' =>  $ticket_show
+        ]);
     }	
 
     public function join_show(Request $request)
