@@ -32,7 +32,7 @@
                                 class="card-body"
                                 style="padding: 0; background: #3b3b3b"
                             >
-                                <div class="video-group relative h-100">
+                                <div class="video-group relative h-100" >
                                     <div id="remote-playerlist">
                                         <h4
                                             class="text-center stream__offline--text"
@@ -45,6 +45,25 @@
                                         class="full-screen"
                                         v-show="isStreamStarted"
                                     >
+
+                                    <div class="ticket_show" v-if="hostDetail.ticket_show.status===1  && !show_joined_by_user">
+                                            <i class="bi bi-ticket-perforated"></i><br/>
+                                            <h4
+                                            class="text-center "
+                                        >
+                                        
+                                            {{ hostDetail?.user?.name }} is
+                                            in a ticket show
+                                        </h4>
+                                        <button
+                                        type="button"
+                                        @click="joinShow"
+                                        class="btn btn-warning btn-sm"
+                                        >
+                                        <i class="bi bi-check-circle-fill"></i> <br/>
+                                        Join Now
+                                    </button>
+                                        </div>
                                 <button
                                     type="button"
                                     id="full-screen-btn"
@@ -809,7 +828,6 @@ import PrivateChat from "@/Components/PrivateChat.vue";
 import SignupModal from "@/Components/SignupModal.vue";
 import LoginModal from "@/Components/LoginModal.vue";
 import OutgoingCallModal from "./Chat/Shared/OutgoingCallModal.vue";
-
 export default {
     name: "HostDetail",
     components: {
@@ -820,6 +838,7 @@ export default {
         LoginModal,
         OutgoingCallModal,
     },
+
     props: [
         "hosts",
         "hostDetail",
@@ -835,6 +854,7 @@ export default {
         return {
             db: "",
             chatKey: "public-chat",
+            show_joined_by_user: false,
             tip_menu_token_amount: 20,
             messages: [],
             isLike: this.$props.like,
@@ -863,7 +883,9 @@ export default {
     // created() {
     //   this.db = firebase.database();
     // },
+ 
     async mounted() {
+     
         $("#mic-btn").prop("disabled", true);
         $("#video-btn").prop("disabled", true);
         // add event listener to play remote tracks when remote user publishs.
@@ -1003,6 +1025,20 @@ export default {
         },
     },
     methods: {
+        joinShow() {
+            try {
+            axios.post("/checker/user/join/ticket-show", {
+                host_id:this.hostDetail.user_id,
+                user_id:this.authUser.uuid,
+                show_id:this.hostDetail.ticket_show.uuid,
+        }).then((resp)=> {
+            this.show_joined_by_user = true;
+          
+            });
+            } catch (error) {
+                console.log(error);
+            }
+        },
         showPhotos() {
             document.getElementById("photo_album").style.display='block';
         },
@@ -1300,6 +1336,42 @@ export default {
 }
 </style>
 <style scoped>
+.ticket_show {
+    position: absolute;
+    /* position: absolute; */
+    /* position: relative; */
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    left: 0;
+    right: -20px;
+   top:0;
+   bottom: 0;
+    font-size: 70px;
+    background: #000;
+    opacity: .9;
+    height: 580px;
+}
+.ticket_show i{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 10%;
+}
+.ticket_show h4{ 
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 25%;
+}
+.ticket_show .btn{ 
+    position: relative;
+    left: 0;
+    right: 0;
+    top: 15%;
+    width: 200px;
+    z-index: 999;
+}
 .btn-live {
     color: #fff;
 }

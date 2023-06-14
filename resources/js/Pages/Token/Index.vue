@@ -7,18 +7,30 @@
                     <table class="table table-dark table-striped" style="color: #888888;">
                         <thead>
                         <th>#</th>
-                        <th>Total Amount </th>
-                        <th>Paid Amount </th>
+                        <th>Transaction ID</th>
+                        <th> Amount </th>
+                        <th>Token </th>
+                        <th>Type </th>
+                        <th>Status </th>
+                        <th>Date </th>
                         <!-- <th>Status</th> -->
-                        <th>Order ID</th>
+                       
                         </thead>
                         <tbody>
                             <tr v-for="(value, index3) in recharge" :key="index3">
                                <td>{{  index3+1 }}</td>
-                               <td>{{  value.amount }}</td>
-                               <td>{{  value.amount_paid }}</td>
-                               <!-- <td>{{  value.type === 'spend_tip' ? 'Send Tip' : 'Private Chat' }}</td> -->
                                <td>{{  value.order_id }}</td>
+                               <td><span style="color: red;" v-if="role==='user'">
+                                -
+                               </span><span style="color: green;" v-else>
+                               +
+                               </span>{{  value.amount }}</td>
+                               <td>{{  value.coin }}</td>
+                               <td>{{  value.type }}</td>
+                               <td>{{  value.status }}</td>
+                               <td>{{  value.created_at }}</td>
+                               <!-- <td>{{  value.type === 'spend_tip' ? 'Send Tip' : 'Private Chat' }}</td> -->
+                              
                             
                             </tr>
                         
@@ -220,7 +232,7 @@
 </template>
 
 <script>
-
+import moment from "moment";
 import Datepicker from 'vue3-datepicker'
 export default {
     components: { Datepicker },
@@ -347,6 +359,10 @@ export default {
                     console.log(node);
 					var new_node = {};
 					new_node.amount = node.amount;
+					new_node.type = node.type;
+					new_node.coin = node.coin;
+					new_node.status = node.status;
+					new_node.created_at = moment(node.created_at).format('dddd MMMM D Y');
 					new_node.amount_paid = node.amount_paid;
 					new_node.order_id = node.order_id ? node.order_id : '-';
 					table_rows.push(new_node);

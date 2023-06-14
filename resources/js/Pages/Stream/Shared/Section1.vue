@@ -85,21 +85,15 @@
                             />
                         </video> -->
                         <div class="action_box">
-                            <div class="private">
+                            <div class="private d-flex">
                                 <button
                                     @click="join"
                                     v-if="!isStreamStarted"
-                                    class="start_stream_btn"
+                                    class="ms-2  start_stream_btn"
                                 >
-                                    Start
+                                <i class="bi bi-camera-reels-fill"></i> Start
                                 </button> 
-                                <!-- <button
-                                    @click="addScreenshot()"
-                                    v-if="isStreamStarted"
-                                    class="start_stream_btn"
-                                >
-                                    screenshot
-                                </button> -->
+                               
                                 <button
                                     @click="stopStream"
                                     v-else
@@ -335,6 +329,7 @@ export default {
         Message,
         IncomingCallModal,
     },
+  
     props: {
         authUser: Object,
         users: Array,
@@ -538,6 +533,7 @@ export default {
         });
     },
     methods: {
+       
         async getRemoteUsers() {
            
             // axios.post("model/generate-token").then((resp)=> {
@@ -1055,9 +1051,12 @@ export default {
     padding: 0.5rem 1rem;
     border-radius: 2rem;
 }
+.btn-success {
+    border-radius: 2rem;
+}
 .action_box {
     position: absolute;
-    width: 25%;
+    width: 45%;
     bottom: 0;
     left: 2%;
 }

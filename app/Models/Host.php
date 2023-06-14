@@ -93,5 +93,10 @@ class Host extends BaseModel
         return $this->belongsTo(Subculture::class, 'subculture_id', 'uuid');
     }
 
+    public function ticketShow(): BelongsTo
+    {
+        return $this->belongsTo(TicketShow::class, 'user_id', 'host_id');
+    }
+
     
 }
