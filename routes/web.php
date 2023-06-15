@@ -60,9 +60,15 @@ Route::view('/tokens-history', 'frontend.tokensHistory');
 // call history or token history code
 Route::get('/call-history', [CallHistoryController::class, 'callHistory']); // need to change this also
 Route::prefix('checker')->group(function () {
+    //------ user call history
     Route::get('user/token/private-chat-history/{user}', [CallHistoryController::class, 'privateChatHistory']);
     Route::get('user/token/recharge-history/{user}', [CallHistoryController::class, 'userTransactionHistory']);
     Route::get('user/token/sent-tip-history/{user}', [CallHistoryController::class, 'sendTipHistory']);
+
+    //---------Host call history
+    Route::post('host/token/private-chat-history', [CallHistoryController::class, 'hostPrivateChatHistory']);
+    Route::post('host/token/history', [CallHistoryController::class, 'hostTokenHistory']);
+    Route::post('host/income-report', [CallHistoryController::class, 'incomeReport']);
 
     //----------------- code for ticket show------------------
     Route::post('host/start/ticket-show', [TicketShowController::class, 'start']);
