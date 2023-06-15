@@ -461,16 +461,18 @@
             loader="dots"
             color="#a2262e"
         />
+        <DummyC></DummyC>
     </section>
 </template>
 
 <script>
 import Section1 from "./Shared/Section1.vue";
+import DummyC from "../../Pages/Dummy.vue";
 import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/css/index.css";
-
+import EventBus from '../../event-bus';
 export default {
-    components: { Section1, Loading },
+    components: { Section1, Loading , DummyC},
     props: {
         users: {
             type: Array,
@@ -498,6 +500,7 @@ export default {
             type: Boolean,
         },
     },
+    emits:['project-created'],
     data() {
         return {
             goal: "",
@@ -538,6 +541,8 @@ export default {
             start_time:this.ticketShowTime,
         }).then((resp)=> {
             this.show_start = resp.data.ticket_show;
+            EventBus.emit('project-created', true);
+            console.log('ab');
             });
             } catch (error) {
                 console.log(error);

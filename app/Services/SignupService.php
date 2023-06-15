@@ -38,7 +38,7 @@ class SignupService
             'specific_id'        => $request['specific_id'],
             'subculture_id'      => $request['subculture_id'],
             'about_me'           => $request['about'],
-            'cover_image'        => $request['cover_image']->store('models/cover-images', 'public'),
+            // 'cover_image'        => $request['cover_image']->store('models/cover-images', 'public'),
             'id_number'          => $request['id_number'],
             'id_issuing_country' => $request['id_issuing_country'],
             'country_id'         => $request['country_id'],

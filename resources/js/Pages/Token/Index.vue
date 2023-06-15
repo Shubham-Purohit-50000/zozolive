@@ -154,10 +154,10 @@
                         <tbody>
                             <tr v-for="(value, index) in token_spent" :key="index">
                                <td>{{  index+1 }}</td>
-                               <td>{{  value.host_name }}</td>
+                               <td>{{  value.user_name ? value.user_name : value.host_name }}</td>
                                <td>{{  value.date }}</td>
                                <!-- <td>{{  value.type === 'spend_tip' ? 'Send Tip' : 'Private Chat' }}</td> -->
-                               <td>{{  value.token }}</td>
+                               <td>{{  value.token ? value.token : value.total_token }}</td>
                             
                             </tr>
                         
@@ -215,7 +215,7 @@
                         <tbody>
                             <tr v-for="(value, index2) in private_chat" :key="index2">
                                <td>{{  index2+1 }}</td>
-                               <td>{{  value.host_name }}</td>
+                               <td>{{  value.host_name ? value.host_name : value.user_name }}</td>
                                <td>{{  value.date }}</td>
                                <!-- <td>{{  value.type === 'spend_tip' ? 'Send Tip' : 'Private Chat' }}</td> -->
                                <td>{{  value.total_token }}</td>
@@ -227,6 +227,76 @@
                 </div>
                    </div>
                  </div>
+
+                 <!-- Income Report-->
+
+                 <div
+                class="tab-content pt-2 mt-20"
+            >
+                <div
+                    class="tab-pane"
+                    id="report"
+                    role="tabpanel"
+                    aria-labelledby="contact-tab"
+                >
+                    <div
+                        class="tip_box"
+                    >
+                    <h5 >Income Report</h5>
+                    <div class="row mt-5">
+                        <div class="col-md-3">
+                            <div class="card text-center">
+                            <div class="card-header">
+                            <h5> Today Income</h5>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title " style="font-size:40px;">Rs. <span style="font-size:60px; color:#d87fff" >{{  host_income_report_data.today_income }}</span>/-</h5>
+                            
+                            </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="card text-center">
+                            <div class="card-header">
+                            <h5> Weekly Income</h5>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title " style="font-size:40px;">Rs. <span style="font-size:60px; color:rgb(127 204 255)" >{{   host_income_report_data.current_week_income }}</span>/-</h5>
+                            
+                            </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="card text-center">
+                            <div class="card-header">
+                            <h5> Last Week Income</h5>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title " style="font-size:40px;">Rs. <span style="font-size:60px; color:rgb(255 127 127)" >{{  host_income_report_data.last_week_income }}</span>/-</h5>
+                            
+                            </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="card text-center">
+                            <div class="card-header">
+                            <h5> Monthly Income</h5>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title " style="font-size:40px;">Rs. <span style="font-size:60px; color:rgb(17 163 56)" >{{  host_income_report_data.current_month_income  }}</span>/-</h5>
+                            
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+              
+                   </div>
+                 </div>
+                </div>
+
                 </div>
     </section>
 </template>
@@ -245,19 +315,43 @@ export default {
             searchBy:null,
             searchBy2:null,
             recharge:[],
+            host_private_chat:[],
+            host_income_report_data:[],
         };
     },
     mounted() {
-        this.getSpentToken();
-        this.getPrivateChat();
-        this.getRechargeHistory();
+
+        if(this.role === 'host') {
+            this.getHostPrivateChat();
+            this.getHostTokenHistory();
+            this.getHostIncomeReport();
+        } else {
+            this.getSpentToken();
+            this.getPrivateChat();
+            this.getRechargeHistory();
+
+        }
+     
+        // Host releated API 
+        
+
     },
     methods: {
        findFilterData() {
-        this.getPrivateChat();
+        if(this.role === 'host') {
+                this.getHostPrivateChat();
+        } else {
+            this.getPrivateChat();
+        }
+       
        } ,   
         filterTokenHistory() {
-        this.getSpentToken();
+            if(this.role === 'host') {
+                this.getHostTokenHistory();
+        } else {
+            this.getSpentToken();
+        }
+    
        } ,  
        convert(str) {
         var date = new Date(str),
@@ -265,16 +359,55 @@ export default {
         day = ("0" + date.getDate()).slice(-2);
         return [date.getFullYear(), mnth, day].join("-");
         },
+
+        getHostPrivateChat() {
+            try {
+                if(this.searchBy) {
+                    let new_date = this.convert(this.searchBy);
+                    axios.get("/checker/host/token/private-chat-history/"+this.user.uuid+'?date='+new_date).then((resp)=> {
+                        this.private_chat = this.formetHostPrivateChat(resp.data.token_spent);
+                    });
+                
+                } else {
+                    axios.get("/checker/host/token/private-chat-history/"+this.user.uuid).then((resp)=> {
+                        this.private_chat = this.formetHostPrivateChat(resp.data.token_spent);
+                    });
+                
+                }
+               
+                } catch (error) {
+                    console.log(error);
+                }
+         },
+
         getSpentToken() {
             try {
                 let new_date = this.convert(this.searchBy2);
                 if(this.searchBy2) {
                 axios.get("/checker/user/token/sent-tip-history/"+this.user.uuid+'?date='+new_date).then((resp)=> {
-                    this.token_spent = this.formetData(resp.data.token_spent);
+                    this.token_spent = this.formetData2(resp.data.token_spent);
                     });
                 } else {
                     axios.get("/checker/user/token/sent-tip-history/"+this.user.uuid).then((resp)=> {
-                    this.token_spent = this.formetData(resp.data.token_spent);
+                    this.token_spent = this.formetData2(resp.data.token_spent);
+                    });
+                }
+                
+                } catch (error) {
+                    console.log(error);
+                }
+    }, 
+
+    getHostTokenHistory() {
+            try {
+                let new_date = this.convert(this.searchBy2);
+                if(this.searchBy2) {
+                axios.get("/checker/host/token/history/"+this.user.uuid+'?date='+new_date).then((resp)=> {
+                    this.token_spent = this.formetHostPrivateChat(resp.data.token_spent);
+                    });
+                } else {
+                    axios.get("/checker/host/token/history/"+this.user.uuid).then((resp)=> {
+                    this.token_spent = this.formetHostPrivateChat(resp.data.token_spent);
                     });
                 }
                 
@@ -283,10 +416,21 @@ export default {
                 }
     }, 
     
+    
     getRechargeHistory() {
             try {
                 axios.get("/checker/user/token/recharge-history/"+this.user.uuid).then((resp)=> {
                     this.recharge = this.formetRechargeData(resp.data.recharge);
+                });
+                } catch (error) {
+                    console.log(error);
+                }
+    }, 
+    
+    getHostIncomeReport() {
+            try {
+                axios.get("/checker/host/income-report/"+this.user.uuid).then((resp)=> {
+                    this.host_income_report_data = resp.data.income_report;
                 });
                 } catch (error) {
                     console.log(error);
@@ -318,6 +462,26 @@ export default {
 				if (node) {
 					var new_node = {};
 					new_node.host_name = node.host_name;
+					new_node.date = node.created_at;
+					new_node.host_id = node.host_id;
+					new_node.total_token = node.total_token ? node.total_token:null;
+					new_node.token = node.token;
+					new_node.type = node.type;
+					new_node.user_id = node.user_id;
+				
+					table_rows.push(new_node);
+				}
+			};
+			return table_rows;
+		}, 
+
+        formetHostPrivateChat(data) {
+			let table_rows = [];
+			for (let key in data) {
+				let node = data[key];
+				if (node) {
+					var new_node = {};
+					new_node.user_name = node.user_name;
 					new_node.date = node.created_at;
 					new_node.host_id = node.host_id;
 					new_node.total_token = node.total_token ? node.total_token:null;

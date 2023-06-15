@@ -37,6 +37,7 @@
         "moment": "^2.29.4",
         "pusher-js": "^8.0.1",
         "simple-peer": "^9.11.1",
+        "tiny-emitter": "^2.1.0",
         "vue-chat-scroll": "^1.4.0",
         "vue-loading-overlay": "^6.0.2",
         "vue-multiselect": "^2.1.7",

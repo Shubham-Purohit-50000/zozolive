@@ -2,8 +2,13 @@
   <div class="col-lg-2 col-6">
    <a :href="`/stream/${host.user.username}`" class="card list">
    <span :class="['total_live--icon ', host.is_online ? 'onlineDedector' : 'offlineDedector']">●</span>
-            <img
+            <img v-if="host.is_online"
                 :src="host.user.live_image"
+                class="card-img-top"
+                alt="..."
+            /> 
+            <img v-else
+              :src="'/images/'+host.user.profile_image"
                 class="card-img-top"
                 alt="..."
             />

@@ -283,7 +283,7 @@
                       <div class="d-flex justify-content-center align-items-center my-3">
                         <img id="fileinput1_img" alt="" class="w-20" src="">
                       </div>
-                      <div class="row mb-2">
+                      <!-- <div class="row mb-2">
                         <div class="col-3 inputLabel">
                           Cover Image:
                         </div>
@@ -301,9 +301,9 @@
                               type="file"
                               @input="handleCoverFile"
                           />
-                          <!-- <textarea id="w3review" name="w3review" rows="4" cols="50" class="inputBox" style="color: #888;"></textarea>  -->
+                           <textarea id="w3review" name="w3review" rows="4" cols="50" class="inputBox" style="color: #888;"></textarea> 
 
-                          <!-- <textarea id="w3review" name="w3review" rows="4" cols="50" class="inputBox" style="color: #888;"></textarea>  -->
+                          <textarea id="w3review" name="w3review" rows="4" cols="50" class="inputBox" style="color: #888;"></textarea> 
                         </div>
                         <div class="col-3 show_example">
                           <span>Show Example</span>
@@ -326,11 +326,11 @@
                           make sure your cover image
                           doesn't violate
                           <a href="#"> our rules </a>
-                          <!-- <input type="file" placeholder="Please, select...... "class="inputBox1 file-input" style="color: #888;"> -->
-                          <!-- <textarea id="w3review" name="w3review" rows="4" cols="50" class="inputBox" style="color: #888;"></textarea>  -->
+                          <input type="file" placeholder="Please, select...... "class="inputBox1 file-input" style="color: #888;">
+                          <textarea id="w3review" name="w3review" rows="4" cols="50" class="inputBox" style="color: #888;"></textarea>
                         </div>
                         <div class="col-3"></div>
-                      </div>
+                      </div> -->
                       <div class="row mb-2">
                         <div class="col-3">
                           <h6>Pricing</h6>
@@ -799,9 +799,21 @@ export default {
           this.form.pricing[index] = val;
         }
         this.form.pricing.push(val);
+        if(this.form.interest!==null && this.form.language_id && this.form.subculture_id && this.form.specific_id 
+      && this.form.about && this.profile_image!==null && this.form.pricing.length > 1) {
+        console.log('inside');
+        $('.tab-pane').removeClass('active');
+              $('#email-verification-tab').removeClass('active');
+              $('#verification-tab-profile-setting').removeClass('active');
+              $('#verification-tab-profile-setting-content').removeClass('active');
+              $('#verification-tab-identification').addClass('active');
+              $('#verification-tab-identification-content').addClass('active show');
+              this.step = 3;
+      }
         return;
       }
       this.form.pricing.push(val);
+     
     },
     previousStep() {
       $('.tab-pane').removeClass('active');
@@ -813,7 +825,7 @@ export default {
       this.isLoading = true;
       const formData = new FormData();
       formData.append('profile_image', this.profile_image);
-      formData.append('cover_image', this.cover_image);
+      // formData.append('cover_image', this.cover_image);
       Object.keys(this.form).forEach(key => {
         formData.append(key, this.form[key]);
       });
