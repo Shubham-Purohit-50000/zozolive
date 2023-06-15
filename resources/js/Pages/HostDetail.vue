@@ -819,6 +819,7 @@
             </div>
         </div>
     </div>
+    <DummyC></DummyC>
 </template>
 
 <script>
@@ -828,6 +829,8 @@ import PrivateChat from "@/Components/PrivateChat.vue";
 import SignupModal from "@/Components/SignupModal.vue";
 import LoginModal from "@/Components/LoginModal.vue";
 import OutgoingCallModal from "./Chat/Shared/OutgoingCallModal.vue";
+import EventBus from '../event-bus';
+import DummyC from "../Pages/Dummy.vue";
 export default {
     name: "HostDetail",
     components: {
@@ -837,8 +840,9 @@ export default {
         HostItem,
         LoginModal,
         OutgoingCallModal,
+        DummyC
     },
-
+    emits:['host-page'],
     props: [
         "hosts",
         "hostDetail",
@@ -880,12 +884,9 @@ export default {
             host_gallery_array: [],
         };
     },
-    // created() {
-    //   this.db = firebase.database();
-    // },
- 
+   
     async mounted() {
-     
+      
         $("#mic-btn").prop("disabled", true);
         $("#video-btn").prop("disabled", true);
         // add event listener to play remote tracks when remote user publishs.
