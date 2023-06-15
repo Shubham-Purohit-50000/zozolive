@@ -32,6 +32,7 @@ Route::controller(FrontendController::class)->group(function () {
         Route::get('profile', 'userProfile');
         Route::post('update-user-profile', 'updateProfile');
         Route::post('logout', 'logoutUser');
+        // shubh
     });
 });
 
