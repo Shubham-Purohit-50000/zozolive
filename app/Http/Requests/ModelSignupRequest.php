@@ -32,7 +32,7 @@ class ModelSignupRequest extends FormRequest
             'pricing'            => 'required',
             'specific_id'        => 'required',
             'profile_image'      => 'required|image',
-            'cover_image'        => 'required|image',
+            // 'cover_image'        => 'required|image',
             'name'               => 'required',
             'gender'             => 'required',
             'birth_date'         => 'required',

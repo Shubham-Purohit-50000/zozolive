@@ -130,13 +130,13 @@ class CallHistoryController extends Controller
 
     //----------------- call related to host start here
 
-    public function hostPrivateChatHistory(Request $req){
+    public function hostPrivateChatHistory(Request $req, User $user){
 
         $token_spents = TokenSpent::select('user_id', DB::raw('SUM(token) as total_token'))
-        ->where('host_id', $req->host_id)
+        ->where('host_id', $user->uuid)
         ->where('type', 'private_chat')
         ->groupBy('user_id');
-
+        
         $formet_date = null;
 
         if($req->has('date')){
@@ -147,7 +147,7 @@ class CallHistoryController extends Controller
             $token_spents->whereDate('created_at', $formet_date);
         }
         $token_spents = $token_spents->latest()->get();
-
+       
         $user_array = [];
         foreach ($token_spents as $data) {
             $user = User::where('uuid', $data['user_id'])->first();
@@ -168,8 +168,8 @@ class CallHistoryController extends Controller
 
     }
 
-    public function hostTokenHistory(Request $req){
-        $token_spents = TokenSpent::where('host_id', $req->host_id)->where('type', '!=' ,'private_chat');
+    public function hostTokenHistory(Request $req, User $user){
+        $token_spents = TokenSpent::where('host_id', $user->uuid)->where('type', '!=' ,'private_chat');
 
         $formet_date = null;
 
@@ -202,26 +202,28 @@ class CallHistoryController extends Controller
 
     }
 
-    public function incomeReport(Request $req){
+    public function incomeReport(Request $req, User $user){
 
         $income_report = array();
 
         $today_date = Carbon::today()->format('Y-m-d');
-        $today_income = TokenSpent::where('host_id', $req->host_id)->whereDate('created_at' , $today_date)->sum('token');
+        $today_income = TokenSpent::where('host_id', $user->uuid)->whereDate('created_at' , $today_date)->sum('token');
         $income_report['today_income'] = $today_income;
 
-        $current_week_income = TokenSpent::where('host_id', $req->host_id)->whereBetween('created_at' , [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->sum('token');
+        $current_week_income = TokenSpent::where('host_id', $user->uuid)->whereBetween('created_at' , [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->sum('token');
         $income_report['current_week_income'] = $current_week_income;
 
         $check = Carbon::now()->startOfMonth() ." | ". Carbon::now()->endOfMonth();
 
-        $last_week_income = TokenSpent::where('host_id', $req->host_id)->whereBetween('created_at' , [Carbon::now()->subWeek()->startOfWeek(), Carbon::now()->subWeek()->endOfWeek()])->sum('token');
+        $last_week_income = TokenSpent::where('host_id', $user->uuid)->whereBetween('created_at' , [Carbon::now()->subWeek()->startOfWeek(), Carbon::now()->subWeek()->endOfWeek()])->sum('token');
         $income_report['last_week_income'] = $last_week_income;
 
-        $current_month_income = TokenSpent::where('host_id', $req->host_id)->whereBetween('created_at' , [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->sum('token');
+        $current_month_income = TokenSpent::where('host_id', $user->uuid)->whereBetween('created_at' , [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->sum('token');
         $income_report['current_month_income'] = $current_month_income;
-
-        return response()->json($income_report);
+       
+        return response()->json([
+            'income_report'=> $income_report,
+        ]);
     }
 
 }
