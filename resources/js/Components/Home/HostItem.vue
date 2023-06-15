@@ -10,7 +10,16 @@
             <span class="total_live--icon onlineDedector badge bg-danger"
                v-else>Offline</span
             >
-            <img :src="host.user.live_image" class="card-img-top" alt="..." />
+            <img v-if="host.is_online"
+                :src="host.user.live_image"
+                class="card-img-top"
+                alt="..."
+            /> 
+            <img v-else
+              :src="'/images/'+host.user.profile_image"
+                class="card-img-top"
+                alt="..."
+            />
             <div class="caption">
                 <span>{{ host.user.name }}</span>
                 <img :src="host.cflag" />

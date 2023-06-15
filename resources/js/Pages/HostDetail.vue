@@ -46,7 +46,7 @@
                                         v-show="isStreamStarted"
                                     >
 
-                                    <div class="ticket_show" v-if="hostDetail.ticket_show.status===1  && !show_joined_by_user">
+                                    <div class="ticket_show" v-if="hostDetail.ticket_show && hostDetail.ticket_show.status  && !show_joined_by_user">
                                             <i class="bi bi-ticket-perforated"></i><br/>
                                             <h4
                                             class="text-center "
@@ -819,6 +819,7 @@
             </div>
         </div>
     </div>
+    <DummyC></DummyC>
 </template>
 
 <script>
@@ -828,6 +829,7 @@ import PrivateChat from "@/Components/PrivateChat.vue";
 import SignupModal from "@/Components/SignupModal.vue";
 import LoginModal from "@/Components/LoginModal.vue";
 import OutgoingCallModal from "./Chat/Shared/OutgoingCallModal.vue";
+import DummyC from "../Pages/Dummy.vue";
 export default {
     name: "HostDetail",
     components: {
@@ -837,8 +839,9 @@ export default {
         HostItem,
         LoginModal,
         OutgoingCallModal,
+        DummyC
     },
-
+    emits:['host-page'],
     props: [
         "hosts",
         "hostDetail",
@@ -880,12 +883,9 @@ export default {
             host_gallery_array: [],
         };
     },
-    // created() {
-    //   this.db = firebase.database();
-    // },
- 
+   
     async mounted() {
-     
+      
         $("#mic-btn").prop("disabled", true);
         $("#video-btn").prop("disabled", true);
         // add event listener to play remote tracks when remote user publishs.

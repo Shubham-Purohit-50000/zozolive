@@ -66,9 +66,9 @@ Route::prefix('checker')->group(function () {
     Route::get('user/token/sent-tip-history/{user}', [CallHistoryController::class, 'sendTipHistory']);
 
     //---------Host call history
-    Route::post('host/token/private-chat-history', [CallHistoryController::class, 'hostPrivateChatHistory']);
-    Route::post('host/token/history', [CallHistoryController::class, 'hostTokenHistory']);
-    Route::post('host/income-report', [CallHistoryController::class, 'incomeReport']);
+    Route::get('host/token/private-chat-history/{user}', [CallHistoryController::class, 'hostPrivateChatHistory']);
+    Route::get('host/token/history/{user}', [CallHistoryController::class, 'hostTokenHistory']);
+    Route::get('host/income-report/{user}', [CallHistoryController::class, 'incomeReport']);
 
     //----------------- code for ticket show------------------
     Route::post('host/start/ticket-show', [TicketShowController::class, 'start']);
