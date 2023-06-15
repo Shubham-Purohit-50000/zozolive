@@ -11,7 +11,7 @@ export default {
     components: {
       
     },
-    emits:['project-created', 'host-page'],
+    emits:['project-created'],
     
     data() {
         return {

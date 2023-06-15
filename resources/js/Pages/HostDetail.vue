@@ -829,7 +829,6 @@ import PrivateChat from "@/Components/PrivateChat.vue";
 import SignupModal from "@/Components/SignupModal.vue";
 import LoginModal from "@/Components/LoginModal.vue";
 import OutgoingCallModal from "./Chat/Shared/OutgoingCallModal.vue";
-import EventBus from '../event-bus';
 import DummyC from "../Pages/Dummy.vue";
 export default {
     name: "HostDetail",
