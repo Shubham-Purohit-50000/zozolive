@@ -33,9 +33,9 @@ class ModelAuthController extends Controller
         $user = User::create(array_merge($request->validatedAttribute(), $attributes));
         $roleId = (new SignupService())->getUserRoleId('model');
         $user->attachRole($roleId);
-        //        $to=$request->email;
-        //        $subject='Your OTP for signup';
-        // SendOtpMailTrait::sendOtpMail(['to'=>$to,'otp'=>$otp,'subject'=>$subject]);
+               $to=$request->email;
+               $subject='Your OTP for signup';
+        SendOtpMailTrait::sendOtpMail(['to'=>$to,'otp'=>$otp,'subject'=>$subject]);
         return response()->json([
             'url' => url('/')
         ]);

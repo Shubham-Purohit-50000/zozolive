@@ -73,6 +73,7 @@ Route::prefix('checker')->group(function () {
     //----------------- code for ticket show------------------
     Route::post('host/start/ticket-show', [TicketShowController::class, 'start']);
     Route::post('user/join/ticket-show', [TicketShowController::class, 'join_show']);
+    Route::post('show-details', [TicketShowController::class, 'show_details']);
     Route::post('host/end/ticket-show', [TicketShowController::class, 'end_show']);
 });
 
@@ -81,7 +82,7 @@ Route::prefix('checker')->group(function () {
 Route::view('/payment-settings', 'frontend.PaymentSettings');
 Route::view('/studio-modal', 'frontend.studioModal');
 Route::view('/modal-control', 'frontend.modalControl');
-Route::view('/contact-us', 'frontend.contactUS');
+//Route::view('/contact-us', 'frontend.contactUS');
 Route::view('/faq', 'frontend.faq');
 
 Route::get('/buy-token', [FrontendController::class, 'buyToken']);
@@ -98,7 +99,7 @@ Route::get('/terms-of-use', [FrontendController::class, 'termOfUse']);
 
 Route::get('/privacy-policy', [FrontendController::class, 'privacyPolice']);
 Route::get('/cookies-policy', [FrontendController::class, 'cookiesPolicy']);
-Route::get('/dmca-policy', [FrontendController::class, 'dmcaPolicy']);
+Route::get('/contact-us', [FrontendController::class, 'contact_us']);
 Route::get('/refund-policy', [FrontendController::class, 'refundPolicy']);
 
 Route::get('/about-us', [FrontendController::class, 'about_us']);

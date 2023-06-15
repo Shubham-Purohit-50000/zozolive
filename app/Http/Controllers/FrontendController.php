@@ -175,7 +175,7 @@ class FrontendController extends Controller
 
     public function refundPolicy()
     {
-        $data = Page::where('slug', 'refund-policy')->first();
+        $data = Page::where('slug', 'payment-refund-policy')->first();
         return inertia('CustomPage', ['page_data'=>$data]);
     }
 
@@ -185,9 +185,9 @@ class FrontendController extends Controller
         return inertia('CustomPage', ['page_data'=>$data]);
     }
 
-    public function dmcaPolicy()
+    public function contact_us()
     {
-        $data = Page::where('slug', 'digital-millennium-copyright-act-policy-notice-takedown')->first();
+        $data = Page::where('slug', 'contact-us')->first();
         return inertia('CustomPage', ['page_data'=>$data]);
     }
 
