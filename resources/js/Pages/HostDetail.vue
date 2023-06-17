@@ -46,7 +46,7 @@
                                         v-show="isStreamStarted"
                                     >
 
-                                    <div class="ticket_show" v-if="hostDetail.ticket_show && hostDetail.ticket_show.status  && !show_joined_by_user">
+                                    <div class="ticket_show" v-if="hostDetail && hostDetail.ticket_show && hostDetail.ticket_show.status ===1  && !show_joined_by_user">
                                             <i class="bi bi-ticket-perforated"></i><br/>
                                             <h4
                                             class="text-center "
@@ -829,7 +829,6 @@ import PrivateChat from "@/Components/PrivateChat.vue";
 import SignupModal from "@/Components/SignupModal.vue";
 import LoginModal from "@/Components/LoginModal.vue";
 import OutgoingCallModal from "./Chat/Shared/OutgoingCallModal.vue";
-import DummyC from "../Pages/Dummy.vue";
 export default {
     name: "HostDetail",
     components: {
@@ -839,7 +838,6 @@ export default {
         HostItem,
         LoginModal,
         OutgoingCallModal,
-        DummyC
     },
     emits:['host-page'],
     props: [

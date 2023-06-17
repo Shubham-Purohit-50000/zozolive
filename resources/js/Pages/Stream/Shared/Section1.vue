@@ -451,7 +451,6 @@ export default {
        // Mouse has left the screen
         console.log('Mouse left the screen');
 
-
         // Swal.fire({
         // title: 'Are you stoping video streaming ?',
         // showDenyButton: true,
