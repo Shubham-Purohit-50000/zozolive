@@ -46,7 +46,7 @@
                                         v-show="isStreamStarted"
                                     >
 
-                                    <div class="ticket_show" v-if="hostDetail.ticket_show && hostDetail.ticket_show.status  && !show_joined_by_user">
+                                    <div class="ticket_show" v-if="hostDetail && hostDetail.ticket_show && hostDetail.ticket_show.status ===1  && !show_joined_by_user">
                                             <i class="bi bi-ticket-perforated"></i><br/>
                                             <h4
                                             class="text-center "
@@ -56,12 +56,31 @@
                                             in a ticket show
                                         </h4>
                                         <button
+                                        v-if="authUser && parseInt(authUser.token) > 0"
                                         type="button"
                                         @click="joinShow"
                                         class="btn btn-warning btn-sm"
                                         >
                                         <i class="bi bi-check-circle-fill"></i> <br/>
                                         Join Now
+                                    </button>
+                                    <a
+                                        v-else-if="authUser && parseInt(authUser.token) <= 0"
+                                        type="button"
+                                        href="/buy-token"
+                                        class="btn btn-warning btn-sm"
+                                        >
+                                        <i class="bi bi-check-circle-fill"></i> <br/>
+                                       Buy Token
+                                </a>
+                                    <button
+                                        v-else
+                                        type="button"
+                                        @click="showLoginModel"
+                                        class="btn btn-warning btn-sm"
+                                        >
+                                        <i class="bi bi-check-circle-fill"></i> <br/>
+                                       Login
                                     </button>
                                         </div>
                                 <button
@@ -142,20 +161,37 @@
                                      <div class="private" v-if="isStreamStarted && authUser">
 
                                         <button
+                                            v-if="authUser && parseInt(authUser.token) > 0"
                                             type="button"
                                             class="bg-dark ms-2"
                                             @click="placeCall()"
                                         >
                                             Private Call
                                         </button>
+                                        <button
+                                            v-else
+                                            type="button"
+                                            class="bg-dark ms-2"
+                                            @click="buyToken()"
+                                        >
+                                            Buy Token
+                                        </button>
                                     </div>
                                     <div class="tip"  v-if="isStreamStarted">
-                                        <button
+                                        <button v-if="authUser"
                                         data-bs-toggle="modal"
                                         data-bs-target="#sendtipModal"
                                         @click="getHostTipMenu()"
                                         >
                                             Send Tip <i class="bi bi-geo-fill"></i>
+                                        </button>  
+                                        
+                                        <button v-else
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#basicModal"
+                                      
+                                        >
+                                           Login 
                                         </button>
                                     </div>
                                 </div>
@@ -364,8 +400,8 @@
                                                         </div>
 
                                                         <div class="tip">
-                                                            <button>
-                                                                Buy Token
+                                                            <button @click="sendUserTip">
+                                                               {{ parseInt(authUser.token) > 0 ? 'Send Tip' : 'Buy Token' }} 
                                                             </button>
                                                         </div>
                                                     </div>
@@ -442,6 +478,22 @@
                                                 &nbsp;&nbsp; {{ total_watching }}
                                             </button>
                                         </li>
+                                        <li
+                                            class="nav-item flex-fill"
+                                            role="presentation"
+                                        > <button
+                                                 id="contact-tab"
+                                                class="nav-link w-100 chat_card--btn"
+                                                type="button"
+                                                data-bs-toggle="tab"
+                                                data-bs-target="#videoCall"
+                                                aria-controls="contact"
+                                                role="tab"
+                                            >
+                                           
+                                                <i class="bi bi-telephone-inbound-fill"></i>  {{  ' Call' }}
+                                            </button> 
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -494,6 +546,45 @@
                                             >
                                         </div>
                                     </div>
+
+                                    <!-- video call-->
+                                    <div
+                                        class="tab-pane fade px-3 mt-5"
+                                        id="videoCall"
+                                        role="tabpanel"
+                                        aria-labelledby="contact-tab"
+                                    >
+                                    <div class="text-center">
+                                      
+                                        <button
+                                            v-if="authUser && parseInt(authUser.token) > 0"
+                                            type="button"
+                                            class="btn btn-success "
+                                            @click="placeCall()"
+                                        >
+                                        <i class="bi bi-camera-video-fill " ></i>  Private Call
+                                        </button>
+                                        <button
+                                            v-else-if="authUser && parseInt(authUser.token) < 1"
+                                            type="button"
+                                            class="btn btn-primary "
+                                            @click="buyToken()"
+                                        >
+                                        <i class="bi bi-coin"></i>  Buy Token
+                                        </button>
+
+                                        <button
+                                            v-else
+                                            type="button"
+                                            class="btn btn-danger "
+                                            @click="showLoginModel()"
+                                        >
+                                        <i class="bi bi-person-check"></i>  Login to make private call 
+                                        </button>
+                                    </div>
+                                    
+                                    </div>
+                                    <!--End Here -->
                                 </div>
                             </div>
                         </div>
@@ -829,7 +920,6 @@ import PrivateChat from "@/Components/PrivateChat.vue";
 import SignupModal from "@/Components/SignupModal.vue";
 import LoginModal from "@/Components/LoginModal.vue";
 import OutgoingCallModal from "./Chat/Shared/OutgoingCallModal.vue";
-import DummyC from "../Pages/Dummy.vue";
 export default {
     name: "HostDetail",
     components: {
@@ -839,7 +929,6 @@ export default {
         HostItem,
         LoginModal,
         OutgoingCallModal,
-        DummyC
     },
     emits:['host-page'],
     props: [
@@ -1025,6 +1114,34 @@ export default {
         },
     },
     methods: {
+        buyToken() {
+            window.location.href='/buy-token'
+        }, 
+        sendUserTip() {
+            try {
+                axios.post("/user/send-tip", {
+                    user_id: this.authUser.uuid,
+                    host_id: this.hostDetail.user_id,
+                    token_amount: this.tip_menu_token_amount,
+                }).then((resp)=>{
+                    this.$refs.cancelButton.click();
+                   console.log(resp);
+                    if(resp.data.status!=='success') {
+                      window.location.href = "/buy-token";
+                      
+                    } else {
+                      this.message = 'tipped ' + this.tip_menu_token_amount + ' tk';
+                      this.send();
+                      this.sended_tip = true;
+                    }
+                   
+                  
+                });
+                } catch (error) {
+                    console.log(error);
+                }
+           
+        },
         joinShow() {
             try {
             axios.post("/checker/user/join/ticket-show", {

@@ -14,7 +14,7 @@ use Inertia\Inertia;
 use App\Models\TokenHistory;
 use App\Models\HostPricing;
 use App\Classes\AgoraDynamicKey\RtcTokenBuilder;
-use Log;
+use Illuminate\Support\Facades\Log;
 
 class AgoraVideoController extends Controller
 {
@@ -172,6 +172,7 @@ class AgoraVideoController extends Controller
 
     public function deductToken(Request $request)
     {
+        
         $call_id = $request->history_id;
         $tknhistory = TokenHistory::find($call_id);
         $coin = 10;
@@ -194,9 +195,6 @@ class AgoraVideoController extends Controller
 
         $remainingToken = (Auth::user()->token - $coin);
         Auth::user()->update(['token' => $remainingToken]);
-
-        Log::info('coin picked : '.$coin);
-
         $tknhistory->duration = $duration;
         $tknhistory->type_coin = ((int)$coin + (int)$tknhistory->type_coin);
         $tknhistory->save();
