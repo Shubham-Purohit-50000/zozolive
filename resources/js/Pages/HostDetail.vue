@@ -478,6 +478,22 @@
                                                 &nbsp;&nbsp; {{ total_watching }}
                                             </button>
                                         </li>
+                                        <li
+                                            class="nav-item flex-fill"
+                                            role="presentation"
+                                        > <button
+                                                 id="contact-tab"
+                                                class="nav-link w-100 chat_card--btn"
+                                                type="button"
+                                                data-bs-toggle="tab"
+                                                data-bs-target="#videoCall"
+                                                aria-controls="contact"
+                                                role="tab"
+                                            >
+                                           
+                                                <i class="bi bi-telephone-inbound-fill"></i>  {{  ' Call' }}
+                                            </button> 
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -530,6 +546,45 @@
                                             >
                                         </div>
                                     </div>
+
+                                    <!-- video call-->
+                                    <div
+                                        class="tab-pane fade px-3 mt-5"
+                                        id="videoCall"
+                                        role="tabpanel"
+                                        aria-labelledby="contact-tab"
+                                    >
+                                    <div class="text-center">
+                                      
+                                        <button
+                                            v-if="authUser && parseInt(authUser.token) > 0"
+                                            type="button"
+                                            class="btn btn-success "
+                                            @click="placeCall()"
+                                        >
+                                        <i class="bi bi-camera-video-fill " ></i>  Private Call
+                                        </button>
+                                        <button
+                                            v-else-if="authUser && parseInt(authUser.token) < 1"
+                                            type="button"
+                                            class="btn btn-primary "
+                                            @click="buyToken()"
+                                        >
+                                        <i class="bi bi-coin"></i>  Buy Token
+                                        </button>
+
+                                        <button
+                                            v-else
+                                            type="button"
+                                            class="btn btn-danger "
+                                            @click="showLoginModel()"
+                                        >
+                                        <i class="bi bi-person-check"></i>  Login to make private call 
+                                        </button>
+                                    </div>
+                                    
+                                    </div>
+                                    <!--End Here -->
                                 </div>
                             </div>
                         </div>
