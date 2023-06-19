@@ -6940,10 +6940,14 @@ var __default__ = {
       channelUid: "",
       duration: 0,
       inCall: true,
-      avlToken: 0
+      avlToken: 0,
+      remoteStream: 0,
+      remoteStreamHost: 0
     };
   },
   mounted: function mounted() {
+    this.createRemoteStream();
+    this.createRemoteStreamHost();
     this.initializeAgora();
     this.initializedAgoraListeners();
     this.acceptCall(this.channel);
@@ -6956,7 +6960,7 @@ var __default__ = {
     initializeAgora: function initializeAgora() {
       this.client = AgoraRTC.createClient({
         mode: "rtc",
-        codec: "h264"
+        codec: "vp8"
       });
       this.client.init(this.agora_id, function () {
         console.log("AgoraRTC client initialized");
@@ -6975,6 +6979,8 @@ var __default__ = {
                 console.log("User " + uid + " join channel successfully");
                 _this.callPlaced = true;
                 _this.createLocalStream();
+                // this.createRemoteStreamHost();
+                // this.createRemoteStream();
                 _this.initializedAgoraListeners();
                 _this.listenEndCall();
               }, function (err) {
@@ -7004,8 +7010,8 @@ var __default__ = {
       });
       this.client.on("stream-subscribed", function (evt) {
         // Attach remote stream to the remote-video div
-        evt.stream.play("remote-video");
-        _this2.client.publish(evt.stream);
+        // evt.stream.play("remote-video");
+        // this.client.publish(evt.stream);
         _this2.deductTokenMethod();
         _this2.chargeCallTokens();
         _this2.stopWatchCall();
@@ -7048,19 +7054,55 @@ var __default__ = {
         console.log(err);
       });
     },
-    listenEndCall: function listenEndCall() {
+    createRemoteStreamHost: function createRemoteStreamHost() {
       var _this4 = this;
+      this.remoteStreamHost = AgoraRTC.createStream({
+        audio: true,
+        video: true
+      });
+      // Initialize the local stream
+      this.remoteStreamHost.init(function () {
+        // Play the local stream
+        _this4.remoteStreamHost.play("remote-video2");
+        // Publish the local stream
+        _this4.client.publish(_this4.remoteStreamHost, function (err) {
+          console.log("publish Remote stream", err);
+        });
+      }, function (err) {
+        console.log(err);
+      });
+    },
+    createRemoteStream: function createRemoteStream() {
+      var _this5 = this;
+      this.remoteStream = AgoraRTC.createStream({
+        audio: true,
+        video: true
+      });
+      // Initialize the local stream
+      this.remoteStream.init(function () {
+        // Play the local stream
+        _this5.remoteStream.play("remote-video");
+        // Publish the local stream
+        _this5.client.publish(_this5.remoteStream, function (err) {
+          console.log("publish Remote stream", err);
+        });
+      }, function (err) {
+        console.log(err);
+      });
+    },
+    listenEndCall: function listenEndCall() {
+      var _this6 = this;
       Echo.channel("end-agora-video").listen(".EndVideoCall", function (_ref3) {
         var data = _ref3.data;
         console.log(data.channelName);
-        console.log(_this4.agoraChannel);
-        if (data.channelName == _this4.agoraChannel) {
-          _this4.endcall();
+        console.log(_this6.agoraChannel);
+        if (data.channelName == _this6.agoraChannel) {
+          _this6.endcall();
         }
       });
     },
     endCall: function endCall() {
-      var _this5 = this;
+      var _this7 = this;
       this.inCall = false;
       var agoraChannel = this.channel;
       axios.post("/agora/end-call", {
@@ -7071,8 +7113,8 @@ var __default__ = {
       });
       this.localStream.close();
       this.client.leave(function () {
-        _this5.callPlaced = false;
-        if (!_this5.isCustomer) {
+        _this7.callPlaced = false;
+        if (!_this7.isCustomer) {
           setTimeout(function () {
             window.location.href = "/chat";
           }, 500);
@@ -7106,14 +7148,14 @@ var __default__ = {
       return agoraToken;
     },
     acceptCall: function acceptCall(channelName) {
-      var _this6 = this;
+      var _this8 = this;
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
-              _this6.initializeAgora();
+              _this8.initializeAgora();
               // const tokenRes = await this.generateToken(channelName);
-              _this6.joinRoom(_this6.agoraToken, channelName);
+              _this8.joinRoom(_this8.agoraToken, channelName);
             case 2:
             case "end":
               return _context2.stop();
@@ -7122,23 +7164,23 @@ var __default__ = {
       }))();
     }
   }, _defineProperty(_methods, "listenEndCall", function listenEndCall() {
-    var _this7 = this;
+    var _this9 = this;
     Echo.channel("end-agora-video").listen(".EndVideoCall", function (_ref4) {
       var data = _ref4.data;
-      console.log(_this7.agoraChannel);
-      if (data.channelName == _this7.agoraChannel) {
-        _this7.endCall();
+      console.log(_this9.agoraChannel);
+      if (data.channelName == _this9.agoraChannel) {
+        _this9.endCall();
       }
     });
   }), _defineProperty(_methods, "deductTokenMethod", function deductTokenMethod() {
-    var _this8 = this;
+    var _this10 = this;
     if (this.inCall && this.isCustomer) {
       var history_id = this.history_id;
       var duration = this.duration;
       setInterval(function () {
         var agoraToken = axios.post("/agora/deduct-token", {
-          history_id: _this8.history_id,
-          duration: _this8.duration
+          history_id: _this10.history_id,
+          duration: _this10.duration
         });
       }, 1000 * 60);
     }
@@ -7152,7 +7194,7 @@ var __default__ = {
       });
     }
   }), _defineProperty(_methods, "stopWatchCall", function stopWatchCall() {
-    var _this9 = this;
+    var _this11 = this;
     var interval;
     if (this.inCall) {
       var drs = this.duration;
@@ -7160,7 +7202,7 @@ var __default__ = {
       var min = 0;
       var hrs = 0;
       interval = setInterval(function () {
-        if (_this9.inCall) {
+        if (_this11.inCall) {
           drs++;
           count++;
           if (count >= 60) {
@@ -7177,7 +7219,7 @@ var __default__ = {
           $("#hr").html(hrString);
           $("#min").html(minString);
           $("#sec").html(secString);
-          _this9.duration = drs;
+          _this11.duration = drs;
           console.log(drs);
         }
       }, 1000);
@@ -15572,44 +15614,78 @@ var _hoisted_5 = {
   key: 0,
   "class": "video-call-wrapper"
 };
-var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"video-participant\" id=\"remote-video\"><div class=\"participant-actions\"><button class=\"btn-mute\"></button><button class=\"btn-camera\"></button></div><a href=\"#\" class=\"name-tag\">Andy Will</a><!--&lt;img src=&quot;https://images.unsplash.com/photo-1566821582776-92b13ab46bb4?ixlib=rb-1.2.1&amp;amp;auto=format&amp;amp;fit=crop&amp;amp;w=900&amp;amp;q=60&quot; alt=&quot;participant&quot;&gt;--></div><div class=\"video-participant host\" id=\"local-video\"><!--&lt;div class=&quot;participant-actions&quot;&gt;\n           &lt;button class=&quot;btn-mute&quot;&gt;&lt;/button&gt;\n          &lt;button class=&quot;btn-camera&quot;&gt;&lt;/button&gt;\n         &lt;/div&gt;--><!--&lt;img src=&quot;https://images.unsplash.com/photo-1500917293891-ef795e70e1f6?ixlib=rb-1.2.1&amp;amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;amp;auto=format&amp;amp;fit=crop&amp;amp;w=1650&amp;amp;q=80&quot; alt=&quot;participant&quot;&gt;--></div>", 2);
-var _hoisted_8 = [_hoisted_6];
+var _hoisted_6 = {
+  key: 0,
+  "class": "video-participant",
+  id: "remote-video"
+};
+var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "participant-actions"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  "class": "btn-mute"
+}), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  "class": "btn-camera"
+})], -1 /* HOISTED */);
+var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+  href: "#",
+  "class": "name-tag"
+}, "Andy Will", -1 /* HOISTED */);
 var _hoisted_9 = {
+  key: 1,
+  "class": "video-participant",
+  id: "remote-video2"
+};
+var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "participant-actions"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  "class": "btn-mute"
+}), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  "class": "btn-camera"
+})], -1 /* HOISTED */);
+var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+  href: "#",
+  "class": "name-tag"
+}, "Andy Will", -1 /* HOISTED */);
+var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "video-participant host",
+  id: "local-video"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<div class=\"participant-actions\">\n           <button class=\"btn-mute\"></button>\n          <button class=\"btn-camera\"></button>\n         </div>"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<img src=\"https://images.unsplash.com/photo-1500917293891-ef795e70e1f6?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1650&amp;q=80\" alt=\"participant\">")], -1 /* HOISTED */);
+var _hoisted_13 = {
   key: 1,
   "class": "video-call-actions"
 };
-var _hoisted_10 = {
+var _hoisted_14 = {
   key: 2
 };
-var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
   style: {
     "text-align": "center"
   }
 }, "Call End", -1 /* HOISTED */);
-var _hoisted_12 = {
+var _hoisted_16 = {
   key: 0,
   "class": "card"
 };
-var _hoisted_13 = {
+var _hoisted_17 = {
   "class": "card-body"
 };
-var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "pt-4 pb-2"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
   "class": "card-title text-center pb-0 fs-4"
 }, " Share Your Feedback "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
   "class": "text-center small"
 }, " Please share your valuable feedback ")], -1 /* HOISTED */);
-var _hoisted_15 = {
+var _hoisted_19 = {
   "class": "row g-3 needs-validation",
   novalidate: ""
 };
-var _hoisted_16 = {
+var _hoisted_20 = {
   "class": "col-12 d-flex"
 };
-var _hoisted_17 = ["for"];
-var _hoisted_18 = ["id"];
-var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_21 = ["for"];
+var _hoisted_22 = ["id"];
+var _hoisted_23 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "col-12"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "for": "yourPassword",
@@ -15617,12 +15693,12 @@ var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 }, "Review"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
   "class": "form-control"
 })], -1 /* HOISTED */);
-var _hoisted_20 = {
+var _hoisted_24 = {
   "class": "col-12"
 };
-var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"right-side\"><button class=\"btn-close-right\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" class=\"feather feather-x-circle\" viewBox=\"0 0 24 24\"><defs></defs><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"M15 9l-6 6M9 9l6 6\"></path></svg></button><div class=\"chat-container\"><div class=\"chat-header\"><button class=\"chat-header-button\">Live Chat</button></div><div class=\"chat-area\"><div class=\"message-wrapper\"><div class=\"profile-picture\"><img src=\"https://images.unsplash.com/photo-1581824283135-0666cf353f35?ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1276&amp;q=80\" alt=\"pp\"></div><div class=\"message-content\"><p class=\"name\">Ryan Patrick</p><div class=\"message\">Helloo team!😍</div></div></div><div class=\"message-wrapper\"><div class=\"profile-picture\"><img src=\"https://images.unsplash.com/photo-1566821582776-92b13ab46bb4?ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=900&amp;q=60\" alt=\"pp\"></div><div class=\"message-content\"><p class=\"name\">Andy Will</p><div class=\"message\"> Hello! Can you hear me?🤯 <a class=\"mention\">@ryanpatrick</a></div></div></div><div class=\"message-wrapper\"><div class=\"profile-picture\"><img src=\"https://images.unsplash.com/photo-1600207438283-a5de6d9df13e?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1234&amp;q=80\" alt=\"pp\"></div><div class=\"message-content\"><p class=\"name\">Jessica Bell</p><div class=\"message\"> Hi team! Let&#39;s get started it. </div></div></div><div class=\"message-wrapper reverse\"><div class=\"profile-picture\"><img src=\"https://images.unsplash.com/photo-1500917293891-ef795e70e1f6?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1650&amp;q=80\" alt=\"pp\"></div><div class=\"message-content\"><p class=\"name\">Emmy Lou</p><div class=\"message\">Good morning!🌈</div></div></div><div class=\"message-wrapper\"><div class=\"profile-picture\"><img src=\"https://images.unsplash.com/photo-1576110397661-64a019d88a98?ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1234&amp;q=80\" alt=\"pp\"></div><div class=\"message-content\"><p class=\"name\">Tim Russel</p><div class=\"message\">New design document⬇️</div><div class=\"message-file\"><div class=\"icon sketch\"><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 512 512\"><path fill=\"#ffd54f\" d=\"M96 191.02v-144l160-30.04 160 30.04v144z\"></path><path fill=\"#ffecb3\" d=\"M96 191.02L256 16.98l160 174.04z\"></path><path fill=\"#ffa000\" d=\"M0 191.02l256 304 256-304z\"></path><path fill=\"#ffca28\" d=\"M96 191.02l160 304 160-304z\"></path><g fill=\"#ffc107\"><path d=\"M0 191.02l96-144v144zM416 47.02v144h96z\"></path></g></svg></div><div class=\"file-info\"><div class=\"file-name\">NewYear.sketch</div><div class=\"file-size\">120 MB</div></div></div></div></div><div class=\"message-wrapper\"><div class=\"profile-picture\"><img src=\"https://images.unsplash.com/photo-1581824283135-0666cf353f35?ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1276&amp;q=80\" alt=\"pp\"></div><div class=\"message-content\"><p class=\"name\">Ryan Patrick</p><div class=\"message\">Hi team!❤️</div><div class=\"message\"> I downloaded the file <a class=\"mention\">@timrussel</a></div></div></div><div class=\"message-wrapper reverse\"><div class=\"profile-picture\"><img src=\"https://images.unsplash.com/photo-1500917293891-ef795e70e1f6?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1650&amp;q=80\" alt=\"pp\"></div><div class=\"message-content\"><p class=\"name\">Emmy Lou</p><div class=\"message\">Woooww! Awesome❤️</div></div></div></div><div class=\"chat-typing-area-wrapper\"><div class=\"chat-typing-area\"><input type=\"text\" placeholder=\"Type your meesage...\" class=\"chat-input\"><button class=\"send-button\"><svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"feather feather-send\" viewBox=\"0 0 24 24\"><path d=\"M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z\"></path></svg></button></div></div></div></div><button class=\"expand-btn show\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"feather feather-message-circle\"><path d=\"M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z\"></path></svg></button>", 2);
+var _hoisted_25 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"right-side\"><button class=\"btn-close-right\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" class=\"feather feather-x-circle\" viewBox=\"0 0 24 24\"><defs></defs><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"M15 9l-6 6M9 9l6 6\"></path></svg></button><div class=\"chat-container\"><div class=\"chat-header\"><button class=\"chat-header-button\">Live Chat</button></div><div class=\"chat-area\"><div class=\"message-wrapper\"><div class=\"profile-picture\"><img src=\"https://images.unsplash.com/photo-1581824283135-0666cf353f35?ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1276&amp;q=80\" alt=\"pp\"></div><div class=\"message-content\"><p class=\"name\">Ryan Patrick</p><div class=\"message\">Helloo team!😍</div></div></div><div class=\"message-wrapper\"><div class=\"profile-picture\"><img src=\"https://images.unsplash.com/photo-1566821582776-92b13ab46bb4?ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=900&amp;q=60\" alt=\"pp\"></div><div class=\"message-content\"><p class=\"name\">Andy Will</p><div class=\"message\"> Hello! Can you hear me?🤯 <a class=\"mention\">@ryanpatrick</a></div></div></div><div class=\"message-wrapper\"><div class=\"profile-picture\"><img src=\"https://images.unsplash.com/photo-1600207438283-a5de6d9df13e?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1234&amp;q=80\" alt=\"pp\"></div><div class=\"message-content\"><p class=\"name\">Jessica Bell</p><div class=\"message\"> Hi team! Let&#39;s get started it. </div></div></div><div class=\"message-wrapper reverse\"><div class=\"profile-picture\"><img src=\"https://images.unsplash.com/photo-1500917293891-ef795e70e1f6?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1650&amp;q=80\" alt=\"pp\"></div><div class=\"message-content\"><p class=\"name\">Emmy Lou</p><div class=\"message\">Good morning!🌈</div></div></div><div class=\"message-wrapper\"><div class=\"profile-picture\"><img src=\"https://images.unsplash.com/photo-1576110397661-64a019d88a98?ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1234&amp;q=80\" alt=\"pp\"></div><div class=\"message-content\"><p class=\"name\">Tim Russel</p><div class=\"message\">New design document⬇️</div><div class=\"message-file\"><div class=\"icon sketch\"><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 512 512\"><path fill=\"#ffd54f\" d=\"M96 191.02v-144l160-30.04 160 30.04v144z\"></path><path fill=\"#ffecb3\" d=\"M96 191.02L256 16.98l160 174.04z\"></path><path fill=\"#ffa000\" d=\"M0 191.02l256 304 256-304z\"></path><path fill=\"#ffca28\" d=\"M96 191.02l160 304 160-304z\"></path><g fill=\"#ffc107\"><path d=\"M0 191.02l96-144v144zM416 47.02v144h96z\"></path></g></svg></div><div class=\"file-info\"><div class=\"file-name\">NewYear.sketch</div><div class=\"file-size\">120 MB</div></div></div></div></div><div class=\"message-wrapper\"><div class=\"profile-picture\"><img src=\"https://images.unsplash.com/photo-1581824283135-0666cf353f35?ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1276&amp;q=80\" alt=\"pp\"></div><div class=\"message-content\"><p class=\"name\">Ryan Patrick</p><div class=\"message\">Hi team!❤️</div><div class=\"message\"> I downloaded the file <a class=\"mention\">@timrussel</a></div></div></div><div class=\"message-wrapper reverse\"><div class=\"profile-picture\"><img src=\"https://images.unsplash.com/photo-1500917293891-ef795e70e1f6?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1650&amp;q=80\" alt=\"pp\"></div><div class=\"message-content\"><p class=\"name\">Emmy Lou</p><div class=\"message\">Woooww! Awesome❤️</div></div></div></div><div class=\"chat-typing-area-wrapper\"><div class=\"chat-typing-area\"><input type=\"text\" placeholder=\"Type your meesage...\" class=\"chat-input\"><button class=\"send-button\"><svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"feather feather-send\" viewBox=\"0 0 24 24\"><path d=\"M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z\"></path></svg></button></div></div></div></div><button class=\"expand-btn show\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"feather feather-message-circle\"><path d=\"M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z\"></path></svg></button>", 2);
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [_hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [_hoisted_4, $data.callPlaced ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_5, _hoisted_8)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.callPlaced ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_9, [$data.mutedAudio ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [_hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [_hoisted_4, $data.callPlaced ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_5, [$props.isCustomer && $props.isCustomer !== null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_6, [_hoisted_7, _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<img src=\"https://images.unsplash.com/photo-1566821582776-92b13ab46bb4?ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=900&amp;q=60\" alt=\"participant\">")])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_9, [_hoisted_10, _hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<img src=\"https://images.unsplash.com/photo-1566821582776-92b13ab46bb4?ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=900&amp;q=60\" alt=\"participant\">")])), _hoisted_12])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.callPlaced ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_13, [$data.mutedAudio ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 0,
     "class": "video-action-button mic",
     onClick: _cache[0] || (_cache[0] = function () {
@@ -15652,24 +15728,24 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[4] || (_cache[4] = function () {
       return $options.endCall && $options.endCall.apply($options, arguments);
     })
-  }, " Leave ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_10, [_hoisted_11, $props.isCustomer ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [_hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(5, function (n) {
+  }, " Leave ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_14, [_hoisted_15, $props.isCustomer ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [_hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(5, function (n) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
       key: n
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
       "class": "bi bi-star",
       "for": "star".concat(_ctx.id)
-    }, null, 8 /* PROPS */, _hoisted_17), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    }, null, 8 /* PROPS */, _hoisted_21), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
       type: "hidden",
       value: "",
       id: "star".concat(_ctx.id)
-    }, null, 8 /* PROPS */, _hoisted_18)]);
-  }), 64 /* STABLE_FRAGMENT */))]), _hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    }, null, 8 /* PROPS */, _hoisted_22)]);
+  }), 64 /* STABLE_FRAGMENT */))]), _hoisted_23, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_24, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     onClick: _cache[5] || (_cache[5] = function () {
       return $options.redirectBack && $options.redirectBack.apply($options, arguments);
     }),
     "class": "btn btn-primary w-100",
     type: "button"
-  }, " Submit ")])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]))]), _hoisted_21]);
+  }, " Submit ")])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]))]), _hoisted_25]);
 }
 
 /***/ }),
