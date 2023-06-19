@@ -121,7 +121,7 @@ class AgoraVideoController extends Controller
                 return back()->with('error', 'Insuficient Account Balance');
             }
         }
-        $checkLog = CallLog::where(['channel_id'=>$channel])->where('call_status', '!=', 2)->first();
+        $checkLog = CallLog::where(['channel_id'=>$channel])->where('call_status', '!=', 2)->latest()->first();
         if ($checkLog) {
             CallLog::where(['channel_id'=>$channel, 'call_status'=>1])->update(['call_status'=>5, 'start_time'=>date('Y-m-d H:i:s')]);
             $appID = config('services.agora.app_id');
