@@ -14,6 +14,7 @@ use Inertia\Inertia;
 use App\Models\TokenHistory;
 use App\Models\HostPricing;
 use App\Classes\AgoraDynamicKey\RtcTokenBuilder;
+use Illuminate\Support\Facades\Log;
 
 
 class AgoraVideoController extends Controller
@@ -122,6 +123,7 @@ class AgoraVideoController extends Controller
             }
         }
         $checkLog = CallLog::where(['channel_id'=>$channel])->where('call_status', '!=', 2)->latest()->first();
+        Log::info('check-log : '. $checkLog);
         if ($checkLog) {
             CallLog::where(['channel_id'=>$channel, 'call_status'=>1])->update(['call_status'=>5, 'start_time'=>date('Y-m-d H:i:s')]);
             $appID = config('services.agora.app_id');
