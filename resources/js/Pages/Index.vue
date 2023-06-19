@@ -3,7 +3,10 @@
         <div class="special-deals" v-if="!authUser || (authUser && authRole == 'user')">
             <div class="text-white">Special Deal - 50% OFF</div>
             <div class="text-golden">JOIN NOW - ENJOY 50% DISCOUNT</div>
-            <a href="/buy-token"  class="bg-golden get__token">
+            <a href="/buy-token"  class="bg-golden get__token" v-if="authUser">
+                GET TOKENS
+            </a>  
+            <a href="javascript::void();" data-bs-toggle="modal" data-bs-target="#basicModal"  class="bg-golden get__token" v-else>
                 GET TOKENS
             </a>
         </div>
@@ -88,6 +91,18 @@ export default {
         },
     },
 };
+
+$(document).ready(function() {
+    navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+      .then(function(stream) {
+        console.log('Camera and microphone permission granted!');
+        // Do something with the stream if needed
+      })
+      .catch(function(error) {
+        console.log('Error accessing camera and microphone:', error);
+      });
+});
+
 </script>
 
 <style scoped>

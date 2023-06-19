@@ -269,7 +269,7 @@ class FrontendController extends Controller
 
     public function buyToken()
     {
-        $list = Coin::all();
+        $list = Coin::orderBy('amount')->get();
         return view('frontend.buy_token', compact('list'));
     }
 

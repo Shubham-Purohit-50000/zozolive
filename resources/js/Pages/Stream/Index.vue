@@ -461,18 +461,17 @@
             loader="dots"
             color="#a2262e"
         />
-        <DummyC></DummyC>
     </section>
 </template>
 
 <script>
 import Section1 from "./Shared/Section1.vue";
-import DummyC from "../../Pages/Dummy.vue";
 import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/css/index.css";
 import EventBus from '../../event-bus';
+import Swal from 'sweetalert2';
 export default {
-    components: { Section1, Loading , DummyC},
+    components: { Section1, Loading},
     props: {
         users: {
             type: Array,
@@ -522,6 +521,7 @@ export default {
         },
     },
     mounted() {
+        
         if (this.authUser) {
             this.goal = this.authUser?.model?.goal;
             this.goalToken = this.authUser?.model?.goal_token;

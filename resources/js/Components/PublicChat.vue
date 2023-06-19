@@ -5,7 +5,7 @@
       role="tabpanel"
       aria-labelledby="home-tab"
   >
-    <ul :class="['messages__box ml-2', !sended_tip ? 'top_postion' : '']">
+    <ul :class="['messages__box ml-2', !sended_tip ? 'top_postion' : '']" :style="!sended_tip ? 'height:17rem' : 'height:27rem'">
       <li
           :class="['messages__box--message']"
           v-for="(msg, i) in messages"
@@ -60,7 +60,8 @@
         <a href="#" @click="showLoginModel"> create a free account.</a> 
       <!--      <span>With tokens, you get to</span>-->
       <br/>
-      <button class="btn public__chat--alert_btn">Buy Tokens</button>
+      <a v-if="authUser" href="/buy-token" class="btn public__chat--alert_btn">Buy Tokens</a>
+      <a v-else @click="showLoginModel" class="btn public__chat--alert_btn">Buy Tokens</a>
       </div>
      
       <div class="tip_menu" v-if="authUser && authUserLevelData.token > 0 && !sended_tip">
@@ -220,7 +221,7 @@
 
                                                         <div class="tip">
                                                             <button @click="sendUserTip">
-                                                                Buy Token
+                                                               {{ parseInt(authUser.token) > 0 ? 'Send Tip' : 'Buy Token' }} 
                                                             </button>
                                                         </div>
                                                     </div>

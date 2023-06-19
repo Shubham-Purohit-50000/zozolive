@@ -109,7 +109,9 @@
           </ul>
         </div>
       </div>
-      <div class="d-flex align-items-center send__message--wrapper">
+      <!-- send message-->
+      <div class="d-flex align-items-center send__message--wrapper" 
+      v-if="authUser && parseInt(authUser.token) > 0">
         <!--begin::Compose-->
         <EmojiPicker
             :native="true"
@@ -135,6 +137,12 @@
         </div>
         <!--begin::Compose-->
       </div>
+      <div v-else>
+        <a href="/buy-token"  class="bg-golden get__token ms-3">
+                GET TOKENS
+            </a>  
+      </div>
+      <!-- End send message -->
     </div>
   </div>
 </template>
@@ -352,7 +360,19 @@ export default {
 .h-92 {
   height: 89% !important;
 }
-
+.text-golden {
+    color: rgb(231, 169, 13);
+}
+.bg-golden {
+    background-color: rgb(231, 169, 13);
+}
+.get__token {
+    color: #000;
+    padding: 0.4rem 1rem;
+    border-radius: 2rem;
+    border: none;
+    outline: none;
+}
 .send__message--wrapper {
   background-color: #26272b !important;
   padding: 0.6rem;
