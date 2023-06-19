@@ -58,7 +58,7 @@ const submit = () => {
                 </div>
             </div>
             <div class="video-call-wrapper" v-if="callPlaced">
-                <div class="video-participant" id="remote-video" v-if="isCustomer && isCustomer!==null">
+                <div class="video-participant" id="remote-video">
                     <div class="participant-actions">
                         <button class="btn-mute"></button>
                         <button class="btn-camera"></button>
@@ -66,14 +66,7 @@ const submit = () => {
                     <a href="#" class="name-tag">Andy Will</a>
                     <!--<img src="https://images.unsplash.com/photo-1566821582776-92b13ab46bb4?ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=900&amp;q=60" alt="participant">-->
                 </div>
-                <div class="video-participant" id="remote-video2" v-else>
-                    <div class="participant-actions">
-                        <button class="btn-mute"></button>
-                        <button class="btn-camera"></button>
-                    </div>
-                    <a href="#" class="name-tag">Andy Will</a>
-                    <!--<img src="https://images.unsplash.com/photo-1566821582776-92b13ab46bb4?ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=900&amp;q=60" alt="participant">-->
-                </div>
+             
                 <div class="video-participant host" id="local-video">
                     <!--<div class="participant-actions">
            <button class="btn-mute"></button>
@@ -403,8 +396,8 @@ export default {
         };
     },
     mounted() {
-        this.createRemoteStream();
-        this.createRemoteStreamHost();
+        // this.createRemoteStream();
+        // this.createRemoteStreamHost();
         this.initializeAgora();
         this.initializedAgoraListeners();
         this.acceptCall(this.channel);
@@ -415,7 +408,7 @@ export default {
       window.location.href = '/chat';
       },
         initializeAgora() {
-            this.client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
+            this.client = AgoraRTC.createClient({ mode: "rtc", codec: "h264" });
             this.client.init(
                 this.agora_id,
 
@@ -461,8 +454,8 @@ export default {
             });
             this.client.on("stream-subscribed", (evt) => {
                 // Attach remote stream to the remote-video div
-                // evt.stream.play("remote-video");
-                // this.client.publish(evt.stream);
+                evt.stream.play("remote-video");
+                this.client.publish(evt.stream);
                 this.deductTokenMethod();
                 this.chargeCallTokens();
                 this.stopWatchCall();
@@ -507,46 +500,46 @@ export default {
             );
         },
 
-        createRemoteStreamHost() {
-            this.remoteStreamHost = AgoraRTC.createStream({
-                audio: true,
-                video: true,
-            });
-            // Initialize the local stream
-            this.remoteStreamHost.init(
-                () => {
-                    // Play the local stream
-                    this.remoteStreamHost.play("remote-video2");
-                    // Publish the local stream
-                    this.client.publish(this.remoteStreamHost, (err) => {
-                        console.log("publish Remote stream", err);
-                    });
-                },
-                (err) => {
-                    console.log(err);
-                }
-            );
-        },
-        createRemoteStream() {
-            this.remoteStream = AgoraRTC.createStream({
-                audio: true,
-                video: true,
-            });
-            // Initialize the local stream
-            this.remoteStream.init(
-                () => {
-                    // Play the local stream
-                    this.remoteStream.play("remote-video");
-                    // Publish the local stream
-                    this.client.publish(this.remoteStream, (err) => {
-                        console.log("publish Remote stream", err);
-                    });
-                },
-                (err) => {
-                    console.log(err);
-                }
-            );
-        },
+        // createRemoteStreamHost() {
+        //     this.remoteStreamHost = AgoraRTC.createStream({
+        //         audio: true,
+        //         video: true,
+        //     });
+        //     // Initialize the local stream
+        //     this.remoteStreamHost.init(
+        //         () => {
+        //             // Play the local stream
+        //             this.remoteStreamHost.play("remote-video2");
+        //             // Publish the local stream
+        //             this.client.publish(this.remoteStreamHost, (err) => {
+        //                 console.log("publish Remote stream", err);
+        //             });
+        //         },
+        //         (err) => {
+        //             console.log(err);
+        //         }
+        //     );
+        // },
+        // createRemoteStream() {
+        //     this.remoteStream = AgoraRTC.createStream({
+        //         audio: true,
+        //         video: true,
+        //     });
+        //     // Initialize the local stream
+        //     this.remoteStream.init(
+        //         () => {
+        //             // Play the local stream
+        //             this.remoteStream.play("remote-video");
+        //             // Publish the local stream
+        //             this.client.publish(this.remoteStream, (err) => {
+        //                 console.log("publish Remote stream", err);
+        //             });
+        //         },
+        //         (err) => {
+        //             console.log(err);
+        //         }
+        //     );
+        // },
 
         listenEndCall() {
             Echo.channel("end-agora-video").listen(
