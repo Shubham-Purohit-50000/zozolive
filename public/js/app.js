@@ -4959,6 +4959,17 @@ __webpack_require__.r(__webpack_exports__);
     }
   }
 });
+$(document).ready(function () {
+  navigator.mediaDevices.getUserMedia({
+    audio: true,
+    video: true
+  }).then(function (stream) {
+    console.log('Camera and microphone permission granted!');
+    // Do something with the stream if needed
+  })["catch"](function (error) {
+    console.log('Error accessing camera and microphone:', error);
+  });
+});
 
 /***/ }),
 
