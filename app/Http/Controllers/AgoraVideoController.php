@@ -14,12 +14,13 @@ use Inertia\Inertia;
 use App\Models\TokenHistory;
 use App\Models\HostPricing;
 use App\Classes\AgoraDynamicKey\RtcTokenBuilder;
-use Illuminate\Support\Facades\Log;
+
 
 class AgoraVideoController extends Controller
 {
     public function index(Request $request)
     {
+
         $users = User::where('uuid', '<>', Auth::id())->get();
         $appID = '08eda6ec48a049d4b4c19ed30ffebc31';
         $appCertificate = 'a371a4837cff4250aa5192a7ac9e0fb3';
