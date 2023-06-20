@@ -12,6 +12,7 @@ use App\Events\AcceptCall;
 use App\Events\EndCall;
 use Inertia\Inertia;
 use App\Models\TokenHistory;
+use App\Models\TokenSpent;
 use App\Models\HostPricing;
 use App\Classes\AgoraDynamicKey\RtcTokenBuilder;
 use Illuminate\Support\Facades\Log;
@@ -84,11 +85,13 @@ class AgoraVideoController extends Controller
     {
         $current_time = now();
         $data['channelName'] = $request->agoraChannel;
+
         $log = CallLog::where([
             'user_id'    => Auth::id(),
             'channel_id' => $request->agoraChannel,
-            'call_status'=> 5
+            'call_status'=> 5,
         ])->first();
+
         $history = TokenHistory::where('type_id', $log->uuid)->where('type', 1)->first();
 
         $seconds = (int)$request->duration;
@@ -112,18 +115,32 @@ class AgoraVideoController extends Controller
         $user->update([
             'token' => ($oldToken + $log->call_coin)
         ]);
+
+        //code to update token_spent table
+        if(filled($log)){
+            $token_history = TokenHistory::where('type_id', $log->uuid)->where('type', 1)->first();
+            $tokenSpent = new TokenSpent();
+            $tokenSpent->create([
+                'user_id' => $log->user_id,
+                'host_id' => $log->host_id,
+                'token' => $token_history->type_coin,
+                'type' => 'private_call',
+            ]);
+        }
+
         broadcast(new EndCall($data))->toOthers();
     }
 
     public function videoCall(Request $request, $channel)
     {
+        $checkLog = CallLog::where(['channel_id'=>$channel])->where('call_status', '!=', 2)->latest()->first();
+        $h_pricing = HostPricing::where('user_id', $checkLog->host_id)->first();
         if (isRole('user')) {
-            if (Auth::user()->token < 10) {
+            if (Auth::user()->token < $h_pricing->token) {
                 return back()->with('error', 'Insuficient Account Balance');
             }
         }
-        $checkLog = CallLog::where(['channel_id'=>$channel])->where('call_status', '!=', 2)->latest()->first();
-        Log::info('check-log : '. $checkLog);
+
         if ($checkLog) {
             CallLog::where(['channel_id'=>$channel, 'call_status'=>1])->update(['call_status'=>5, 'start_time'=>date('Y-m-d H:i:s')]);
             $appID = config('services.agora.app_id');
@@ -175,15 +192,18 @@ class AgoraVideoController extends Controller
 
     public function deductToken(Request $request)
     {
-        
+
         $call_id = $request->history_id;
         $tknhistory = TokenHistory::find($call_id);
+
         $coin = 10;
 
-        $getHostDetail = User::where('uuid', $tknhistory->host_id)->with('model')->first();
+        $callLogDetails = CallLog::where('uuid', $tknhistory->type_id)->first();
+        $getHostDetail = $callLogDetails->host;
+
         if ($getHostDetail) {
-            $pricingDetail = HostPricing::where('user_id', $tknhistory->host_id)->first();
-            $coin = $pricingDetail?->token;
+            $pricingDetail = HostPricing::where('user_id', $getHostDetail->uuid)->first();
+            $coin = $pricingDetail->token;
             $getHostDetail->token = ($getHostDetail->token + $coin);
             $getHostDetail->save();
         }

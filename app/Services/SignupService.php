@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Log;
 
 class SignupService
 {
@@ -32,6 +33,7 @@ class SignupService
 
     public function createModel(User $user, $request)
     {
+        Log::info(json_encode($request));
         $host = $user->model()->create([
             'interested_in'      => $request['interest'],
             'language_id'        => $request['language_id'],

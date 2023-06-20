@@ -88,6 +88,69 @@ class CallHistoryController extends Controller
         return response()->json([
             'token_spent'=> $host_array,
         ]);
+
+    }
+
+    public function privateCallHistory(Request $req){
+        $token_spents = CallLog::where('user_id', $req->user_id);
+    
+        $formet_date = null;
+
+        if($req->has('date')){
+            $formet_date = Carbon::parse($req->date)->format('Y-m-d');
+            $token_spents->whereDate('created_at',  $formet_date);
+        }else{
+            $formet_date = Carbon::today()->format('Y-m-d');
+            $token_spents->whereDate('created_at', $formet_date);
+        }
+        $token_spents = $token_spents->latest()->get();
+      
+        $host_array = [];
+        foreach ($token_spents as $data) {
+            $host = User::where('uuid', $data['host_id'])->first();
+            $object = new stdClass();
+            $object->host_name = $host->name;
+            $object->token = $data['call_coin'];
+            $object->type = 'Private Call';
+            $object->created_at = Carbon::parse($data['created_at'])->format('Y-m-d h:i:s a');
+            $object->call_duration = $data['duration'];
+            array_push($host_array, $object);
+        }
+      
+        return response()->json([
+            'token_spent'=> $host_array,
+        ]);
+    }
+
+    public function hostPrivateCallHistory(Request $req){
+        $token_spents = CallLog::where('host_id', $req->user_id);
+    
+        $formet_date = null;
+
+        if($req->has('date')){
+            $formet_date = Carbon::parse($req->date)->format('Y-m-d');
+            $token_spents->whereDate('created_at',  $formet_date);
+        }else{
+            $formet_date = Carbon::today()->format('Y-m-d');
+            $token_spents->whereDate('created_at', $formet_date);
+        }
+        $token_spents = $token_spents->latest()->get();
+      
+        $host_array = [];
+        foreach ($token_spents as $data) {
+            $host = User::where('uuid', $data['user_id'])->first();
+            $object = new stdClass();
+            $object->host_name = $host->name;
+            $object->token = $data['call_coin'];
+            $object->type = 'Private Call';
+            $object->created_at = Carbon::parse($data['created_at'])->format('Y-m-d h:i:s a');
+            $object->call_duration = $data['duration'];
+            array_push($host_array, $object);
+        }
+      
+        return response()->json([
+            'token_spent'=> $host_array,
+        ]);
     }
 
     public function sendTipHistory(Request $req, User $user){

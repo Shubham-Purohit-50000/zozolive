@@ -62,11 +62,13 @@ Route::get('/call-history', [CallHistoryController::class, 'callHistory']); // n
 Route::prefix('checker')->group(function () {
     //------ user call history
     Route::get('user/token/private-chat-history/{user}', [CallHistoryController::class, 'privateChatHistory']);
+    Route::post('user/token/private-call-history', [CallHistoryController::class, 'privateCallHistory']);
     Route::get('user/token/recharge-history/{user}', [CallHistoryController::class, 'userTransactionHistory']);
     Route::get('user/token/sent-tip-history/{user}', [CallHistoryController::class, 'sendTipHistory']);
 
     //---------Host call history
     Route::get('host/token/private-chat-history/{user}', [CallHistoryController::class, 'hostPrivateChatHistory']);
+    Route::post('host/token/private-call-history', [CallHistoryController::class, 'hostPrivateCallHistory']);
     Route::get('host/token/history/{user}', [CallHistoryController::class, 'hostTokenHistory']);
     Route::get('host/income-report/{user}', [CallHistoryController::class, 'incomeReport']);
 

@@ -128,6 +128,10 @@
     align-items: center;
 }
 
+.desktop-d-none{
+    display: none!important;
+}
+
 @media screen and (max-width: 768px){
     .header-nav .login__btn, .header-nav .signup__btn{
         display: none;
