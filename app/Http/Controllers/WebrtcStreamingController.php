@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\StreamAnswer;
 use App\Events\StreamEvent;
 use App\Models\Country;
+use App\Models\Host;
 use App\Models\Language;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -33,14 +34,14 @@ class WebrtcStreamingController extends Controller
     {
         return view('stream');
 
-//        return inertia('Broadcaster', [
-//            'type'           => 'broadcaster',
-//            'auth_user_id'   => Auth::id(),
-//            'env'            => env('APP_ENV'),
-//            'turn_url'       => env('TURN_SERVER_URL'),
-//            'turn_username'  => env('TURN_SERVER_USERNAME'),
-//            'turn_credential'=> env('TURN_SERVER_CREDENTIAL')
-//        ]);
+        //        return inertia('Broadcaster', [
+        //            'type'           => 'broadcaster',
+        //            'auth_user_id'   => Auth::id(),
+        //            'env'            => env('APP_ENV'),
+        //            'turn_url'       => env('TURN_SERVER_URL'),
+        //            'turn_username'  => env('TURN_SERVER_USERNAME'),
+        //            'turn_credential'=> env('TURN_SERVER_CREDENTIAL')
+        //        ]);
     }
 
     public function consumer(Request $request, $streamId)
@@ -122,7 +123,8 @@ class WebrtcStreamingController extends Controller
         $isCustomer = isRole('user');
 
         $test_user = User::get();
-        
+        $host = Host::where('user_id', auth()->id())->with('ticketShow')->first();
+
         return inertia('Stream/Index', [
             'users' => User::withoutEvents(function () {
                 $role = 'user';
@@ -138,7 +140,8 @@ class WebrtcStreamingController extends Controller
             'agoraChannel'  => $channelName,
             'authuserid'    => auth()->id(),
             'appCertificate'=> $appCertificate,
-            'isCustomer'    => $isCustomer
+            'isCustomer'    => $isCustomer,
+            'host'    => $host,
         ]);
     }
 }

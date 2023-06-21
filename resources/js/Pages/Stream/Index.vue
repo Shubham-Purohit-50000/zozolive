@@ -1,6 +1,7 @@
 <template>
     <Section1
         :auth-user="authUser"
+        :host-details="host"
         :users="users"
         :agoraChannel="agoraChannel"
         :agora-id ="agora_id"
@@ -474,6 +475,10 @@ export default {
     components: { Section1, Loading},
     props: {
         users: {
+            type: Array,
+            default: () => [],
+        },
+        host: {
             type: Array,
             default: () => [],
         },
