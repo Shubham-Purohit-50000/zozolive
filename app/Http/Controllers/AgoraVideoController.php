@@ -15,8 +15,8 @@ use App\Models\TokenHistory;
 use App\Models\TokenSpent;
 use App\Models\HostPricing;
 use App\Classes\AgoraDynamicKey\RtcTokenBuilder;
+use App\Models\Host;
 use Illuminate\Support\Facades\Log;
-
 
 class AgoraVideoController extends Controller
 {
@@ -101,7 +101,7 @@ class AgoraVideoController extends Controller
         $hrs = $hrs / 60;
 
         $duration = (int)$hrs . ':' . (int)$mins . ':' . (int)$secs;
-        
+
         $log->update([
             'call_status'    => 2,
             'end_time'       => $current_time,
@@ -117,7 +117,7 @@ class AgoraVideoController extends Controller
         ]);
 
         //code to update token_spent table
-        if(filled($log)){
+        if(filled($log)) {
             $token_history = TokenHistory::where('type_id', $log->uuid)->where('type', 1)->first();
             $tokenSpent = new TokenSpent();
             $tokenSpent->create([
@@ -140,6 +140,8 @@ class AgoraVideoController extends Controller
                 return back()->with('error', 'Insuficient Account Balance');
             }
         }
+
+        $host = User::where('uuid', $checkLog->host_id)->first();
 
         if ($checkLog) {
             CallLog::where(['channel_id'=>$channel, 'call_status'=>1])->update(['call_status'=>5, 'start_time'=>date('Y-m-d H:i:s')]);
@@ -165,14 +167,14 @@ class AgoraVideoController extends Controller
             }
             $isCustomer = isRole('user');
             Inertia::setRootView('videocall');
-            return Inertia('VideoCall', ['channel'=>$channel, 'authuid'=>(int)$uid, 'agora_id'=>$appID, 'appCertificate'=>$appCertificate, 'agoraToken'=>$agoraToken, 'history_id'=>$hisid, 'isCustomer'=>$isCustomer]);
+            return Inertia('VideoCall', ['channel'=>$channel, 'authuid'=>(int)$uid, 'HostName'=>$host->name, 'agora_id'=>$appID, 'appCertificate'=>$appCertificate, 'agoraToken'=>$agoraToken, 'history_id'=>$hisid, 'isCustomer'=>$isCustomer]);
         } else {
             return back()->with('error', 'Invalid Channel Request');
         }
     }
 
     public function generateToken($channelName, $uid)
-    { 
+    {
         $appID = '08eda6ec48a049d4b4c19ed30ffebc31';
         $appCertificate = 'a371a4837cff4250aa5192a7ac9e0fb3';
         $channelName = $channelName;
