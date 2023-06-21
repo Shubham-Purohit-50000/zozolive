@@ -85,7 +85,24 @@
                        Private Chat
                     </button>
                 </li>
-
+                <li
+                    class="nav-item"
+                    role="presentation"
+                >
+                    <button
+                        class="nav-link w-100 chat_card--btn"
+                        id="profile-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#privateCall"
+                        type="button"
+                        role="tab"
+                        aria-controls="profile"
+                        aria-selected="false"
+                    >
+                    <i class="bi bi-telephone-inbound-fill"></i>
+                       Private Call
+                    </button>
+                </li>
                 <li
                     class="nav-item"
                     role="presentation"
@@ -228,6 +245,69 @@
                    </div>
                  </div>
 
+                   <!--Private Call -->
+                <div
+                class="tab-content pt-2 mt-20"
+            >
+                <div
+                    class="tab-pane  "
+                    id="privateCall"
+                    role="tabpanel"
+                    aria-labelledby="contact-tab"
+                >
+                    <div
+                        class="tip_box"
+                    >
+                    <form class="d-flex justify-content-between call_history_filter"
+                      style="margin-top: 1.5rem; margin-bottom: 1rem;">
+                    <h5 >Private Call</h5>
+                    <div class="d-flex align-items-center call_history_filter--date" style="gap: 1rem;">
+                        <datepicker
+                        v-model="searchBy"
+                        :locale="locale"
+                        :upperLimit="to"
+                        :lowerLimit="from"
+                        :clearable="true"
+                        :style="'background-color:#000; border:1px solid #fff; border-radius:15px; height:40px; color:#fff; padding-left:10px'"
+                    />
+                        <!-- <input placeholder="Select Datte" name="daterange" class="inputBox1" type="date" v-model ="searchBy" id="date"/> -->
+                        <div>
+                            <button class="btn btn__search" type="button" @click="findFilterData()">Search</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="table-responsive">
+                    <table class="table table-dark table-striped" style="color: #888888;">
+                        <thead>
+                        <th>#</th>
+                        
+                            <th v-if="role==='user'">Model </th>
+                          
+                                <th v-else>User</th>
+                           
+                        <th>Token</th>
+                        <th>Type</th>
+                        <th>Call Duration</th>
+                        <!-- <th>Status</th> -->
+                        <th>Date</th>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(value, index2) in private_call" :key="index2">
+                               <td>{{  index2+1 }}</td>
+                               <td>{{  value.host_name ? value.host_name : value.user_name }}</td>
+                               <td>{{  value.token }}</td>
+                               <td>{{  value.type}}</td>
+                               <td>{{  value.call_duration }}</td>
+                               <td>{{  value.date }}</td>
+                            
+                            </tr>
+                        
+                        </tbody>
+                    </table>
+                </div>
+                   </div>
+                 </div>
+                </div>
                  <!-- Income Report-->
 
                  <div
@@ -298,6 +378,8 @@
                 </div>
 
                 </div>
+
+                
     </section>
 </template>
 
@@ -317,6 +399,7 @@ export default {
             recharge:[],
             host_private_chat:[],
             host_income_report_data:[],
+            private_call:[],
         };
     },
     mounted() {
@@ -325,10 +408,12 @@ export default {
             this.getHostPrivateChat();
             this.getHostTokenHistory();
             this.getHostIncomeReport();
+            this.getHostPrivateCall();
         } else {
             this.getSpentToken();
             this.getPrivateChat();
             this.getRechargeHistory();
+            this.getPrivateCall();
 
         }
      
@@ -340,16 +425,20 @@ export default {
        findFilterData() {
         if(this.role === 'host') {
                 this.getHostPrivateChat();
+                this.getHostPrivateCall();
         } else {
             this.getPrivateChat();
+            this.getPrivateCall();
         }
        
        } ,   
         filterTokenHistory() {
             if(this.role === 'host') {
                 this.getHostTokenHistory();
+                this.getHostPrivateCall();
         } else {
             this.getSpentToken();
+            this.getPrivateCall();
         }
     
        } ,  
@@ -416,6 +505,25 @@ export default {
                 }
     }, 
     
+    getHostPrivateCall() {
+        try {
+                if(this.searchBy) {
+                    let new_date = this.convert(this.searchBy);
+                    axios.get("/checker/host/token/private-call-history/"+this.user.uuid+'?date='+new_date).then((resp)=> {
+                    this.private_call = this.callHistoryData(resp.data.token_spent);
+                    });
+                
+                } else {
+                    axios.get("/checker/host/token/private-call-history/"+this.user.uuid).then((resp)=> {
+                    this.private_call = this.callHistoryData(resp.data.token_spent);
+                    });
+                
+                }
+               
+                } catch (error) {
+                    console.log(error);
+                }
+    },
     
     getRechargeHistory() {
             try {
@@ -432,6 +540,25 @@ export default {
                 axios.get("/checker/host/income-report/"+this.user.uuid).then((resp)=> {
                     this.host_income_report_data = resp.data.income_report;
                 });
+                } catch (error) {
+                    console.log(error);
+                }
+    },
+    getPrivateCall() {
+        try {
+                if(this.searchBy) {
+                    let new_date = this.convert(this.searchBy);
+                    axios.get("/checker/user/token/private-call-history/"+this.user.uuid+'?date='+new_date).then((resp)=> {
+                    this.private_call = this.callHistoryData(resp.data.token_spent);
+                    });
+                
+                } else {
+                    axios.get("/checker/user/token/private-call-history/"+this.user.uuid).then((resp)=> {
+                    this.private_call = this.callHistoryData(resp.data.token_spent);
+                    });
+                
+                }
+               
                 } catch (error) {
                     console.log(error);
                 }
@@ -506,6 +633,24 @@ export default {
 					new_node.date = node.created_at;
 					new_node.host_id = node.host_id;
 					new_node.total_token = node.total_token;
+					table_rows.push(new_node);
+				}
+			};
+            }
+			
+			return table_rows;
+		}, 
+        callHistoryData(data) {
+			let table_rows = [];
+            if(data) {
+                for (let key in data) {
+				let node = data[key];
+				if (node) {
+					var new_node = {};
+					new_node.host_name = node.host_name;
+					new_node.date = moment( node.created_at).format('dddd MMMM D Y');;
+					new_node.call_duration = node.call_duration;
+					new_node.token = node.token;
 					table_rows.push(new_node);
 				}
 			};

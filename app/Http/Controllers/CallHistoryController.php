@@ -44,7 +44,7 @@ class CallHistoryController extends Controller
         //     $end = date('Y-m-d', strtotime(trim($daterange[1]))).' 23:59:00';
         // }
         // $key = isRole('user') ? 'user_id' : 'host_id';
-       
+
         $role = isRole('user') ? 'user' : 'host';
         return inertia('Token/Index', [
             'role'  => $role,
@@ -53,7 +53,8 @@ class CallHistoryController extends Controller
         ]);
     }
 
-    public function privateChatHistory(Request $req, User $user){
+    public function privateChatHistory(Request $req, User $user)
+    {
 
         $token_spents = TokenSpent::select('host_id', DB::raw('SUM(token) as total_token'))
         ->where('user_id', $user->uuid)
@@ -62,17 +63,17 @@ class CallHistoryController extends Controller
 
         $formet_date = null;
 
-        if($req->has('date')){
+        if($req->has('date')) {
             $formet_date = Carbon::parse($req->date)->format('Y-m-d');
-            $token_spents->whereDate('created_at',  $formet_date);
-        }else{
+            $token_spents->whereDate('created_at', $formet_date);
+        } else {
             $formet_date = Carbon::today()->format('Y-m-d');
             $token_spents->whereDate('created_at', $formet_date);
         }
         $token_spents = $token_spents->latest()->get();
-      
+
         $host_array = [];
-        foreach ( $token_spents as $data) {
+        foreach ($token_spents as $data) {
             $host = User::where('uuid', $data['host_id'])->first();
             $object = new stdClass();
             $object->host_name = $host->name;
@@ -84,27 +85,28 @@ class CallHistoryController extends Controller
             $object->user_id = $data['user_id'];
             array_push($host_array, $object);
         }
-      
+
         return response()->json([
             'token_spent'=> $host_array,
         ]);
 
     }
 
-    public function privateCallHistory(Request $req){
-        $token_spents = CallLog::where('user_id', $req->user_id);
-    
+    public function privateCallHistory(Request $req, User $user)
+    {
+        $token_spents = CallLog::where('user_id', $user->uuid);
+
         $formet_date = null;
 
-        if($req->has('date')){
+        if($req->has('date')) {
             $formet_date = Carbon::parse($req->date)->format('Y-m-d');
-            $token_spents->whereDate('created_at',  $formet_date);
-        }else{
+            $token_spents->whereDate('created_at', $formet_date);
+        } else {
             $formet_date = Carbon::today()->format('Y-m-d');
             $token_spents->whereDate('created_at', $formet_date);
         }
         $token_spents = $token_spents->latest()->get();
-      
+
         $host_array = [];
         foreach ($token_spents as $data) {
             $host = User::where('uuid', $data['host_id'])->first();
@@ -116,26 +118,27 @@ class CallHistoryController extends Controller
             $object->call_duration = $data['duration'];
             array_push($host_array, $object);
         }
-      
+
         return response()->json([
             'token_spent'=> $host_array,
         ]);
     }
 
-    public function hostPrivateCallHistory(Request $req){
-        $token_spents = CallLog::where('host_id', $req->user_id);
-    
+    public function hostPrivateCallHistory(Request $req, User $user)
+    {
+        $token_spents = CallLog::where('host_id', $user->uuid);
+
         $formet_date = null;
 
-        if($req->has('date')){
+        if($req->has('date')) {
             $formet_date = Carbon::parse($req->date)->format('Y-m-d');
-            $token_spents->whereDate('created_at',  $formet_date);
-        }else{
+            $token_spents->whereDate('created_at', $formet_date);
+        } else {
             $formet_date = Carbon::today()->format('Y-m-d');
             $token_spents->whereDate('created_at', $formet_date);
         }
         $token_spents = $token_spents->latest()->get();
-      
+
         $host_array = [];
         foreach ($token_spents as $data) {
             $host = User::where('uuid', $data['user_id'])->first();
@@ -147,25 +150,26 @@ class CallHistoryController extends Controller
             $object->call_duration = $data['duration'];
             array_push($host_array, $object);
         }
-      
+
         return response()->json([
             'token_spent'=> $host_array,
         ]);
     }
 
-    public function sendTipHistory(Request $req, User $user){
+    public function sendTipHistory(Request $req, User $user)
+    {
 
         $token_spents = TokenSpent::where('user_id', $user->uuid)->where('type', 'spend_tip');
 
-        if($req->has('date')){
+        if($req->has('date')) {
             $token_spents->whereDate('created_at', $req->date);
-        }else{
+        } else {
             $token_spents->whereDate('created_at', Carbon::today());
         }
         $token_spents = $token_spents->latest()->get();
-        
+
         $host_array = [];
-        foreach ( $token_spents as $data) {
+        foreach ($token_spents as $data) {
             $host = User::where('uuid', $data['host_id'])->first();
             $object = new stdClass();
             $object->host_name = $host->name;
@@ -176,41 +180,43 @@ class CallHistoryController extends Controller
             $object->user_id = $data['user_id'];
             array_push($host_array, $object);
         }
-       
+
         return response()->json([
             'token_spent'=> $host_array,
         ]);
 
     }
 
-    public function userTransactionHistory(Request $req, User $user){
+    public function userTransactionHistory(Request $req, User $user)
+    {
         $recharge = Recharge::where('user_id', $user->uuid)->latest()->get();
         return response()->json([
             'recharge'=> $recharge,
         ]);
-        
+
     }
 
     //----------------- call related to host start here
 
-    public function hostPrivateChatHistory(Request $req, User $user){
+    public function hostPrivateChatHistory(Request $req, User $user)
+    {
 
         $token_spents = TokenSpent::select('user_id', DB::raw('SUM(token) as total_token'))
         ->where('host_id', $user->uuid)
         ->where('type', 'private_chat')
         ->groupBy('user_id');
-        
+
         $formet_date = null;
 
-        if($req->has('date')){
+        if($req->has('date')) {
             $formet_date = Carbon::parse($req->date)->format('Y-m-d');
-            $token_spents->whereDate('created_at',  $formet_date);
-        }else{
+            $token_spents->whereDate('created_at', $formet_date);
+        } else {
             $formet_date = Carbon::today()->format('Y-m-d');
             $token_spents->whereDate('created_at', $formet_date);
         }
         $token_spents = $token_spents->latest()->get();
-       
+
         $user_array = [];
         foreach ($token_spents as $data) {
             $user = User::where('uuid', $data['user_id'])->first();
@@ -224,22 +230,23 @@ class CallHistoryController extends Controller
             $object->user_id = $data['user_id'];
             array_push($user_array, $object);
         }
-      
+
         return response()->json([
             'token_spent'=> $user_array,
         ]);
 
     }
 
-    public function hostTokenHistory(Request $req, User $user){
-        $token_spents = TokenSpent::where('host_id', $user->uuid)->where('type', '!=' ,'private_chat');
+    public function hostTokenHistory(Request $req, User $user)
+    {
+        $token_spents = TokenSpent::where('host_id', $user->uuid)->where('type', '!=', 'private_chat');
 
         $formet_date = null;
 
-        if($req->has('date')){
+        if($req->has('date')) {
             $formet_date = Carbon::parse($req->date)->format('Y-m-d');
             $token_spents->whereDate('created_at', $formet_date);
-        }else{
+        } else {
             $formet_date = Carbon::today()->format('Y-m-d');
             $token_spents->whereDate('created_at', $formet_date);
         }
@@ -258,32 +265,33 @@ class CallHistoryController extends Controller
             $object->user_id = $data['user_id'];
             array_push($user_array, $object);
         }
-      
+
         return response()->json([
             'token_spent'=> $user_array,
         ]);
 
     }
 
-    public function incomeReport(Request $req, User $user){
+    public function incomeReport(Request $req, User $user)
+    {
 
         $income_report = array();
 
         $today_date = Carbon::today()->format('Y-m-d');
-        $today_income = TokenSpent::where('host_id', $user->uuid)->whereDate('created_at' , $today_date)->sum('token');
+        $today_income = TokenSpent::where('host_id', $user->uuid)->whereDate('created_at', $today_date)->sum('token');
         $income_report['today_income'] = $today_income;
 
-        $current_week_income = TokenSpent::where('host_id', $user->uuid)->whereBetween('created_at' , [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->sum('token');
+        $current_week_income = TokenSpent::where('host_id', $user->uuid)->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->sum('token');
         $income_report['current_week_income'] = $current_week_income;
 
         $check = Carbon::now()->startOfMonth() ." | ". Carbon::now()->endOfMonth();
 
-        $last_week_income = TokenSpent::where('host_id', $user->uuid)->whereBetween('created_at' , [Carbon::now()->subWeek()->startOfWeek(), Carbon::now()->subWeek()->endOfWeek()])->sum('token');
+        $last_week_income = TokenSpent::where('host_id', $user->uuid)->whereBetween('created_at', [Carbon::now()->subWeek()->startOfWeek(), Carbon::now()->subWeek()->endOfWeek()])->sum('token');
         $income_report['last_week_income'] = $last_week_income;
 
-        $current_month_income = TokenSpent::where('host_id', $user->uuid)->whereBetween('created_at' , [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->sum('token');
+        $current_month_income = TokenSpent::where('host_id', $user->uuid)->whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->sum('token');
         $income_report['current_month_income'] = $current_month_income;
-       
+
         return response()->json([
             'income_report'=> $income_report,
         ]);
