@@ -63,10 +63,9 @@ const submit = () => {
                         <button class="btn-mute"></button>
                         <button class="btn-camera"></button>
                     </div>
-                    <a href="#" class="name-tag">Andy Will</a>
+                    <!-- <a href="#" class="name-tag">Andy Will</a> -->
                     <!--<img src="https://images.unsplash.com/photo-1566821582776-92b13ab46bb4?ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=900&amp;q=60" alt="participant">-->
                 </div>
-             
                 <div class="video-participant host" id="local-video">
                     <!--<div class="participant-actions">
            <button class="btn-mute"></button>
@@ -108,7 +107,7 @@ const submit = () => {
                 </button>
             </div>
 
-            <div v-else>
+            <!-- <div v-else>
                 <p style="text-align: center">Call End</p>
                 <div class="card" v-if="isCustomer">
                     <div class="card-body">
@@ -153,9 +152,9 @@ const submit = () => {
                         </form>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
-        <div class="right-side">
+        <!-- <div class="right-side">
             <button class="btn-close-right">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -333,8 +332,8 @@ const submit = () => {
                     </div>
                 </div>
             </div>
-        </div>
-        <button class="expand-btn show">
+        </div> -->
+        <!-- <button class="expand-btn show">
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -351,7 +350,7 @@ const submit = () => {
                     d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"
                 ></path>
             </svg>
-        </button>
+        </button> -->
     </div>
 </template>
 
@@ -366,6 +365,7 @@ export default {
         "agoraToken",
         "history_id",
         "isCustomer",
+        "HostName",
     ],
     data() {
         return {
@@ -391,13 +391,9 @@ export default {
             duration: 0,
             inCall: true,
             avlToken: 0,
-            remoteStream: 0,
-            remoteStreamHost: 0,
         };
     },
     mounted() {
-        // this.createRemoteStream();
-        // this.createRemoteStreamHost();
         this.initializeAgora();
         this.initializedAgoraListeners();
         this.acceptCall(this.channel);
@@ -429,8 +425,6 @@ export default {
                     console.log("User " + uid + " join channel successfully");
                     this.callPlaced = true;
                     this.createLocalStream();
-                    // this.createRemoteStreamHost();
-                    // this.createRemoteStream();
                     this.initializedAgoraListeners();
                     this.listenEndCall();
                 },
@@ -499,48 +493,6 @@ export default {
                 }
             );
         },
-
-        // createRemoteStreamHost() {
-        //     this.remoteStreamHost = AgoraRTC.createStream({
-        //         audio: true,
-        //         video: true,
-        //     });
-        //     // Initialize the local stream
-        //     this.remoteStreamHost.init(
-        //         () => {
-        //             // Play the local stream
-        //             this.remoteStreamHost.play("remote-video2");
-        //             // Publish the local stream
-        //             this.client.publish(this.remoteStreamHost, (err) => {
-        //                 console.log("publish Remote stream", err);
-        //             });
-        //         },
-        //         (err) => {
-        //             console.log(err);
-        //         }
-        //     );
-        // },
-        // createRemoteStream() {
-        //     this.remoteStream = AgoraRTC.createStream({
-        //         audio: true,
-        //         video: true,
-        //     });
-        //     // Initialize the local stream
-        //     this.remoteStream.init(
-        //         () => {
-        //             // Play the local stream
-        //             this.remoteStream.play("remote-video");
-        //             // Publish the local stream
-        //             this.client.publish(this.remoteStream, (err) => {
-        //                 console.log("publish Remote stream", err);
-        //             });
-        //         },
-        //         (err) => {
-        //             console.log(err);
-        //         }
-        //     );
-        // },
-
         listenEndCall() {
             Echo.channel("end-agora-video").listen(
                 ".EndVideoCall",
@@ -570,6 +522,8 @@ export default {
                         setTimeout(() => {
                             window.location.href = "/chat";
                         }, 500);
+                    } else {
+                        window.location.href = "/stream/"+this.HostName;
                     }
                 },
                 (err) => {

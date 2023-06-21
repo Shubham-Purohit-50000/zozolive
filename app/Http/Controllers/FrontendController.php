@@ -52,33 +52,33 @@ class FrontendController extends Controller
     {
         // if (session()->get('is_18')) {
         $search = $request->search ?? null;
-        $userIds = User::withoutEvents(function() use($search) {
+        $userIds = User::withoutEvents(function () use ($search) {
             return User::whereRelation('roles', 'name', 'model')
             ->when($search, function ($query) use ($search) {
                 return $query->where('name', 'like', "%$search%");
             })->where('is_active', 1)->pluck('uuid')->toArray();
         });
-        
+
         $languageId = null;
-        if($request->language){
-            $languageId = Language::withoutEvents(function() use($request){
+        if($request->language) {
+            $languageId = Language::withoutEvents(function () use ($request) {
                 return Language::where('name', $request->language)
                     ->value('uuid');
             });
         }
         $countryId = null;
-        if($request->country){
-            $countryId = Country::withoutEvents(function() use($request){
+        if($request->country) {
+            $countryId = Country::withoutEvents(function () use ($request) {
                 return Country::where('code', $request->country)
                     ->value('id');
             });
         }
-        $hosts = Host::withoutEvents(function() use($request, $userIds, $languageId, $countryId){
+        $hosts = Host::withoutEvents(function () use ($request, $userIds, $languageId, $countryId) {
             return Host::whereIn('user_id', $userIds)
-                ->when($request->language, function($qry) use($languageId){
+                ->when($request->language, function ($qry) use ($languageId) {
                     return $qry->where('language_id', $languageId);
                 })
-                ->when($request->country, function($qry) use($countryId){
+                ->when($request->country, function ($qry) use ($countryId) {
                     return $qry->where('country_id', $countryId);
                 })
                 ->with('user', 'country')
@@ -110,7 +110,7 @@ class FrontendController extends Controller
             return $item;
         });
 
-        $hostDetail = Host::with('user','ticketShow', 'language:uuid,name', 'specific:uuid,name', 'subculture:uuid,name', 'country:id,name', 'state:id,name')
+        $hostDetail = Host::with('user', 'ticketShow', 'language:uuid,name', 'specific:uuid,name', 'subculture:uuid,name', 'country:id,name', 'state:id,name')
         ->whereHas('user', function ($query) use ($username) {
             return $query->where('username', $username)->where('is_active', 1);
         })->first();
@@ -504,67 +504,69 @@ class FrontendController extends Controller
         return view('frontend.broadcast');
     }
 
-    public function updateProfileImage(Request $request){
+    public function updateProfileImage(Request $request)
+    {
 
         $request->validate([
             'image1' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             // 'image2' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
-      
-        $imageName1 = time().'.'.$request->image1->extension();  
+
+        $imageName1 = time().'.'.$request->image1->extension();
         $request->image1->move(public_path('images'), $imageName1);
 
-        // $imageName2 = time().'.'.$request->image2->extension();  
+        // $imageName2 = time().'.'.$request->image2->extension();
         // $request->image2->move(public_path('images'), $imageName2);
 
         $request->user()->update([
             'profile_image' => $imageName1
         ]);
-      
+
         return response()->json([
             'msg' => 'Profile image has been updated successfully at '.$imageName1,
             'profile_image' => $imageName1,
         ]);
-    }   
+    }
 
-    public function userLevel($token){
+    public function userLevel($token)
+    {
         $token = (int)$token;
         // dd($token);
         $level = array();
         $add_amount = 0;
         for($i=1; $i<=50; $i++) {
             $item = array();
-            if($i<=5){
+            if($i<=5) {
                 $add_amount += 100;
                 $item['color'] = '#b35d1c';
                 $item['name'] = 'Bronze';
                 $item['token'] = $add_amount;
                 $item['icon'] = '\f005';
-            }elseif($i<=10){
+            } elseif($i<=10) {
                 $add_amount += 500;
                 $item['color'] = '#6085aa';
                 $item['name'] = 'Silver';
                 $item['token'] = $add_amount;
                 $item['icon'] = '\f005';
-            }elseif($i<=20){
+            } elseif($i<=20) {
                 $add_amount += 1000;
                 $item['color'] = '#dea20c';
                 $item['name'] = 'Gold';
                 $item['token'] = $add_amount;
                 $item['icon'] = '\f005';
-            }elseif($i<=35){
+            } elseif($i<=35) {
                 $add_amount += 5000;
                 $item['color'] = '#ce2fe4';
                 $item['name'] = 'Diamond';
                 $item['token'] = $add_amount;
                 $item['icon'] = '\f005';
-            }elseif($i<=49){
+            } elseif($i<=49) {
                 $add_amount += 10000;
                 $item['color'] = '#e33534';
                 $item['name'] = 'Royal';
                 $item['token'] = $add_amount;
                 $item['icon'] = '\f005';
-            }else{
+            } else {
                 $add_amount += 272000;
                 $item['color'] = '#278000';
                 $item['name'] = 'Legend';
@@ -576,8 +578,8 @@ class FrontendController extends Controller
 
         $level_data = array();
 
-        foreach($level as $key=>$value){
-            if($token <= $value['token']){
+        foreach($level as $key=>$value) {
+            if($token <= $value['token']) {
                 $level_data = $value;
                 $level_data['level'] = $key+1;
                 break;
@@ -589,10 +591,11 @@ class FrontendController extends Controller
         ]);
     }
 
-    public function setUserToken(Request $req, $id){
+    public function setUserToken(Request $req, $id)
+    {
         $user = User::where('uuid', $id)->first();
         $host = User::where('uuid', $req->host_id)->first();
-        if( $user->token > 0) {
+        if($user->token > 0) {
             $user->token = $user->token-1;
             $host->token = $host->token+1;
             //here we have to add this token in host
@@ -609,9 +612,10 @@ class FrontendController extends Controller
         }
         $user->save();
         $host->save();
-    }   
-    
-    public function storeLiveImage(Request $request){
+    }
+
+    public function storeLiveImage(Request $request)
+    {
 
         $request->validate([
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -620,16 +624,16 @@ class FrontendController extends Controller
         $imageName = auth()->id().'.'.$request->image->extension();
         $request->image->move(public_path('live_images'), $imageName);
 
-        $host = User::where('uuid',$request->host_id)->first();
-        
+        $host = User::where('uuid', $request->host_id)->first();
+
         auth()->user()->update([
             'live_image' => $imageName,
         ]);
-      
+
         return response()->json([
             'status' => true
         ]);
 
     }
-    
+
 }

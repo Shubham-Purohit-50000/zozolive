@@ -101,6 +101,13 @@
                                 >
                                     Stop
                                 </button>
+                                <button
+                                v-if="isStreamStarted"
+                                @click="startTicketShow"
+                                class="ms-2 start_stream_btn"
+                            >
+                            <i class="bi bi-ticket-perforated"></i>  Start Show <span style="font-weight:bold">{{  hostDetails.ticket_show ? '/'+ hostDetails.ticket_show.token + 'tk': '' }} </span>
+                            </button>
                             </div>
                             <!-- <div class="tip"><button>Send Tip</button></div> -->
                         </div>
@@ -335,6 +342,9 @@ export default {
         users: Array,
         authuseruid: {
             type: [String, Number],
+        },
+        hostDetails: {
+            type: Object,
         },
         authuserid: {
             type: String,
