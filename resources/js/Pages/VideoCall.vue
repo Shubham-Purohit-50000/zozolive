@@ -63,7 +63,7 @@ const submit = () => {
                         <button class="btn-mute"></button>
                         <button class="btn-camera"></button>
                     </div>
-                    <a href="#" class="name-tag">Andy Will</a>
+                    <!-- <a href="#" class="name-tag">Andy Will</a> -->
                     <!--<img src="https://images.unsplash.com/photo-1566821582776-92b13ab46bb4?ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=900&amp;q=60" alt="participant">-->
                 </div>
                 <div class="video-participant host" id="local-video">
