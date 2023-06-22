@@ -835,11 +835,10 @@ export default {
             );
             if (index != -1) {
                 this.allUsers[index].send_at = data.send_at;
-                this.allUsers[index].is_online = data.is_online;
             }
             this.allUsers.sort((newItem, oldItem) => {
-                let new_is_online = newItem.is_online || false;
-                let old_is_online = oldItem.is_online || false;
+                let new_is_online = newItem.is_online;
+                let old_is_online = oldItem.is_online;
                 if (
                     new_is_online === old_is_online &&
                     (newItem.send_at || oldItem.send_at)

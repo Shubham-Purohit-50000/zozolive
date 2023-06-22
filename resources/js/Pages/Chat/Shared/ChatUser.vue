@@ -245,7 +245,6 @@ export default {
                             this.$emit("updateUserList", {
                                 user_id: this.userData.uuid,
                                 send_at: this.lastMessage.send_at,
-                                is_online: this.isOnline || false
                             });
                         }
                     } else {

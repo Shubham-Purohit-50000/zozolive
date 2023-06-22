@@ -33,12 +33,12 @@
                                 style="padding: 0; background: #3b3b3b"
                             >
                                 <div class="video-group relative h-100" >
-                                    <div id="remote-playerlist">
+                                    <div id="remote-playerlist" :style="'background-image:url(/images/' +hostDetail.user.profile_image+')'">
+                                      
                                         <h4
                                             class="text-center stream__offline--text"
                                         >
-                                            {{ hostDetail?.user?.name }} is
-                                            offline
+                                            {{ hostDetail?.user?.name }} 
                                         </h4>
                                     </div>
                                     <div
@@ -513,6 +513,7 @@
                                         :auth-user="authUser"
                                         :host-detail="hostDetail"
                                         :active-tab="activeTab"
+                                        @makeUserCall="makeUserCall"
                                     />
                                     <div
                                         class="tab-pane fade px-3"
@@ -967,7 +968,7 @@ export default {
             outgoingCaller: "",
             activeTab: "",
             displayVolume: true,
-            total_watching: true,
+            total_watching: 0,
             host_tip_menus: [],
             host_gallery_array: [],
         };
@@ -1114,6 +1115,9 @@ export default {
         },
     },
     methods: {
+        makeUserCall() {
+            this.placeCall();
+        },
         buyToken() {
             window.location.href='/buy-token'
         }, 
@@ -1449,7 +1453,14 @@ export default {
     justify-content: center;
     align-items: center;
     height: 100%;
-    color: var(--primary);
+    color: #fff;
+    height: 100%;
+    position: absolute;
+    background: rgba(57, 57, 57, 0.86);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
 }
 </style>
 <style scoped>

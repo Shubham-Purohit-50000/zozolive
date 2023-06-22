@@ -49,7 +49,12 @@
                 <div>
               <span
                   class="text-white text-hover-primary font-weight-bold font-size-h6"
-              >{{ hostDetail?.user?.name }}</span>
+              >{{ hostDetail?.user?.name }}</span> <br/>
+             <button class="btn btn-link" v-if="hostDetail && hostDetail.user.is_online" @click="makeCall">
+              <i  class="bi bi-telephone-inbound-fill"></i> 
+             </button>
+              <span :class="[hostDetail && hostDetail.user.is_online ? 'text-success' : 'text-danger']"> {{  hostDetail && hostDetail.user.is_online ? 'Online' : 'Offline' }}</span>
+              
                 </div>
               </div>
               <div
@@ -94,7 +99,7 @@
                 </div>
               </div>
               <div
-                  class="mt-2 p-2 message__text text-white font-weight-bold font-size-lg text-right max-w-400px d-flex flex-column"
+                  class="mt-2 p-2  text-white font-weight-bold font-size-lg text-right max-w-400px d-flex flex-column"
               >
               <span
                   class="message__text--msg"
@@ -215,6 +220,9 @@ export default {
     },
   },
   methods: {
+    makeCall() {
+      this.$emit("makeUserCall");
+    },
     setUserToken() {
       try {
            axios.post("/user/"+this.authUser.uuid, {
@@ -357,6 +365,12 @@ export default {
 }
 </style>
 <style scoped>
+.text-danger {
+  color: rgb(174, 22, 22) !important;
+}
+.text-success {
+  color: rgb(16, 127, 46) !important;
+}
 .h-92 {
   height: 89% !important;
 }

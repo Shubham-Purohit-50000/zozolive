@@ -132,7 +132,6 @@ class WebrtcStreamingController extends Controller
                 ->map(function ($item) {
                     $item->avatar = $item->avatar ? storageUrl($item->avatar) : '';
                     $item->send_at = null;
-                    $item->is_online = $item->is_online === 0 ? false : true;
                     return $item;
                 });
             }),
