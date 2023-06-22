@@ -114,20 +114,20 @@
                             "
                         >
                             <span>
-                                <h6 style="color: #f8f8f8 !important">Ticket Show</h6>
+                                <h6 style="color: #f8f8f8 !important">Ticket Show Token</h6>
                             </span>
                             
                         </div>
                         <hr />
                         <div class="row">
-                            <div class="col-md-8">
+                            <!-- <div class="col-md-8">
                                 <input id="appt-time" required  type="time" class="timepicker" name="appt-time" :v-model="ticketShowTime" />
                                
-                            </div>
-                            <div class="col-md-4">
+                            </div> -->
+                            <div class="col-md-8">
                                 <input
                                     class="timepicker ps-2 mb-2"
-                                    placeholder="Enter Token"
+                                    placeholder="Enter Ticket Show Token"
                                     required
                                     type="text"
                                     v-model="ticketShowToken"
@@ -143,15 +143,7 @@
                                 class="saveButton"
                                 style="background-color: #859e4f"
                             >
-                                Start
-                            </button>
-                            <button
-                                v-if="show_start.uuid"
-                                @click="stopTicketShow"
-                                class="ms-2 saveButton"
-                                style="background-color: rgb(91, 91, 91);"
-                            >
-                                Cancel
+                                Save
                             </button>
                             <!-- </div> -->
 

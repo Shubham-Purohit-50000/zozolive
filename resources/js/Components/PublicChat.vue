@@ -30,7 +30,7 @@
                      <a  :style="{'color':msg.level_data ? msg.level_data.color : ''}" href="#" @click="showToast(authUserLevelData, msg.user_token)"> {{  msg.send_by_user }}  </a>
                   </span>
                   <span v-else>
-                    {{  msg.send_by_user }} 
+                    <span :class="[msg.send_by === hostDetail.user_id ? 'message__text' : '']"> {{  msg.send_by_user }} </span>
                   </span>
                   {{ msg.msg }}
                   
@@ -173,7 +173,7 @@
                                                                         <tr  v-for="(value2, index2) in host_tip_menus" 
   :key="index2">
                                                                       <td>
-                                                                          {{ value2.menu_title }}
+                                                                         <button class="btn btn-link" @click="sendUserTip(value2)"> {{ value2.menu_title }} </button>
                                                                       </td>
                                                                       <td
                                                                           style="text-align: right"
@@ -238,7 +238,7 @@
   <li class="list-group-item d-flex bg-dark-1 text-white justify-content-between align-items-center" 
   v-for="(value, index) in host_tip_menus" 
   :key="index">
-   {{ value.menu_title }}
+    {{ value.menu_title }}
     <span class="badge badge-primary badge-pill">{{ value.token }}</span>
   </li>
 </ul>
@@ -335,20 +335,21 @@ export default {
     this.getHostTipMenu();
   },
   methods: {
-    sendUserTip() {
+    sendUserTip(value = null) {
+      console.log(value);
             try {
                 axios.post("/user/send-tip", {
                     user_id: this.authUser.uuid,
                     host_id: this.hostDetail.user_id,
-                    token_amount: this.tip_menu_token_amount,
+                    token_amount: value ? value.token : this.tip_menu_token_amount,
                 }).then((resp)=>{
                     this.$refs.cancelButton.click();
-                   console.log(resp);
+                    console.log(resp);
                     if(resp.data.status!=='success') {
                       window.location.href = "/buy-token";
                       
                     } else {
-                      this.message = 'tipped ' + this.tip_menu_token_amount + ' tk';
+                      this.message = 'tipped ' + value ? value.token : this.tip_menu_token_amount + ' tk';
                       this.send();
                       this.sended_tip = true;
                     }
@@ -481,7 +482,13 @@ export default {
 </script>
 
 <style scoped>
-
+.message__text {
+    background-color: var(--primary) !important;
+    border-bottom-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    padding: 0px 2px 0px 2px;
+}
 .public__chat--alert {
   position: relative;
 

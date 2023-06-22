@@ -102,8 +102,15 @@
                                     Stop
                                 </button>
                                 <button
-                                v-if="isStreamStarted"
+                                v-if="isStreamStarted && !show_started"
                                 @click="startTicketShow"
+                                class="ms-2 start_stream_btn"
+                            >
+                            <i class="bi bi-ticket-perforated"></i>  End Show <span style="font-weight:bold">{{  hostDetails.ticket_show ? '/'+ hostDetails.ticket_show.token + 'tk': '' }} </span>
+                            </button>
+                            <button
+                                v-if="isStreamStarted && show_started"
+                                @click="stopTicketShow"
                                 class="ms-2 start_stream_btn"
                             >
                             <i class="bi bi-ticket-perforated"></i>  Start Show <span style="font-weight:bold">{{  hostDetails.ticket_show ? '/'+ hostDetails.ticket_show.token + 'tk': '' }} </span>
@@ -202,13 +209,45 @@
                                         v-for="(msg, i) in messages"
                                         :key="i"
                                     >
-                                        <span
-                                            :class="[msg.role === 'host' ? 'messages__box--user_name':'']"
-                                            :style="{'color':msg.level_data ? msg.level_data.color : ''}"
-                                            >{{ msg.send_by_user }}</span
-                                        >
-                                        {{ msg.msg }}
-                                    </li>
+                                    <div v-if="msg.msg.includes('tipped')" class="text-center">
+                    <span v-if="msg.user_token">
+                     <a  :style="{'color':msg.level_data ? msg.level_data.color : ''}" href="#" @click="showToast(msg.user_token)"> {{  msg.send_by_user }}  </a>
+                  </span>
+                  <span v-else>
+                    {{  msg.send_by_user }} 
+                  </span>
+                  {{ msg.msg }}
+                  
+                  </div>
+
+                  <div v-else>
+                    <span v-if="msg.user_token">
+                     <a  :style="{'color':msg.level_data ? msg.level_data.color : ''}" href="#" @click="showToast( msg.user_token)"> {{  msg.send_by_user }}  </a>
+                  </span>
+                  <span v-else>
+                   <span :class="[msg.send_by === authUser.uuid ? 'message__text' : '']"> {{  msg.send_by_user }} </span>
+                  </span>
+                  {{ msg.msg }}
+                  
+                  </div>
+
+                  <div class="toast" :id="'liveToast'+msg.user_token" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="toast-header">
+                        <!-- <img src="..." class="rounded me-2" alt="..."> -->
+                        <span class="badge me-auto" :style="{'background-color':msg.level_data ? msg.level_data.color : ''}">Level : {{ msg.level_data ? msg.level_data.level : null  }}</span>
+                        <span class="badge  badge-pill badge-primary"><span class="text-white">Tk : </span>{{ msg.user_token }}</span> 
+                        
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close" @click="closeToast(msg.user_token)">
+                            <i class=" bi bi-x-lg"></i>
+                        </button>
+                        </div>
+                        <div class="toast-body">
+                        <small>Subscribed Plan : <span :style="{'color':msg.level_data ? msg.level_data.color : ''}"> {{ msg.level_data ? msg.level_data.name : null  }} </span>  </small>
+
+                        <!-- <button class="btn btn-primary btn-sm">{{  Reply }}</button> -->
+                        </div>
+                    </div>
+                  </li>
                                 </ul>
                                 <div class="my-2 chat__box top_postion_chat_box">
                                     <div class="input-group chat__box--wrapper">
@@ -373,6 +412,8 @@ export default {
             options: "",
             streamBtnText: "Start Stream",
             isStreamStarted: false,
+            show_started: false,
+            ticket_show: null,
             remoteUsers: {},
             token: "",
             uid: "",
@@ -543,7 +584,60 @@ export default {
         });
     },
     methods: {
-       
+        showToast(token) {
+            document.getElementById('liveToast'+token).style.display='block';
+            this.getUserLevels(token);
+        },
+        closeToast(value) {
+            document.getElementById('liveToast'+value).style.display='none'
+        },
+        getUserLevels(token = null) {
+            try {
+                    if(token) {
+                    axios.get("/user_level/"+token).then((resp)=> {
+                    // console.log(resp);
+                    this.authUserLevelData = resp.data.data;
+                    });
+                    } else {
+                    if(this.authUser) {
+                        axios.get("/user_level/"+this.authUser.token).then((resp)=> {
+                    // console.log(resp);
+                    this.authUserLevelData = resp.data.data;
+                    
+                    });
+                    }
+                    
+                    }
+                
+                } catch (error) {
+                    console.log(error);
+                }
+         },
+        stopTicketShow() {
+        try {
+        axios.post("/checker/host/end/ticket-show", {
+            show_id:this.ticket_show.uuid,
+        }).then((resp)=> {
+            this.show_started = false;
+            });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        startTicketShow() {
+        
+        try {
+        axios.post("/checker/host/start/ticket-show", {
+            host_id:this.authUser.uuid,
+            token:this.hostDetails.ticket_show ? this.hostDetails.ticket_show.token : null,
+        }).then((resp)=> {
+            this.show_started = true;
+            this.ticket_show = resp.data.ticket_show;
+            });
+            } catch (error) {
+                console.log(error);
+            }
+        },
         async getRemoteUsers() {
            
             // axios.post("model/generate-token").then((resp)=> {
@@ -1034,6 +1128,25 @@ export default {
 }
 </style>
 <style scoped>
+.toast {
+  background-color: #2b2b2b;
+}
+.toast-header {
+  background-color: #282323; 
+}
+.btn-close {
+  color:#fff
+}
+.badge {
+  font-size:16px;
+}
+.message__text {
+    background-color: var(--primary) !important;
+    border-bottom-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    padding: 0px 2px 0px 2px;
+}
 .msgs__list .back_btn i {
     font-size: 1.2rem;
     color: #fff;

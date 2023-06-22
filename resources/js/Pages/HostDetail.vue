@@ -62,7 +62,7 @@
                                         class="btn btn-warning btn-sm"
                                         >
                                         <i class="bi bi-check-circle-fill"></i> <br/>
-                                        Join Now
+                                        Join Now <span style="font-weight:bold">{{  hostDetail && hostDetail.ticket_show ? '/'+ hostDetail.ticket_show.token + ' tk': '' }} </span>
                                     </button>
                                     <a
                                         v-else-if="authUser && parseInt(authUser.token) <= 0"
@@ -1465,7 +1465,7 @@ export default {
    top:0;
    bottom: 0;
     font-size: 70px;
-    background: #000;
+    backdrop-filter: blur(20px);
     opacity: .9;
     height: 580px;
 }
