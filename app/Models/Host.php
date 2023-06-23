@@ -97,6 +97,5 @@ class Host extends BaseModel
     {
         return $this->belongsTo(TicketShow::class, 'user_id', 'host_id');
     }
-
     
 }
