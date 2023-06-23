@@ -79,7 +79,7 @@ Route::prefix('checker')->group(function () {
     Route::post('host/end/ticket-show', [TicketShowController::class, 'end_show']);
 
     //----------code to get and update private call token------------------
-    Route::post('host/private-call-token', [CallHistoryController::class, 'getPrivateCallToken']);
+    Route::get('host/private-call-token/{user}', [CallHistoryController::class, 'getPrivateCallToken']);
     Route::post('host/update/private-call-token', [CallHistoryController::class, 'updatePrivateCallToken']);
 });
 

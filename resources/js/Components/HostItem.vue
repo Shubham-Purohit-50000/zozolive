@@ -14,6 +14,7 @@
             />
       <div class="caption">
         <span>{{host.user.name}}</span>
+        <span class="me-2" v-if="host.user.is_online"><i class="bi bi-telephone-inbound-fill"></i></span>
       </div>
     </a>
   </div>

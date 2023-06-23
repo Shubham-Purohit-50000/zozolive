@@ -166,7 +166,7 @@
                                             class="bg-dark ms-2"
                                             @click="placeCall()"
                                         >
-                                            Private Call
+                                            Private Call {{ '/'+private_call_token+'tk'}}
                                         </button>
                                         <button
                                             v-else
@@ -563,7 +563,7 @@
                                             class="btn btn-success "
                                             @click="placeCall()"
                                         >
-                                        <i class="bi bi-camera-video-fill " ></i>  Private Call
+                                        <i class="bi bi-camera-video-fill " ></i>  Private Call {{ '/'+private_call_token+'tk'}}
                                         </button>
                                         <button
                                             v-else-if="authUser && parseInt(authUser.token) < 1"
@@ -971,11 +971,14 @@ export default {
             total_watching: 0,
             host_tip_menus: [],
             host_gallery_array: [],
+            private_call_token: null
         };
     },
    
     async mounted() {
-      
+        if(this.hostDetail) {
+            this.getPrivateToken();
+        }
         $("#mic-btn").prop("disabled", true);
         $("#video-btn").prop("disabled", true);
         // add event listener to play remote tracks when remote user publishs.
@@ -1025,8 +1028,8 @@ export default {
             this.subscribe(remoteUser[0], mediaType);
             this.isStreamStarted = true;
             this.setVideoQuality();
-
-            // this.subscribe(remoteUser[0], "audio");
+            
+           
         });
         this.client.on("user-left", (evt) => {
             this.isStreamStarted = false;
@@ -1115,6 +1118,15 @@ export default {
         },
     },
     methods: {
+        getPrivateToken() {
+            try {
+                axios.get("/checker/host/private-call-token/"+this.hostDetail.user_id).then((resp)=> {
+                    this.private_call_token = resp.data.token;
+                    });
+                    } catch (error) {
+                        console.log(error);
+                    }
+        },  
         makeUserCall() {
             this.placeCall();
         },
@@ -1154,7 +1166,7 @@ export default {
                 show_id:this.hostDetail.ticket_show.uuid,
         }).then((resp)=> {
             this.show_joined_by_user = true;
-          
+            this.client.remoteUsers[0].audioTrack.play();
             });
             } catch (error) {
                 console.log(error);
@@ -1376,7 +1388,9 @@ export default {
                 user.videoTrack.play(`player-${uid}`);
             }
             if (mediaType === "audio") {
-                user.audioTrack.play();
+                if(this.hostDetail && this.hostDetail.ticket_show && this.hostDetail.ticket_show.status!==1) {
+                    user.audioTrack.play()
+                }
             }
         },
         setVolumn(evt) {
