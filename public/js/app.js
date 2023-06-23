@@ -5851,25 +5851,25 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
               // Mouse has left the screen
               console.log('Mouse left the screen');
               if ($('video')[0]) {
-                sweetalert2__WEBPACK_IMPORTED_MODULE_4___default().fire({
-                  title: 'Are you stoping video streaming ?',
-                  showDenyButton: true,
-                  showCancelButton: false,
-                  confirmButtonText: 'Yes',
-                  denyButtonText: 'No',
-                  customClass: {
-                    actions: 'my-actions',
-                    cancelButton: 'order-1 right-gap',
-                    confirmButton: 'order-2',
-                    denyButton: 'order-3'
-                  }
-                }).then(function (result) {
-                  if (result.isConfirmed) {
-                    window.location.reload();
-                  } else if (result.isDenied) {
-                    sweetalert2__WEBPACK_IMPORTED_MODULE_4___default().fire('Thanks', '', 'info');
-                  }
-                });
+                //     Swal.fire({
+                // title: 'Are you stoping video streaming ?',
+                // showDenyButton: true,
+                // showCancelButton: false,
+                // confirmButtonText: 'Yes',
+                // denyButtonText: 'No',
+                // customClass: {
+                //     actions: 'my-actions',
+                //     cancelButton: 'order-1 right-gap',
+                //     confirmButton: 'order-2',
+                //     denyButton: 'order-3',
+                // }
+                // }).then((result) => {
+                // if (result.isConfirmed) {
+                //    window.location.reload();
+                // } else if (result.isDenied) {
+                //     Swal.fire('Thanks', '', 'info')
+                // }
+                // })
               }
               // Additional actions you want to perform
             });
@@ -15142,16 +15142,16 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return $options.stopStream && $options.stopStream.apply($options, arguments);
     }),
     "class": "start_stream_btn"
-  }, " Stop ")), $data.isStreamStarted && !$data.show_started ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+  }, " Stop ")), $data.isStreamStarted && $data.show_started ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 2,
     onClick: _cache[8] || (_cache[8] = function () {
-      return $options.startTicketShow && $options.startTicketShow.apply($options, arguments);
+      return $options.stopTicketShow && $options.stopTicketShow.apply($options, arguments);
     }),
     "class": "ms-2 start_stream_btn"
-  }, [_hoisted_23, _hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_25, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.hostDetails.ticket_show ? '/' + $props.hostDetails.ticket_show.token + 'tk' : ''), 1 /* TEXT */)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.isStreamStarted && $data.show_started ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+  }, [_hoisted_23, _hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_25, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.hostDetails.ticket_show ? '/' + $props.hostDetails.ticket_show.token + 'tk' : ''), 1 /* TEXT */)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.isStreamStarted && !$data.show_started ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 3,
     onClick: _cache[9] || (_cache[9] = function () {
-      return $options.stopTicketShow && $options.stopTicketShow.apply($options, arguments);
+      return $options.startTicketShow && $options.startTicketShow.apply($options, arguments);
     }),
     "class": "ms-2 start_stream_btn"
   }, [_hoisted_26, _hoisted_27, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_28, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.hostDetails.ticket_show ? '/' + $props.hostDetails.ticket_show.token + 'tk' : ''), 1 /* TEXT */)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"tip\"><button>Send Tip</button></div> ")])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_29, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_30, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_31, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_32, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_33, [_hoisted_34, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_35, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", _hoisted_36, [_hoisted_37, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("    Private   " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.totalUnread), 1 /* TEXT */)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_38, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", _hoisted_39, [_hoisted_40, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("    " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.total_watching), 1 /* TEXT */)])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_41, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_42, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_43, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_44, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.messages, function (msg, i) {
