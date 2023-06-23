@@ -975,7 +975,7 @@ export default {
     },
    
     async mounted() {
-      
+        
         $("#mic-btn").prop("disabled", true);
         $("#video-btn").prop("disabled", true);
         // add event listener to play remote tracks when remote user publishs.
@@ -1025,8 +1025,8 @@ export default {
             this.subscribe(remoteUser[0], mediaType);
             this.isStreamStarted = true;
             this.setVideoQuality();
-
-            // this.subscribe(remoteUser[0], "audio");
+            
+           
         });
         this.client.on("user-left", (evt) => {
             this.isStreamStarted = false;
@@ -1154,7 +1154,7 @@ export default {
                 show_id:this.hostDetail.ticket_show.uuid,
         }).then((resp)=> {
             this.show_joined_by_user = true;
-          
+            this.client.remoteUsers[0].audioTrack.play();
             });
             } catch (error) {
                 console.log(error);
@@ -1376,7 +1376,9 @@ export default {
                 user.videoTrack.play(`player-${uid}`);
             }
             if (mediaType === "audio") {
-                user.audioTrack.play();
+                if(this.hostDetail && this.hostDetail.ticket_show && this.hostDetail.ticket_show.status!==1) {
+                    user.audioTrack.play()
+                }
             }
         },
         setVolumn(evt) {

@@ -4341,10 +4341,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               _this.subscribe(remoteUser[0], mediaType);
               _this.isStreamStarted = true;
               _this.setVideoQuality();
-
-              // this.subscribe(remoteUser[0], "audio");
             });
-
             _this.client.on("user-left", function (evt) {
               _this.isStreamStarted = false;
               if (!evt.videoTrack) {
@@ -4471,6 +4468,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           show_id: this.hostDetail.ticket_show.uuid
         }).then(function (resp) {
           _this3.show_joined_by_user = true;
+          _this3.client.remoteUsers[0].audioTrack.play();
         });
       } catch (error) {
         console.log(error);
@@ -4790,7 +4788,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 user.videoTrack.play("player-".concat(uid));
               }
               if (mediaType === "audio") {
-                user.audioTrack.play();
+                if (_this14.hostDetail && _this14.hostDetail.ticket_show && _this14.hostDetail.ticket_show.status !== 1) {
+                  user.audioTrack.play();
+                }
               }
             case 5:
             case "end":
