@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use DB;
 use App\Models\Recharge;
 use App\Models\User;
+use App\Models\HostPricing;
 use Illuminate\Support\Facades\DB as FacadesDB;
 use stdClass;
 
@@ -294,6 +295,21 @@ class CallHistoryController extends Controller
 
         return response()->json([
             'income_report'=> $income_report,
+        ]);
+    }
+
+    public function getPrivateCallToken(Request $request){
+        $private_call = HostPricing::where('user_id', $request->host_id)->first();
+        return response()->json($private_call->token);
+    }
+
+    public function updatePrivateCallToken(Request $request){
+        $private_call = HostPricing::where('user_id', $request->host_id)->first();
+        $private_call->token = $request->token;
+        $private_call->update();
+        return response()->json([
+            'message'=>'token update successfully',
+            'status'=>true,
         ]);
     }
 
