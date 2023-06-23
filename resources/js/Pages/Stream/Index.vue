@@ -211,7 +211,103 @@
                         </p>
                     </div>
                 </div>
+
+
+                <!-- Set Private Token Start-->
+                <div class="card">
+                    <div class="card-body">
+                        <div
+                            class="card-title"
+                            style="
+                                display: flex;
+                                justify-content: space-between;
+                                padding: 20px 0 0px 0 !important;
+                            "
+                        >
+                            <span>
+                                <h6 style="color: #f8f8f8 !important">Private Call Token</h6>
+                            </span>
+                            
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <!-- <div class="col-md-8">
+                                <input id="appt-time" required  type="time" class="timepicker" name="appt-time" :v-model="ticketShowTime" />
+                               
+                            </div> -->
+                            <div class="col-md-12">
+                                <select
+                                    name="activity" v-model="private_call_token"
+                                    class="inputBox"
+                                    style="font-size: small"
+                                    @change="setPrivateCallToken($event)"
+                                >
+                                    <option
+                                        value="10"
+                                        style="font-size: small"
+                                    >
+                                       10 tk
+                                    </option>
+                                    <option
+                                        value="15"
+                                        style="font-size: small"
+                                    >
+                                    15 tk
+                                    </option>
+                                    <option
+                                        value="18"
+                                        style="font-size: small"
+                                    >
+                                    18 tk
+                                    </option>
+                                    <option
+                                        value="20"
+                                        style="font-size: small"
+                                    >
+                                    20 tk
+                                    </option>
+                                    <option
+                                        value="25"
+                                        style="font-size: small"
+                                    >
+                                    25 tk
+                                    </option>
+                                    <option
+                                        value="30"
+                                        style="font-size: small"
+                                    >
+                                    30 tk
+                                    </option>
+                                    <option
+                                        value="35"
+                                        style="font-size: small"
+                                    >
+                                    35 tk
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="d-flex">
+                            <!-- <div class="col-md-6"> -->
+                            <button
+                                @click="privateCallToken"
+                                class="saveButton"
+                                style="background-color: #859e4f"
+                            >
+                                Save
+                            </button>
+                            <!-- </div> -->
+
+                            <!-- <div class="announce col-md-6">
+                                <i class="bi bi-send-fill"></i>Announce in chat
+                            </div> -->
+                        </div>
+
+                    </div>
+                </div>
+                <!-- End  Private Token-->
             </div>
+            
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-body">
@@ -503,6 +599,7 @@ export default {
             goalToken: "",
             todayTopic: "",
             isLoading: false,
+            private_call_token: 10,
             topicError: "",
             activity_name: "Love",
             token_amount:null,
@@ -524,11 +621,34 @@ export default {
             this.goalToken = this.authUser?.model?.goal_token;
             this.todayTopic = this.authUser?.model?.today_topic;
             this.getHostTipMenu();
+            this.getPrivateToken();
            
         }
 
     },
     methods: {
+        privateCallToken() {
+        try {
+        axios.post("/checker/host/update/private-call-token", {
+            host_id:this.authUser.uuid,
+            token:this.private_call_token,
+        }).then((resp)=> {
+            this.private_call_token = resp.data.token;
+            });
+            } catch (error) {
+                console.log(error);
+            }
+        },  
+        getPrivateToken() {
+            try {
+                axios.get("/checker/host/private-call-token/"+this.authUser.uuid).then((resp)=> {
+                    this.private_call_token = resp.data.token;
+                    });
+                    } catch (error) {
+                        console.log(error);
+                    }
+        },  
+        
         startTicketShow() {
         
         try {

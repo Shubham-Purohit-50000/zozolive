@@ -166,7 +166,7 @@
                                             class="bg-dark ms-2"
                                             @click="placeCall()"
                                         >
-                                            Private Call
+                                            Private Call {{ '/'+private_call_token+'tk'}}
                                         </button>
                                         <button
                                             v-else
@@ -563,7 +563,7 @@
                                             class="btn btn-success "
                                             @click="placeCall()"
                                         >
-                                        <i class="bi bi-camera-video-fill " ></i>  Private Call
+                                        <i class="bi bi-camera-video-fill " ></i>  Private Call {{ '/'+private_call_token+'tk'}}
                                         </button>
                                         <button
                                             v-else-if="authUser && parseInt(authUser.token) < 1"
@@ -971,11 +971,14 @@ export default {
             total_watching: 0,
             host_tip_menus: [],
             host_gallery_array: [],
+            private_call_token: null
         };
     },
    
     async mounted() {
-        
+        if(this.hostDetail) {
+            this.getPrivateToken();
+        }
         $("#mic-btn").prop("disabled", true);
         $("#video-btn").prop("disabled", true);
         // add event listener to play remote tracks when remote user publishs.
@@ -1115,6 +1118,15 @@ export default {
         },
     },
     methods: {
+        getPrivateToken() {
+            try {
+                axios.get("/checker/host/private-call-token/"+this.hostDetail.user_id).then((resp)=> {
+                    this.private_call_token = resp.data.token;
+                    });
+                    } catch (error) {
+                        console.log(error);
+                    }
+        },  
         makeUserCall() {
             this.placeCall();
         },

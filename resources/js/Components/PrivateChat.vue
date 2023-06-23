@@ -50,8 +50,8 @@
               <span
                   class="text-white text-hover-primary font-weight-bold font-size-h6"
               >{{ hostDetail?.user?.name }}</span> <br/>
-             <button class="btn btn-link" v-if="hostDetail && hostDetail.user.is_online" @click="makeCall">
-              <i  class="bi bi-telephone-inbound-fill"></i> 
+             <button class="btn btn-link"  style="text-decoration: none;" v-if="hostDetail && hostDetail.user.is_online || hostDetail.is_online" @click="makeCall">
+              <i  class="bi bi-telephone-inbound-fill"></i><span > {{ '/'+private_call_token+'tk'}}</span>
              </button>
               <span :class="[hostDetail && hostDetail.user.is_online ? 'text-success' : 'text-danger']"> {{  hostDetail && hostDetail.user.is_online ? 'Online' : 'Offline' }}</span>
               
@@ -179,6 +179,7 @@ export default {
       hasNotPermission: false,
       hasReceiverAvatar: true,
       hasAuthAvatar: true,
+      private_call_token: null,
     }
   },
   created() {
@@ -188,6 +189,9 @@ export default {
   },
   mounted() {
     console.log('private chat mounted');
+    if(this.hostDetail) {
+      this.getPrivateToken();
+    }
     this.ref.child(this.mainKey)
         .child(this.chatKey)
         .child('message')
@@ -220,6 +224,15 @@ export default {
     },
   },
   methods: {
+    getPrivateToken() {
+            try {
+                axios.get("/checker/host/private-call-token/"+this.hostDetail.user_id).then((resp)=> {
+                    this.private_call_token = resp.data.token;
+                    });
+                    } catch (error) {
+                        console.log(error);
+                    }
+        },  
     makeCall() {
       this.$emit("makeUserCall");
     },

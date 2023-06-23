@@ -298,9 +298,11 @@ class CallHistoryController extends Controller
         ]);
     }
 
-    public function getPrivateCallToken(Request $request){
-        $private_call = HostPricing::where('user_id', $request->host_id)->first();
-        return response()->json($private_call->token);
+    public function getPrivateCallToken(Request $request, User $user){
+        $private_call = HostPricing::where('user_id', $user->uuid)->first();
+        return response()->json([
+            'token'=> $private_call->token,
+        ]);
     }
 
     public function updatePrivateCallToken(Request $request){
@@ -310,6 +312,7 @@ class CallHistoryController extends Controller
         return response()->json([
             'message'=>'token update successfully',
             'status'=>true,
+            'token'=> $request->token,
         ]);
     }
 
