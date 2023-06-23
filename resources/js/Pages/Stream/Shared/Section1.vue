@@ -102,15 +102,15 @@
                                     Stop
                                 </button>
                                 <button
-                                v-if="isStreamStarted && !show_started"
-                                @click="startTicketShow"
+                                v-if="isStreamStarted && show_started"
+                                @click="stopTicketShow"
                                 class="ms-2 start_stream_btn"
                             >
                             <i class="bi bi-ticket-perforated"></i>  End Show <span style="font-weight:bold">{{  hostDetails.ticket_show ? '/'+ hostDetails.ticket_show.token + 'tk': '' }} </span>
                             </button>
                             <button
-                                v-if="isStreamStarted && show_started"
-                                @click="stopTicketShow"
+                                v-if="isStreamStarted && !show_started"
+                                @click="startTicketShow"
                                 class="ms-2 start_stream_btn"
                             >
                             <i class="bi bi-ticket-perforated"></i>  Start Show <span style="font-weight:bold">{{  hostDetails.ticket_show ? '/'+ hostDetails.ticket_show.token + 'tk': '' }} </span>
@@ -504,25 +504,25 @@ export default {
        // Mouse has left the screen
         console.log('Mouse left the screen');
         if($('video')[0]) {
-            Swal.fire({
-        title: 'Are you stoping video streaming ?',
-        showDenyButton: true,
-        showCancelButton: false,
-        confirmButtonText: 'Yes',
-        denyButtonText: 'No',
-        customClass: {
-            actions: 'my-actions',
-            cancelButton: 'order-1 right-gap',
-            confirmButton: 'order-2',
-            denyButton: 'order-3',
-        }
-        }).then((result) => {
-        if (result.isConfirmed) {
-           window.location.reload();
-        } else if (result.isDenied) {
-            Swal.fire('Thanks', '', 'info')
-        }
-        })
+        //     Swal.fire({
+        // title: 'Are you stoping video streaming ?',
+        // showDenyButton: true,
+        // showCancelButton: false,
+        // confirmButtonText: 'Yes',
+        // denyButtonText: 'No',
+        // customClass: {
+        //     actions: 'my-actions',
+        //     cancelButton: 'order-1 right-gap',
+        //     confirmButton: 'order-2',
+        //     denyButton: 'order-3',
+        // }
+        // }).then((result) => {
+        // if (result.isConfirmed) {
+        //    window.location.reload();
+        // } else if (result.isDenied) {
+        //     Swal.fire('Thanks', '', 'info')
+        // }
+        // })
         }
         // Additional actions you want to perform
         });
