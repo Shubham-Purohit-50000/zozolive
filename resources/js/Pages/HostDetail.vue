@@ -33,12 +33,12 @@
                                 style="padding: 0; background: #3b3b3b"
                             >
                                 <div class="video-group relative h-100" >
-                                    <div id="remote-playerlist" :style="'background-image:url(/images/' +hostDetail.user.profile_image+')'">
+                                    <div id="remote-playerlist" :style="hostDetail.user.is_online ? 'background-image:url(/images/' +hostDetail.user.profile_image+')' : ''">
                                       
                                         <h4
                                             class="text-center stream__offline--text"
                                         >
-                                            {{ hostDetail?.user?.name }} 
+                                           <span :class="[!hostDetail.user.is_online ? 'text-danger' : '']"> {{ hostDetail?.user?.name }} {{! hostDetail.user.is_online ? 'is offline' : '' }} </span>
                                         </h4>
                                     </div>
                                     <div
@@ -1442,6 +1442,9 @@ export default {
 </script>
 
 <style>
+.text-danger {
+    color: #a2262e !important;
+}
 .album_photo {
     width: 200px;
     padding: 20px 0px;
