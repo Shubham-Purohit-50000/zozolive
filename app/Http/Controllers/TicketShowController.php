@@ -79,14 +79,20 @@ class TicketShowController extends Controller
         $ticket_show = TicketShow::where('uuid', $request->show_id)->first();
         $ticket_show->host_name = User::where('uuid', $ticket_show->host_id)->first()->name;
         $user_ids = json_decode($ticket_show->user_ids);
-        $ticket_show->total_user = count($user_ids);
-        $user_list = array();
-        foreach($user_ids as $user_id){
-            $user = User::where('uuid', $user_id)->first();
-            array_push($user_list, $user->name);
+        if(!empty($user_ids)) {
+            $ticket_show->total_user = $user_ids ? count($user_ids) : 0;
+            $user_list = array();
+            foreach($user_ids as $user_id){
+                $user = User::where('uuid', $user_id)->first();
+                array_push($user_list, $user->name);
+            }
+            $ticket_show->user_list = $user_list;
         }
-        $ticket_show->user_list = $user_list;
-        return response()->json($ticket_show);
+       
+        return response()->json([
+            'ticket_show'=>$ticket_show,
+           
+        ]);
     }
 
 }

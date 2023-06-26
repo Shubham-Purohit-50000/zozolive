@@ -4277,6 +4277,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       chatKey: "public-chat",
       show_joined_by_user: false,
       tip_menu_token_amount: 20,
+      latest_ticket_show: [],
       messages: [],
       isLike: this.$props.like,
       totalLikes: this.$props.totalLike,
@@ -4432,7 +4433,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             _this.getRemoteUsers();
             // get Host Gallery 
             _this.getHostGallery();
-          case 27:
+            if (_this.hostDetail.ticket_show) {
+              _this.$nextTick(function () {
+                var _this2 = this;
+                window.setInterval(function () {
+                  _this2.getTicketShowDetails();
+                }, 10000);
+              });
+            }
+          case 28:
           case "end":
             return _context.stop();
         }
@@ -4449,11 +4458,23 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
   },
   methods: {
+    getTicketShowDetails: function getTicketShowDetails() {
+      var _this3 = this;
+      try {
+        axios.post("/checker/show-details", {
+          show_id: this.hostDetail.ticket_show.uuid
+        }).then(function (resp) {
+          _this3.latest_ticket_show = resp.data.ticket_show;
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    },
     getPrivateToken: function getPrivateToken() {
-      var _this2 = this;
+      var _this4 = this;
       try {
         axios.get("/checker/host/private-call-token/" + this.hostDetail.user_id).then(function (resp) {
-          _this2.private_call_token = resp.data.token;
+          _this4.private_call_token = resp.data.token;
         });
       } catch (error) {
         console.log(error);
@@ -4466,21 +4487,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       window.location.href = '/buy-token';
     },
     sendUserTip: function sendUserTip() {
-      var _this3 = this;
+      var _this5 = this;
       try {
         axios.post("/user/send-tip", {
           user_id: this.authUser.uuid,
           host_id: this.hostDetail.user_id,
           token_amount: this.tip_menu_token_amount
         }).then(function (resp) {
-          _this3.$refs.cancelButton.click();
+          _this5.$refs.cancelButton.click();
           console.log(resp);
           if (resp.data.status !== 'success') {
             window.location.href = "/buy-token";
           } else {
-            _this3.message = 'tipped ' + _this3.tip_menu_token_amount + ' tk';
-            _this3.send();
-            _this3.sended_tip = true;
+            _this5.message = 'tipped ' + _this5.tip_menu_token_amount + ' tk';
+            _this5.send();
+            _this5.sended_tip = true;
           }
         });
       } catch (error) {
@@ -4488,15 +4509,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
     },
     joinShow: function joinShow() {
-      var _this4 = this;
+      var _this6 = this;
       try {
         axios.post("/checker/user/join/ticket-show", {
           host_id: this.hostDetail.user_id,
           user_id: this.authUser.uuid,
           show_id: this.hostDetail.ticket_show.uuid
         }).then(function (resp) {
-          _this4.show_joined_by_user = true;
-          _this4.client.remoteUsers[0].audioTrack.play();
+          _this6.show_joined_by_user = true;
+          _this6.client.remoteUsers[0].audioTrack.play();
         });
       } catch (error) {
         console.log(error);
@@ -4509,13 +4530,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       document.getElementById("photo_album").style.display = 'none';
     },
     getRemoteUsers: function getRemoteUsers() {
-      var _this5 = this;
+      var _this7 = this;
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
               _context2.next = 2;
-              return axios.get('https://api.agora.io/dev/v1/channel/user/' + _this5.appId + '/' + _this5.options.channel, {
+              return axios.get('https://api.agora.io/dev/v1/channel/user/' + _this7.appId + '/' + _this7.options.channel, {
                 response_type: 'code',
                 headers: {
                   Authorization: 'Basic MDdhN2ZmNjRjNDk5NDI1Yjk4MTAzMzc1MTFiMTFlNTk6YTM3M2U2OTBiZTY4NDdjY2I0NDg1OWU2NzJmNjcxYjA='
@@ -4523,7 +4544,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               }).then(function (response) {
                 var values = Object.values(response.data);
                 if (values) {
-                  _this5.total_watching = values[1].audience_total;
+                  _this7.total_watching = values[1].audience_total;
                 }
               })["catch"](function (error) {
                 console.log("ERROR: " + error);
@@ -4606,64 +4627,64 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.activeTab = tab;
     },
     listenDeclinecall: function listenDeclinecall() {
-      var _this6 = this;
+      var _this8 = this;
       Echo.channel("decline-agora-video").listen(".declineVideoCall", function (_ref) {
         var data = _ref.data;
-        if (data.channelName == _this6.channel) {
-          _this6.outgoingCall = false;
-          _this6.outgoingCallAudio.pause();
+        if (data.channelName == _this8.channel) {
+          _this8.outgoingCall = false;
+          _this8.outgoingCallAudio.pause();
           $("#outgoingCall").modal("hide");
         }
       });
     },
     listenAcceptcall: function listenAcceptcall() {
-      var _this7 = this;
+      var _this9 = this;
       Echo.channel("accept-agora-video").listen(".acceptVideoCall", function (_ref2) {
         var data = _ref2.data;
         console.log("call accepted", data);
-        if (data.channelName == _this7.channel) {
+        if (data.channelName == _this9.channel) {
           window.location.href = "/video-call/" + data.channelName;
         }
       });
     },
     getHostGallery: function getHostGallery() {
-      var _this8 = this;
+      var _this10 = this;
       try {
         axios.get("/host/gallery/" + this.hostDetail.user_id).then(function (resp) {
-          _this8.host_gallery_array = resp.data.gallery;
+          _this10.host_gallery_array = resp.data.gallery;
         });
       } catch (error) {
         console.log(error);
       }
     },
     placeCall: function placeCall() {
-      var _this9 = this;
+      var _this11 = this;
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
-        var _this9$authUser, _this9$hostDetail, _this9$hostDetail$use;
+        var _this11$authUser, _this11$hostDetail, _this11$hostDetail$us;
         return _regeneratorRuntime().wrap(function _callee5$(_context5) {
           while (1) switch (_context5.prev = _context5.next) {
             case 0:
-              if (!_this9.authUser) {
+              if (!_this11.authUser) {
                 _context5.next = 21;
                 break;
               }
-              if (!(((_this9$authUser = _this9.authUser) === null || _this9$authUser === void 0 ? void 0 : _this9$authUser.token) > 10)) {
+              if (!(((_this11$authUser = _this11.authUser) === null || _this11$authUser === void 0 ? void 0 : _this11$authUser.token) > 10)) {
                 _context5.next = 18;
                 break;
               }
               _context5.prev = 2;
               _context5.next = 5;
               return axios.post("/agora/call-user", {
-                user_to_call: _this9.hostDetail.user_id,
-                channel_name: _this9.channel
+                user_to_call: _this11.hostDetail.user_id,
+                channel_name: _this11.channel
               });
             case 5:
-              _this9.outgoingCaller = (_this9$hostDetail = _this9.hostDetail) === null || _this9$hostDetail === void 0 ? void 0 : (_this9$hostDetail$use = _this9$hostDetail.user) === null || _this9$hostDetail$use === void 0 ? void 0 : _this9$hostDetail$use.name;
-              _this9.outgoingCall = true;
+              _this11.outgoingCaller = (_this11$hostDetail = _this11.hostDetail) === null || _this11$hostDetail === void 0 ? void 0 : (_this11$hostDetail$us = _this11$hostDetail.user) === null || _this11$hostDetail$us === void 0 ? void 0 : _this11$hostDetail$us.name;
+              _this11.outgoingCall = true;
               $("#outgoingCall").modal("show");
-              _this9.listenDeclinecall();
-              _this9.listenAcceptcall();
-              _this9.outGoingcallStart();
+              _this11.listenDeclinecall();
+              _this11.listenAcceptcall();
+              _this11.outGoingcallStart();
               _context5.next = 16;
               break;
             case 13:
@@ -4688,15 +4709,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }))();
     },
     outGoingcallStart: function outGoingcallStart() {
-      var _this10 = this;
+      var _this12 = this;
       this.outgoingCallAudio = new Audio("https://assets.mixkit.co/active_storage/sfx/1354/1354-preview.mp3");
       this.outgoingCallAudio.play();
       this.outgoingCall = true;
       if (this.outgoingCall == true) setInterval(function () {
-        _this10.outgoingCall = false;
+        _this12.outgoingCall = false;
         $("#outgoingCall").modal("hide");
-        _this10.callPlaced = false;
-        _this10.outgoingCallAudio.pause();
+        _this12.callPlaced = false;
+        _this12.outgoingCallAudio.pause();
       }, 1000 * 30);
     },
     endCall: function endCall() {
@@ -4705,7 +4726,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.outgoingCallAudio.pause();
     },
     generateToken: function generateToken() {
-      var _this11 = this;
+      var _this13 = this;
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
         var res;
         return _regeneratorRuntime().wrap(function _callee6$(_context6) {
@@ -4713,11 +4734,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             case 0:
               _context6.next = 2;
               return axios.post("/user/generate-token", {
-                channelName: _this11.hostDetail.user_id
+                channelName: _this13.hostDetail.user_id
               });
             case 2:
               res = _context6.sent;
-              _this11.uid = res.data.uid;
+              _this13.uid = res.data.uid;
               return _context6.abrupt("return", res.data.token);
             case 5:
             case "end":
@@ -4727,24 +4748,24 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }))();
     },
     mangeFavourite: function mangeFavourite(type) {
-      var _this12 = this;
+      var _this14 = this;
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
         var _tokenRes$data;
         var tokenRes;
         return _regeneratorRuntime().wrap(function _callee7$(_context7) {
           while (1) switch (_context7.prev = _context7.next) {
             case 0:
-              _this12.isLike = type;
+              _this14.isLike = type;
               _context7.next = 3;
               return axios.post("/manage-favourite", {
                 type: type,
-                host_id: _this12.$props.hostDetail.uuid,
-                host_user_id: _this12.$props.hostDetail.user_id
+                host_id: _this14.$props.hostDetail.uuid,
+                host_user_id: _this14.$props.hostDetail.user_id
               });
             case 3:
               tokenRes = _context7.sent;
               console.log(tokenRes.data);
-              _this12.totalLikes = (_tokenRes$data = tokenRes.data) !== null && _tokenRes$data !== void 0 ? _tokenRes$data : 0;
+              _this14.totalLikes = (_tokenRes$data = tokenRes.data) !== null && _tokenRes$data !== void 0 ? _tokenRes$data : 0;
             case 6:
             case "end":
               return _context7.stop();
@@ -4753,12 +4774,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }))();
     },
     getHostTipMenu: function getHostTipMenu() {
-      var _this13 = this;
+      var _this15 = this;
       try {
         this.removeBackdrop();
         axios.get("/host-tip-menu/?host_id=" + this.hostDetail.user_id).then(function (resp) {
           // console.log(resp);
-          _this13.host_tip_menus = resp.data.host_tip_menu;
+          _this15.host_tip_menus = resp.data.host_tip_menu;
         });
       } catch (error) {
         console.log(error);
@@ -4768,26 +4789,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       $(".modal-backdrop.fade.show").removeClass("modal-backdrop");
     },
     joinChannel: function joinChannel() {
-      var _this14 = this;
+      var _this16 = this;
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8() {
         return _regeneratorRuntime().wrap(function _callee8$(_context8) {
           while (1) switch (_context8.prev = _context8.next) {
             case 0:
               // create Agora client
-              _this14.client.setClientRole(_this14.options.role);
+              _this16.client.setClientRole(_this16.options.role);
               // $("#mic-btn").prop("disabled", false);
               // $("#video-btn").prop("disabled", false);
               _context8.next = 3;
-              return _this14.client.join(_this14.options.appId, _this14.options.channel, _this14.token, _this14.options.uid);
+              return _this16.client.join(_this16.options.appId, _this16.options.channel, _this16.token, _this16.options.uid);
             case 3:
-              _this14.options.uid = _context8.sent;
-              if (_this14.options.role === "host") {
+              _this16.options.uid = _context8.sent;
+              if (_this16.options.role === "host") {
                 // $("#mic-btn").prop("disabled", true);
                 // $("#video-btn").prop("disabled", true);
                 // add event listener to play remote tracks when remote user publishs.
-                _this14.client.on("user-published", _this14.handleUserPublished);
-                _this14.client.on("user-joined", _this14.handleUserJoined);
-                _this14.client.on("user-left", _this14.handleUserLeft);
+                _this16.client.on("user-published", _this16.handleUserPublished);
+                _this16.client.on("user-joined", _this16.handleUserJoined);
+                _this16.client.on("user-left", _this16.handleUserLeft);
               }
               // join the channel
             case 5:
@@ -4798,7 +4819,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }))();
     },
     subscribe: function subscribe(user, mediaType) {
-      var _this15 = this;
+      var _this17 = this;
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9() {
         var uid, player;
         return _regeneratorRuntime().wrap(function _callee9$(_context9) {
@@ -4806,17 +4827,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             case 0:
               uid = user.uid; // subscribe to a remote user
               _context9.next = 3;
-              return _this15.client.subscribe(user, mediaType);
+              return _this17.client.subscribe(user, mediaType);
             case 3:
               if (mediaType === "video") {
-                _this15.remoteTracks.videoTrack = user.videoTrack;
-                _this15.remoteTracks.audioTrack = user.audioTrack;
+                _this17.remoteTracks.videoTrack = user.videoTrack;
+                _this17.remoteTracks.audioTrack = user.audioTrack;
                 player = $("\n      <div id=\"player-wrapper-".concat(uid, "\" style=\"height: 100%\">\n        <div id=\"player-").concat(uid, "\" class=\"player\" style=\"width: 100%;height: 100%\"></div>\n      </div>\n    "));
                 $("#remote-playerlist").html(player);
                 user.videoTrack.play("player-".concat(uid));
               }
               if (mediaType === "audio") {
-                if (_this15.hostDetail && _this15.hostDetail.ticket_show && _this15.hostDetail.ticket_show.status !== 1) {
+                if (_this17.hostDetail && _this17.hostDetail.ticket_show && _this17.hostDetail.ticket_show.status !== 1) {
                   user.audioTrack.play();
                 }
               }
@@ -7700,11 +7721,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     src: $props.host.user.live_image,
     "class": "card-img-top",
     alt: "..."
-  }, null, 8 /* PROPS */, _hoisted_6)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+  }, null, 8 /* PROPS */, _hoisted_6)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("img", {
+    key: 4,
     src: $props.host.user.is_online ? '/images/' + $props.host.user.profile_image : '',
     "class": "card-img-top",
     alt: "..."
-  }, null, 8 /* PROPS */, _hoisted_7), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.host.user.name) + " ", 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+  }, null, 8 /* PROPS */, _hoisted_7)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.host.user.name) + " ", 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
     src: $props.host.cflag
   }, null, 8 /* PROPS */, _hoisted_9)]), $props.host.user.is_online ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_10, _hoisted_12)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])], 8 /* PROPS */, _hoisted_2)]);
 }
@@ -13173,8 +13195,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_OutgoingCallModal = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("OutgoingCallModal");
   var _component_SignupModal = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("SignupModal");
   var _component_LoginModal = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("LoginModal");
-  var _component_DummyC = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("DummyC");
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("nav", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_$props$hostDetail = $props.hostDetail) === null || _$props$hostDetail === void 0 ? void 0 : (_$props$hostDetail$us = _$props$hostDetail.user) === null || _$props$hostDetail$us === void 0 ? void 0 : _$props$hostDetail$us.name), 1 /* TEXT */)])]), _hoisted_7, _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("nav", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_$props$hostDetail = $props.hostDetail) === null || _$props$hostDetail === void 0 ? void 0 : (_$props$hostDetail$us = _$props$hostDetail.user) === null || _$props$hostDetail$us === void 0 ? void 0 : _$props$hostDetail$us.name), 1 /* TEXT */)])]), _hoisted_7, _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
     "class": "second-nav-a",
     onClick: _cache[0] || (_cache[0] = function ($event) {
       return $options.showPhotos();
@@ -13185,14 +13206,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     style: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeStyle)($props.hostDetail.user.is_online ? 'background-image:url(/images/' + $props.hostDetail.user.profile_image + ')' : '')
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h4", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([!$props.hostDetail.user.is_online ? 'text-danger' : ''])
-  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_$props$hostDetail2 = $props.hostDetail) === null || _$props$hostDetail2 === void 0 ? void 0 : (_$props$hostDetail2$u = _$props$hostDetail2.user) === null || _$props$hostDetail2$u === void 0 ? void 0 : _$props$hostDetail2$u.name) + " " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(!$props.hostDetail.user.is_online ? 'is offline' : ''), 3 /* TEXT, CLASS */)])], 4 /* STYLE */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [$props.hostDetail && $props.hostDetail.ticket_show && $props.hostDetail.ticket_show.status === 1 && !$data.show_joined_by_user ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_19, [_hoisted_20, _hoisted_21, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h4", _hoisted_22, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_$props$hostDetail3 = $props.hostDetail) === null || _$props$hostDetail3 === void 0 ? void 0 : (_$props$hostDetail3$u = _$props$hostDetail3.user) === null || _$props$hostDetail3$u === void 0 ? void 0 : _$props$hostDetail3$u.name) + " is in a ticket show ", 1 /* TEXT */), $options.authUser && parseInt($options.authUser.token) > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_$props$hostDetail2 = $props.hostDetail) === null || _$props$hostDetail2 === void 0 ? void 0 : (_$props$hostDetail2$u = _$props$hostDetail2.user) === null || _$props$hostDetail2$u === void 0 ? void 0 : _$props$hostDetail2$u.name) + " " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(!$props.hostDetail.user.is_online ? 'is offline' : ''), 3 /* TEXT, CLASS */)])], 4 /* STYLE */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [$data.latest_ticket_show.status === 1 && !$data.show_joined_by_user ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_19, [_hoisted_20, _hoisted_21, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h4", _hoisted_22, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_$props$hostDetail3 = $props.hostDetail) === null || _$props$hostDetail3 === void 0 ? void 0 : (_$props$hostDetail3$u = _$props$hostDetail3.user) === null || _$props$hostDetail3$u === void 0 ? void 0 : _$props$hostDetail3$u.name) + " is in a ticket show ", 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.latest_ticket_show.user_ids ? Object.keys($data.latest_ticket_show.user_ids[0]).length : 0) + " user already joined ", 1 /* TEXT */), $options.authUser && parseInt($options.authUser.token) > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 0,
     type: "button",
     onClick: _cache[1] || (_cache[1] = function () {
       return $options.joinShow && $options.joinShow.apply($options, arguments);
     }),
     "class": "btn btn-warning btn-sm"
-  }, [_hoisted_23, _hoisted_24, _hoisted_25, _hoisted_26, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_27, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.hostDetail && $props.hostDetail.ticket_show ? '/' + $props.hostDetail.ticket_show.token + ' tk' : ''), 1 /* TEXT */)])) : $options.authUser && parseInt($options.authUser.token) <= 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("a", _hoisted_28, _hoisted_33)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+  }, [_hoisted_23, _hoisted_24, _hoisted_25, _hoisted_26, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_27, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.latest_ticket_show ? '/' + $data.latest_ticket_show.token + ' tk' : ''), 1 /* TEXT */)])) : $options.authUser && parseInt($options.authUser.token) <= 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("a", _hoisted_28, _hoisted_33)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 2,
     type: "button",
     onClick: _cache[2] || (_cache[2] = function () {
@@ -13429,7 +13450,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "class": "user__avatar",
     src: $props.hostDetail ? '/images/' + $props.hostDetail.user.profile_image : '',
     alt: ""
-  }, null, 8 /* PROPS */, _hoisted_145)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("h1", _hoisted_146, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ nameFirstLetter }} ")]))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_147, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h4", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_$props$hostDetail5 = $props.hostDetail) === null || _$props$hostDetail5 === void 0 ? void 0 : (_$props$hostDetail5$u = _$props$hostDetail5.user) === null || _$props$hostDetail5$u === void 0 ? void 0 : _$props$hostDetail5$u.name), 1 /* TEXT */)])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_148, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_149, [_hoisted_150, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_151, [_hoisted_152, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_153, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_$props$hostDetail6 = $props.hostDetail) === null || _$props$hostDetail6 === void 0 ? void 0 : (_$props$hostDetail6$u = _$props$hostDetail6.user) === null || _$props$hostDetail6$u === void 0 ? void 0 : _$props$hostDetail6$u.from), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_154, [_hoisted_155, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_156, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_$props$hostDetail7 = $props.hostDetail) === null || _$props$hostDetail7 === void 0 ? void 0 : _$props$hostDetail7.user.about), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_157, [_hoisted_158, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_159, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_$props$hostDetail8 = $props.hostDetail) === null || _$props$hostDetail8 === void 0 ? void 0 : _$props$hostDetail8.user.dob), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_160, [_hoisted_161, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_162, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_$props$hostDetail9 = $props.hostDetail) === null || _$props$hostDetail9 === void 0 ? void 0 : (_$props$hostDetail9$l = _$props$hostDetail9.language) === null || _$props$hostDetail9$l === void 0 ? void 0 : _$props$hostDetail9$l.name), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_163, [_hoisted_164, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_165, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_$props$hostDetail10 = $props.hostDetail) === null || _$props$hostDetail10 === void 0 ? void 0 : (_$props$hostDetail10$ = _$props$hostDetail10.specific) === null || _$props$hostDetail10$ === void 0 ? void 0 : _$props$hostDetail10$.name), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_166, [_hoisted_167, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_168, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_$props$hostDetail11 = $props.hostDetail) === null || _$props$hostDetail11 === void 0 ? void 0 : (_$props$hostDetail11$ = _$props$hostDetail11.subculture) === null || _$props$hostDetail11$ === void 0 ? void 0 : _$props$hostDetail11$.name), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_169, [_hoisted_170, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_171, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_$props$hostDetail12 = $props.hostDetail) === null || _$props$hostDetail12 === void 0 ? void 0 : _$props$hostDetail12.interested_in), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_172, [_hoisted_173, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_174, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_$props$hostDetail13 = $props.hostDetail) === null || _$props$hostDetail13 === void 0 ? void 0 : (_$props$hostDetail13$ = _$props$hostDetail13.country) === null || _$props$hostDetail13$ === void 0 ? void 0 : _$props$hostDetail13$.name), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_175, [_hoisted_176, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_177, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_$props$hostDetail14 = $props.hostDetail) === null || _$props$hostDetail14 === void 0 ? void 0 : (_$props$hostDetail14$ = _$props$hostDetail14.state) === null || _$props$hostDetail14$ === void 0 ? void 0 : _$props$hostDetail14$.name), 1 /* TEXT */)])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <img src=\"{{ asset('img/messages-1.jpg') }}\" class=\"card-img-top\" alt=\"...\"> ")])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_DummyC)], 64 /* STABLE_FRAGMENT */);
+  }, null, 8 /* PROPS */, _hoisted_145)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("h1", _hoisted_146, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ nameFirstLetter }} ")]))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_147, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h4", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_$props$hostDetail5 = $props.hostDetail) === null || _$props$hostDetail5 === void 0 ? void 0 : (_$props$hostDetail5$u = _$props$hostDetail5.user) === null || _$props$hostDetail5$u === void 0 ? void 0 : _$props$hostDetail5$u.name), 1 /* TEXT */)])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_148, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_149, [_hoisted_150, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_151, [_hoisted_152, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_153, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_$props$hostDetail6 = $props.hostDetail) === null || _$props$hostDetail6 === void 0 ? void 0 : (_$props$hostDetail6$u = _$props$hostDetail6.user) === null || _$props$hostDetail6$u === void 0 ? void 0 : _$props$hostDetail6$u.from), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_154, [_hoisted_155, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_156, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_$props$hostDetail7 = $props.hostDetail) === null || _$props$hostDetail7 === void 0 ? void 0 : _$props$hostDetail7.user.about), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_157, [_hoisted_158, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_159, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_$props$hostDetail8 = $props.hostDetail) === null || _$props$hostDetail8 === void 0 ? void 0 : _$props$hostDetail8.user.dob), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_160, [_hoisted_161, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_162, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_$props$hostDetail9 = $props.hostDetail) === null || _$props$hostDetail9 === void 0 ? void 0 : (_$props$hostDetail9$l = _$props$hostDetail9.language) === null || _$props$hostDetail9$l === void 0 ? void 0 : _$props$hostDetail9$l.name), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_163, [_hoisted_164, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_165, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_$props$hostDetail10 = $props.hostDetail) === null || _$props$hostDetail10 === void 0 ? void 0 : (_$props$hostDetail10$ = _$props$hostDetail10.specific) === null || _$props$hostDetail10$ === void 0 ? void 0 : _$props$hostDetail10$.name), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_166, [_hoisted_167, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_168, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_$props$hostDetail11 = $props.hostDetail) === null || _$props$hostDetail11 === void 0 ? void 0 : (_$props$hostDetail11$ = _$props$hostDetail11.subculture) === null || _$props$hostDetail11$ === void 0 ? void 0 : _$props$hostDetail11$.name), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_169, [_hoisted_170, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_171, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_$props$hostDetail12 = $props.hostDetail) === null || _$props$hostDetail12 === void 0 ? void 0 : _$props$hostDetail12.interested_in), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_172, [_hoisted_173, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_174, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_$props$hostDetail13 = $props.hostDetail) === null || _$props$hostDetail13 === void 0 ? void 0 : (_$props$hostDetail13$ = _$props$hostDetail13.country) === null || _$props$hostDetail13$ === void 0 ? void 0 : _$props$hostDetail13$.name), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_175, [_hoisted_176, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_177, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_$props$hostDetail14 = $props.hostDetail) === null || _$props$hostDetail14 === void 0 ? void 0 : (_$props$hostDetail14$ = _$props$hostDetail14.state) === null || _$props$hostDetail14$ === void 0 ? void 0 : _$props$hostDetail14$.name), 1 /* TEXT */)])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <img src=\"{{ asset('img/messages-1.jpg') }}\" class=\"card-img-top\" alt=\"...\"> ")])])])])])]);
 }
 
 /***/ }),
@@ -18426,7 +18447,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.ticket_show[data-v-f36f23fc] {\n    position: absolute;\n    /* position: absolute; */\n    /* position: relative; */\n    text-align: center;\n    align-items: center;\n    justify-content: center;\n    left: 0;\n    right: -20px;\n   top:0;\n   bottom: 0;\n    font-size: 70px;\n    -webkit-backdrop-filter: blur(20px);\n            backdrop-filter: blur(20px);\n    opacity: .9;\n    height: 580px;\n}\n.ticket_show i[data-v-f36f23fc]{\n    position: absolute;\n    left: 0;\n    right: 0;\n    top: 10%;\n}\n.ticket_show h4[data-v-f36f23fc]{ \n    position: absolute;\n    left: 0;\n    right: 0;\n    top: 25%;\n}\n.ticket_show .btn[data-v-f36f23fc]{ \n    position: relative;\n    left: 0;\n    right: 0;\n    top: 15%;\n    width: 200px;\n    z-index: 999;\n}\n.btn-live[data-v-f36f23fc] {\n    color: #fff;\n}\n.action_box[data-v-f36f23fc] {\n    display: flex;\n    color: #958d8d;\n    justify-content: space-between;\n    align-items: center;\n    padding: 10px 20px;\n    background: transparent;\n    font-weight: 500;\n    font-size: 14px;\n    position: absolute;\n    width: 100%;\n    bottom: 0;\n}\n.progress[data-v-f36f23fc] {\n    background-color: #3f3838;\n    height: 30px;\n    display: block;\n}\n.p-absolute[data-v-f36f23fc] {\n    position: absolute;\n}\n.bg-progress[data-v-f36f23fc] {\n    background-color: #91102e;\n    height: 100%;\n}\n\n\n/*Chrome*/\n@media screen and (-webkit-min-device-pixel-ratio:0) {\ninput[type='range'][data-v-f36f23fc] {\n      overflow: hidden;\n      width: 80px;\n      -webkit-appearance: none;\n      background-color: #9a905d;\n}\ninput[type='range'][data-v-f36f23fc]::-webkit-slider-runnable-track {\n      height: 10px;\n      -webkit-appearance: none;\n      color: #a2262e;\n      margin-top: -1px;\n}\ninput[type='range'][data-v-f36f23fc]::-webkit-slider-thumb {\n      width: 10px;\n      -webkit-appearance: none;\n      height: 10px;\n      cursor: ew-resize;\n      background: #434343;\n      box-shadow: -80px 0 0 80px #a2262e;\n}\n}\n/** FF*/\ninput[type=\"range\"][data-v-f36f23fc]::-moz-range-progress {\n  background-color: #a2262e;\n}\ninput[type=\"range\"][data-v-f36f23fc]::-moz-range-track {  \n  background-color: #9a905d;\n}\n/* IE*/\ninput[type=\"range\"][data-v-f36f23fc]::-ms-fill-lower {\n  background-color: #a2262e;\n}\ninput[type=\"range\"][data-v-f36f23fc]::-ms-fill-upper {  \n  background-color: #9a905d;\n}\n.action_box .like[data-v-f36f23fc] {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n}\n.action_box .like i[data-v-f36f23fc] {\n    font-size: 20px;\n    margin-right: 9px;\n    cursor: pointer;\n}\n.action_box .private button[data-v-f36f23fc] {\n    margin-bottom: 0px;\n    border: 2px solid #a1a1a1;\n    border-radius: 20px;\n    padding: 5px 15px;\n    background: #821e25;\n    color: #fff;\n}\n.action_box .private button[data-v-f36f23fc]:hover{\n     background: #821e25 !important;\n}\n.action_box .tip button[data-v-f36f23fc] {\n    margin-bottom: 0px;\n    border: 2px solid #a1a1a1;\n    border-radius: 20px;\n    padding: 5px 15px;\n    background: #79943d;\n    color: #fff;\n}\n.bi-heart-fill[data-v-f36f23fc] {\n    color: #ff2c3a;\n}\n.hostPageTabs li button[data-v-f36f23fc] {\n    color: #a4a4a4;\n    font-weight: 500;\n    font-size: 16px;\n    background: none;\n}\n.font-size-16[data-v-f36f23fc] {\n    font-size: 25px;\n}\n.hostPageTabs li button.active[data-v-f36f23fc] {\n    background: none;\n    color: #fff;\n}\n.hostPageTabs li button[data-v-f36f23fc]:hover {\n    color: #fff;\n}\n.hostPageTabs[data-v-f36f23fc] {\n    border-bottom: none;\n}\n.player[data-v-f36f23fc] {\n    width: 100%;\n    height: 500px;\n}\n.hostPageTabs li button.active[data-v-f36f23fc] {\n    background: none;\n    color: #fff;\n}\n.hostPageTabs li button[data-v-f36f23fc]:hover {\n    color: #fff;\n}\n.hostPageTabs[data-v-f36f23fc] {\n    border-bottom: none;\n}\n#sendtipModal .modal-header[data-v-f36f23fc] {\n    background: #212121;\n    border-radius: 0px;\n    padding: 10px 15px;\n}\n#sendtipModal .card-header[data-v-f36f23fc] {\n    background: #000001;\n    border-radius: 0px;\n    padding-top: 5px;\n}\n.token_box label[data-v-f36f23fc] {\n    background: #191919;\n    padding: 8px;\n    font-size: 18px;\n    font-weight: 600;\n    min-width: 60px;\n    text-align: center;\n    border-radius: 12px;\n    cursor: pointer;\n}\n.border-dark[data-v-f36f23fc] {\n    border: 2px solid #396220 !important;\n}\n.token_box ul[data-v-f36f23fc] {\n    -webkit-padding-start: 0px;\n            padding-inline-start: 0px;\n    display: flex;\n    overflow-x: scroll;\n}\n.token_box ul li[data-v-f36f23fc] {\n    list-style: none;\n    margin-top: 15px;\n    margin-right: 15px;\n    margin-bottom: 15px;\n}\n.token_box input[data-v-f36f23fc] {\n    width: 75%;\n    margin-left: 15px;\n    height: 45px;\n    border-radius: 27px;\n    background: #000;\n    border-color: #000;\n    color: #fff;\n    text-align: center;\n}\n.token_box button[data-v-f36f23fc] {\n    margin-bottom: 0px;\n    border: 2px solid #a1a1a1;\n    border-radius: 20px;\n    padding: 10px 25px;\n    background: #79943d;\n    color: #fff;\n    margin-left: 0px;\n}\n#remote-playerlist[data-v-f36f23fc] {\n    height: 100%;\n}\n.full-screen[data-v-f36f23fc] {\n    position: absolute;\n    width: 100%;\n    top: 5px;\n    right: 16px;\n    display: flex;\n    justify-content: flex-end;\n    align-items: center;\n}\n#full-screen-btn[data-v-f36f23fc] {\n    cursor: pointer;\n}\n\n/* .header {\n    min-height: 150px;\n} */\n#fileinput1[data-v-f36f23fc] {\n    display: none;\n}\n.fileClass[data-v-f36f23fc] {\n    display: inline-block;\n    border: 3px solid green;\n    border-radius: 20px;\n    padding: 3px 10px;\n    font-size: 12px;\n}\n.profile[data-v-f36f23fc] {\n    text-decoration: none;\n    border: none;\n    background: none;\n    color: white;\n}\n.level[data-v-f36f23fc] {\n    text-decoration: none;\n    border: none;\n    background: none;\n    color: white;\n    margin-left: 3rem;\n}\n.profilebackgroundImage[data-v-f36f23fc] {\n    background-image: url(\"/img/host_cover.jpg\");\n    border-top-left-radius: calc(0.42rem - 1px);\n    border-top-right-radius: calc(0.42rem - 1px);\n    height: 30rem;\n    background-position: center;\n    background-repeat: no-repeat;\n    background-size: cover;\n    padding: 0;\n    position: relative;\n}\n.header-content[data-v-f36f23fc] {\n    display: flex;\n    position: absolute;\n    bottom: 0;\n    /* left: 0; */\n    background: #222222;\n    width: 100%;\n    height: 5rem;\n}\n.circleModal[data-v-f36f23fc] {\n    position: absolute;\n    bottom: 20%;\n    width: 8rem;\n    height: 8rem;\n    border-radius: 50%;\n    background-color: #26272b;\n    border: 6px solid #9f9f9f;\n    /* margin-left: 10px; */\n    font-size: 10px;\n    line-height: 80px;\n    text-align: center;\n    margin: auto;\n}\n.informationDiv[data-v-f36f23fc] {\n    background-color: #26272b;\n    width: 40%;\n    padding: 1rem 1rem;\n}\n#showVolumeBtn[data-v-f36f23fc] {\n    display: none;\n}\n.PrfileDiv2[data-v-f36f23fc] {\n    background-color: #26272b;\n    width: 60%;\n    padding: 1rem 1rem;\n}\n.PrfileDiv2 .profile__img[data-v-f36f23fc] {\n    width: 10rem;\n    height: 6rem;\n    -o-object-fit: cover;\n       object-fit: cover;\n}\n.user__avatar[data-v-f36f23fc] {\n    width: 100%;\n    height: 100%;\n    -o-object-fit: cover;\n       object-fit: cover;\n    border-radius: 50%;\n}\n.profile__img_actions[data-v-f36f23fc] {\n    margin-top: 1rem;\n}\n.profile__img_actions button[data-v-f36f23fc] {\n    background: var(--primary);\n    border-radius: 2rem;\n    padding: 0.3rem 1.3rem;\n}\n#profileModal .modal-dialog[data-v-f36f23fc]{\n  max-width: 100%;\n}\n@media (max-width: 700px) {\n.video-group[data-v-f36f23fc] {\n    min-height: 200px;\n}\n.mt-3rem[data-v-f36f23fc] {\n    margin-top: 3rem !important;\n}\n}\n\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.ticket_show[data-v-f36f23fc] {\n    position: absolute;\n    /* position: absolute; */\n    /* position: relative; */\n    text-align: center;\n    align-items: center;\n    justify-content: center;\n    left: 0;\n    right: -20px;\n   top:0;\n   bottom: 0;\n    font-size: 70px;\n    -webkit-backdrop-filter: blur(20px);\n            backdrop-filter: blur(20px);\n    opacity: .9;\n    height: 580px;\n}\n.ticket_show i[data-v-f36f23fc]{\n    position: absolute;\n    left: 0;\n    right: 0;\n    top: 10%;\n}\n.ticket_show h4[data-v-f36f23fc]{ \n    position: absolute;\n    left: 0;\n    right: 0;\n    top: 25%;\n}\n.ticket_show h5[data-v-f36f23fc]{ \n    position: absolute;\n    left: 0;\n    right: 0;\n    top: 32%;\n}\n.ticket_show .btn[data-v-f36f23fc]{ \n    position: relative;\n    left: 0;\n    right: 0;\n    top: 15%;\n    width: 200px;\n    z-index: 999;\n}\n.btn-live[data-v-f36f23fc] {\n    color: #fff;\n}\n.action_box[data-v-f36f23fc] {\n    display: flex;\n    color: #958d8d;\n    justify-content: space-between;\n    align-items: center;\n    padding: 10px 20px;\n    background: transparent;\n    font-weight: 500;\n    font-size: 14px;\n    position: absolute;\n    width: 100%;\n    bottom: 0;\n}\n.progress[data-v-f36f23fc] {\n    background-color: #3f3838;\n    height: 30px;\n    display: block;\n}\n.p-absolute[data-v-f36f23fc] {\n    position: absolute;\n}\n.bg-progress[data-v-f36f23fc] {\n    background-color: #91102e;\n    height: 100%;\n}\n\n\n/*Chrome*/\n@media screen and (-webkit-min-device-pixel-ratio:0) {\ninput[type='range'][data-v-f36f23fc] {\n      overflow: hidden;\n      width: 80px;\n      -webkit-appearance: none;\n      background-color: #9a905d;\n}\ninput[type='range'][data-v-f36f23fc]::-webkit-slider-runnable-track {\n      height: 10px;\n      -webkit-appearance: none;\n      color: #a2262e;\n      margin-top: -1px;\n}\ninput[type='range'][data-v-f36f23fc]::-webkit-slider-thumb {\n      width: 10px;\n      -webkit-appearance: none;\n      height: 10px;\n      cursor: ew-resize;\n      background: #434343;\n      box-shadow: -80px 0 0 80px #a2262e;\n}\n}\n/** FF*/\ninput[type=\"range\"][data-v-f36f23fc]::-moz-range-progress {\n  background-color: #a2262e;\n}\ninput[type=\"range\"][data-v-f36f23fc]::-moz-range-track {  \n  background-color: #9a905d;\n}\n/* IE*/\ninput[type=\"range\"][data-v-f36f23fc]::-ms-fill-lower {\n  background-color: #a2262e;\n}\ninput[type=\"range\"][data-v-f36f23fc]::-ms-fill-upper {  \n  background-color: #9a905d;\n}\n.action_box .like[data-v-f36f23fc] {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n}\n.action_box .like i[data-v-f36f23fc] {\n    font-size: 20px;\n    margin-right: 9px;\n    cursor: pointer;\n}\n.action_box .private button[data-v-f36f23fc] {\n    margin-bottom: 0px;\n    border: 2px solid #a1a1a1;\n    border-radius: 20px;\n    padding: 5px 15px;\n    background: #821e25;\n    color: #fff;\n}\n.action_box .private button[data-v-f36f23fc]:hover{\n     background: #821e25 !important;\n}\n.action_box .tip button[data-v-f36f23fc] {\n    margin-bottom: 0px;\n    border: 2px solid #a1a1a1;\n    border-radius: 20px;\n    padding: 5px 15px;\n    background: #79943d;\n    color: #fff;\n}\n.bi-heart-fill[data-v-f36f23fc] {\n    color: #ff2c3a;\n}\n.hostPageTabs li button[data-v-f36f23fc] {\n    color: #a4a4a4;\n    font-weight: 500;\n    font-size: 16px;\n    background: none;\n}\n.font-size-16[data-v-f36f23fc] {\n    font-size: 25px;\n}\n.hostPageTabs li button.active[data-v-f36f23fc] {\n    background: none;\n    color: #fff;\n}\n.hostPageTabs li button[data-v-f36f23fc]:hover {\n    color: #fff;\n}\n.hostPageTabs[data-v-f36f23fc] {\n    border-bottom: none;\n}\n.player[data-v-f36f23fc] {\n    width: 100%;\n    height: 500px;\n}\n.hostPageTabs li button.active[data-v-f36f23fc] {\n    background: none;\n    color: #fff;\n}\n.hostPageTabs li button[data-v-f36f23fc]:hover {\n    color: #fff;\n}\n.hostPageTabs[data-v-f36f23fc] {\n    border-bottom: none;\n}\n#sendtipModal .modal-header[data-v-f36f23fc] {\n    background: #212121;\n    border-radius: 0px;\n    padding: 10px 15px;\n}\n#sendtipModal .card-header[data-v-f36f23fc] {\n    background: #000001;\n    border-radius: 0px;\n    padding-top: 5px;\n}\n.token_box label[data-v-f36f23fc] {\n    background: #191919;\n    padding: 8px;\n    font-size: 18px;\n    font-weight: 600;\n    min-width: 60px;\n    text-align: center;\n    border-radius: 12px;\n    cursor: pointer;\n}\n.border-dark[data-v-f36f23fc] {\n    border: 2px solid #396220 !important;\n}\n.token_box ul[data-v-f36f23fc] {\n    -webkit-padding-start: 0px;\n            padding-inline-start: 0px;\n    display: flex;\n    overflow-x: scroll;\n}\n.token_box ul li[data-v-f36f23fc] {\n    list-style: none;\n    margin-top: 15px;\n    margin-right: 15px;\n    margin-bottom: 15px;\n}\n.token_box input[data-v-f36f23fc] {\n    width: 75%;\n    margin-left: 15px;\n    height: 45px;\n    border-radius: 27px;\n    background: #000;\n    border-color: #000;\n    color: #fff;\n    text-align: center;\n}\n.token_box button[data-v-f36f23fc] {\n    margin-bottom: 0px;\n    border: 2px solid #a1a1a1;\n    border-radius: 20px;\n    padding: 10px 25px;\n    background: #79943d;\n    color: #fff;\n    margin-left: 0px;\n}\n#remote-playerlist[data-v-f36f23fc] {\n    height: 100%;\n}\n.full-screen[data-v-f36f23fc] {\n    position: absolute;\n    width: 100%;\n    top: 5px;\n    right: 16px;\n    display: flex;\n    justify-content: flex-end;\n    align-items: center;\n}\n#full-screen-btn[data-v-f36f23fc] {\n    cursor: pointer;\n}\n\n/* .header {\n    min-height: 150px;\n} */\n#fileinput1[data-v-f36f23fc] {\n    display: none;\n}\n.fileClass[data-v-f36f23fc] {\n    display: inline-block;\n    border: 3px solid green;\n    border-radius: 20px;\n    padding: 3px 10px;\n    font-size: 12px;\n}\n.profile[data-v-f36f23fc] {\n    text-decoration: none;\n    border: none;\n    background: none;\n    color: white;\n}\n.level[data-v-f36f23fc] {\n    text-decoration: none;\n    border: none;\n    background: none;\n    color: white;\n    margin-left: 3rem;\n}\n.profilebackgroundImage[data-v-f36f23fc] {\n    background-image: url(\"/img/host_cover.jpg\");\n    border-top-left-radius: calc(0.42rem - 1px);\n    border-top-right-radius: calc(0.42rem - 1px);\n    height: 30rem;\n    background-position: center;\n    background-repeat: no-repeat;\n    background-size: cover;\n    padding: 0;\n    position: relative;\n}\n.header-content[data-v-f36f23fc] {\n    display: flex;\n    position: absolute;\n    bottom: 0;\n    /* left: 0; */\n    background: #222222;\n    width: 100%;\n    height: 5rem;\n}\n.circleModal[data-v-f36f23fc] {\n    position: absolute;\n    bottom: 20%;\n    width: 8rem;\n    height: 8rem;\n    border-radius: 50%;\n    background-color: #26272b;\n    border: 6px solid #9f9f9f;\n    /* margin-left: 10px; */\n    font-size: 10px;\n    line-height: 80px;\n    text-align: center;\n    margin: auto;\n}\n.informationDiv[data-v-f36f23fc] {\n    background-color: #26272b;\n    width: 40%;\n    padding: 1rem 1rem;\n}\n#showVolumeBtn[data-v-f36f23fc] {\n    display: none;\n}\n.PrfileDiv2[data-v-f36f23fc] {\n    background-color: #26272b;\n    width: 60%;\n    padding: 1rem 1rem;\n}\n.PrfileDiv2 .profile__img[data-v-f36f23fc] {\n    width: 10rem;\n    height: 6rem;\n    -o-object-fit: cover;\n       object-fit: cover;\n}\n.user__avatar[data-v-f36f23fc] {\n    width: 100%;\n    height: 100%;\n    -o-object-fit: cover;\n       object-fit: cover;\n    border-radius: 50%;\n}\n.profile__img_actions[data-v-f36f23fc] {\n    margin-top: 1rem;\n}\n.profile__img_actions button[data-v-f36f23fc] {\n    background: var(--primary);\n    border-radius: 2rem;\n    padding: 0.3rem 1.3rem;\n}\n#profileModal .modal-dialog[data-v-f36f23fc]{\n  max-width: 100%;\n}\n@media (max-width: 700px) {\n.video-group[data-v-f36f23fc] {\n    min-height: 200px;\n}\n.mt-3rem[data-v-f36f23fc] {\n    margin-top: 3rem !important;\n}\n}\n\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
