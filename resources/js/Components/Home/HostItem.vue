@@ -17,7 +17,7 @@
                 alt="..."
             /> 
             <img v-else
-              :src="'/images/'+host.user.profile_image"
+              :src="host.user.is_online ? '/images/'+host.user.profile_image : ''"
                 class="card-img-top"
                 alt="..."
             />

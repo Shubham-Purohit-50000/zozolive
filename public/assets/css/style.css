@@ -710,8 +710,10 @@ html {
 }
 
 @media (max-width: 1199px) {
+    /*----------- Mobile sidebar issue*/
     .sidebar {
         left: -300px;
+        width: 0px;
     }
 
     #main {

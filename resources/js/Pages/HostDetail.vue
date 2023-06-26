@@ -33,12 +33,12 @@
                                 style="padding: 0; background: #3b3b3b"
                             >
                                 <div class="video-group relative h-100" >
-                                    <div id="remote-playerlist" :style="'background-image:url(/images/' +hostDetail.user.profile_image+')'">
+                                    <div id="remote-playerlist" :style="hostDetail.user.is_online ? 'background-image:url(/images/' +hostDetail.user.profile_image+')' : ''">
                                       
                                         <h4
                                             class="text-center stream__offline--text"
                                         >
-                                            {{ hostDetail?.user?.name }} 
+                                           <span :class="[!hostDetail.user.is_online ? 'text-danger' : '']"> {{ hostDetail?.user?.name }} {{! hostDetail.user.is_online ? 'is offline' : '' }} </span>
                                         </h4>
                                     </div>
                                     <div
@@ -46,7 +46,7 @@
                                         v-show="isStreamStarted"
                                     >
 
-                                    <div class="ticket_show" v-if="hostDetail && hostDetail.ticket_show && hostDetail.ticket_show.status ===1  && !show_joined_by_user">
+                                    <div class="ticket_show" v-if="latest_ticket_show.status ===1  && !show_joined_by_user">
                                             <i class="bi bi-ticket-perforated"></i><br/>
                                             <h4
                                             class="text-center "
@@ -55,6 +55,9 @@
                                             {{ hostDetail?.user?.name }} is
                                             in a ticket show
                                         </h4>
+                                        <h5>
+                                            {{  latest_ticket_show.user_ids ? Object.keys(latest_ticket_show.user_ids[0]).length : 0 }} user already joined
+                                        </h5>
                                         <button
                                         v-if="authUser && parseInt(authUser.token) > 0"
                                         type="button"
@@ -62,7 +65,7 @@
                                         class="btn btn-warning btn-sm"
                                         >
                                         <i class="bi bi-check-circle-fill"></i> <br/>
-                                        Join Now <span style="font-weight:bold">{{  hostDetail && hostDetail.ticket_show ? '/'+ hostDetail.ticket_show.token + ' tk': '' }} </span>
+                                        Join Now <span style="font-weight:bold">{{  latest_ticket_show ? '/'+ latest_ticket_show.token + ' tk': '' }} </span>
                                     </button>
                                     <a
                                         v-else-if="authUser && parseInt(authUser.token) <= 0"
@@ -166,7 +169,7 @@
                                             class="bg-dark ms-2"
                                             @click="placeCall()"
                                         >
-                                            Private Call
+                                            Private Call {{ '/'+private_call_token+'tk'}}
                                         </button>
                                         <button
                                             v-else
@@ -563,7 +566,7 @@
                                             class="btn btn-success "
                                             @click="placeCall()"
                                         >
-                                        <i class="bi bi-camera-video-fill " ></i>  Private Call
+                                        <i class="bi bi-camera-video-fill " ></i>  Private Call {{ '/'+private_call_token+'tk'}}
                                         </button>
                                         <button
                                             v-else-if="authUser && parseInt(authUser.token) < 1"
@@ -911,7 +914,6 @@
             </div>
         </div>
     </div>
-    <DummyC></DummyC>
 </template>
 
 <script>
@@ -949,6 +951,7 @@ export default {
             chatKey: "public-chat",
             show_joined_by_user: false,
             tip_menu_token_amount: 20,
+            latest_ticket_show: [],
             messages: [],
             isLike: this.$props.like,
             totalLikes: this.$props.totalLike,
@@ -971,11 +974,14 @@ export default {
             total_watching: 0,
             host_tip_menus: [],
             host_gallery_array: [],
+            private_call_token: null
         };
     },
    
     async mounted() {
-      
+        if(this.hostDetail) {
+            this.getPrivateToken();
+        }
         $("#mic-btn").prop("disabled", true);
         $("#video-btn").prop("disabled", true);
         // add event listener to play remote tracks when remote user publishs.
@@ -1025,8 +1031,8 @@ export default {
             this.subscribe(remoteUser[0], mediaType);
             this.isStreamStarted = true;
             this.setVideoQuality();
-
-            // this.subscribe(remoteUser[0], "audio");
+            
+           
         });
         this.client.on("user-left", (evt) => {
             this.isStreamStarted = false;
@@ -1105,6 +1111,14 @@ export default {
         this.getRemoteUsers();
         // get Host Gallery 
         this.getHostGallery();
+        if(this.hostDetail.ticket_show) {
+            this.$nextTick(function () {
+            window.setInterval(() => {
+                this.getTicketShowDetails();
+            },10000);
+        })
+            
+        }
     },
     computed: {
          percentage(percent, total) {
@@ -1115,6 +1129,26 @@ export default {
         },
     },
     methods: {
+        getTicketShowDetails() {
+            try {
+                axios.post("/checker/show-details", {
+                    show_id:this.hostDetail.ticket_show.uuid
+                }).then((resp)=> {
+                    this.latest_ticket_show = resp.data.ticket_show;
+                    });
+                    } catch (error) {
+                        console.log(error);
+                    }
+        },  
+        getPrivateToken() {
+            try {
+                axios.get("/checker/host/private-call-token/"+this.hostDetail.user_id).then((resp)=> {
+                    this.private_call_token = resp.data.token;
+                    });
+                    } catch (error) {
+                        console.log(error);
+                    }
+        },  
         makeUserCall() {
             this.placeCall();
         },
@@ -1154,7 +1188,7 @@ export default {
                 show_id:this.hostDetail.ticket_show.uuid,
         }).then((resp)=> {
             this.show_joined_by_user = true;
-          
+            this.client.remoteUsers[0].audioTrack.play();
             });
             } catch (error) {
                 console.log(error);
@@ -1376,7 +1410,9 @@ export default {
                 user.videoTrack.play(`player-${uid}`);
             }
             if (mediaType === "audio") {
-                user.audioTrack.play();
+                if(this.hostDetail && this.hostDetail.ticket_show && this.hostDetail.ticket_show.status!==1) {
+                    user.audioTrack.play()
+                }
             }
         },
         setVolumn(evt) {
@@ -1428,6 +1464,9 @@ export default {
 </script>
 
 <style>
+.text-danger {
+    color: #a2262e !important;
+}
 .album_photo {
     width: 200px;
     padding: 20px 0px;
@@ -1491,6 +1530,12 @@ export default {
     left: 0;
     right: 0;
     top: 25%;
+}
+.ticket_show h5{ 
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 32%;
 }
 .ticket_show .btn{ 
     position: relative;
