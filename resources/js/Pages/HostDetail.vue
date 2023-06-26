@@ -46,7 +46,7 @@
                                         v-show="isStreamStarted"
                                     >
 
-                                    <div class="ticket_show" v-if="hostDetail && hostDetail.ticket_show && hostDetail.ticket_show.status ===1  && !show_joined_by_user">
+                                    <div class="ticket_show" v-if="latest_ticket_show.status ===1  && !show_joined_by_user">
                                             <i class="bi bi-ticket-perforated"></i><br/>
                                             <h4
                                             class="text-center "
@@ -55,6 +55,9 @@
                                             {{ hostDetail?.user?.name }} is
                                             in a ticket show
                                         </h4>
+                                        <h5>
+                                            {{  latest_ticket_show.user_ids ? Object.keys(latest_ticket_show.user_ids[0]).length : 0 }} user already joined
+                                        </h5>
                                         <button
                                         v-if="authUser && parseInt(authUser.token) > 0"
                                         type="button"
@@ -62,7 +65,7 @@
                                         class="btn btn-warning btn-sm"
                                         >
                                         <i class="bi bi-check-circle-fill"></i> <br/>
-                                        Join Now <span style="font-weight:bold">{{  hostDetail && hostDetail.ticket_show ? '/'+ hostDetail.ticket_show.token + ' tk': '' }} </span>
+                                        Join Now <span style="font-weight:bold">{{  latest_ticket_show ? '/'+ latest_ticket_show.token + ' tk': '' }} </span>
                                     </button>
                                     <a
                                         v-else-if="authUser && parseInt(authUser.token) <= 0"
@@ -911,7 +914,6 @@
             </div>
         </div>
     </div>
-    <DummyC></DummyC>
 </template>
 
 <script>
@@ -949,6 +951,7 @@ export default {
             chatKey: "public-chat",
             show_joined_by_user: false,
             tip_menu_token_amount: 20,
+            latest_ticket_show: [],
             messages: [],
             isLike: this.$props.like,
             totalLikes: this.$props.totalLike,
@@ -1108,6 +1111,14 @@ export default {
         this.getRemoteUsers();
         // get Host Gallery 
         this.getHostGallery();
+        if(this.hostDetail.ticket_show) {
+            this.$nextTick(function () {
+            window.setInterval(() => {
+                this.getTicketShowDetails();
+            },10000);
+        })
+            
+        }
     },
     computed: {
          percentage(percent, total) {
@@ -1118,6 +1129,17 @@ export default {
         },
     },
     methods: {
+        getTicketShowDetails() {
+            try {
+                axios.post("/checker/show-details", {
+                    show_id:this.hostDetail.ticket_show.uuid
+                }).then((resp)=> {
+                    this.latest_ticket_show = resp.data.ticket_show;
+                    });
+                    } catch (error) {
+                        console.log(error);
+                    }
+        },  
         getPrivateToken() {
             try {
                 axios.get("/checker/host/private-call-token/"+this.hostDetail.user_id).then((resp)=> {
@@ -1508,6 +1530,12 @@ export default {
     left: 0;
     right: 0;
     top: 25%;
+}
+.ticket_show h5{ 
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 32%;
 }
 .ticket_show .btn{ 
     position: relative;
