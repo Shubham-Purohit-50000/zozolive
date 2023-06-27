@@ -3188,31 +3188,24 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       });
       if (index != -1) {
         Object.assign(this.allUsers[index], {
-          send_at: data.send_at,
-          is_online: data.is_online
+          send_at: data.send_at
         });
-        // this.allUsers.sort((newItem, oldItem) => {
-        //     let new_is_online = newItem.is_online || false;
-        //     let old_is_online = oldItem.is_online || false;
-        //     if (
-        //         new_is_online === old_is_online &&
-        //         (newItem.send_at || oldItem.send_at)
-        //     ) {
-        //         return (
-        //             new Date(oldItem.send_at) -
-        //             new Date(newItem.send_at)
-        //         );
-        //     }
-        //     return old_is_online - new_is_online;
-        //     // if (oldItem.send_at) {
-        //     // let newDate = new Date(newItem.send_at);
-        //     // let oldDate = new Date(oldItem.send_at);
-        //     // return oldDate - newDate;
-        //     // } else {
-        //     //     console.log("else");
-        //     //     return newItem.send_at ? 1 : 0;
-        //     // }
-        // });
+        this.allUsers.sort(function (newItem, oldItem) {
+          var new_is_online = newItem.is_online || false;
+          var old_is_online = oldItem.is_online || false;
+          if (new_is_online === old_is_online && (newItem.send_at || oldItem.send_at)) {
+            return new Date(oldItem.send_at) - new Date(newItem.send_at);
+          }
+          return old_is_online - new_is_online;
+          // if (oldItem.send_at) {
+          // let newDate = new Date(newItem.send_at);
+          // let oldDate = new Date(oldItem.send_at);
+          // return oldDate - newDate;
+          // } else {
+          //     console.log("else");
+          //     return newItem.send_at ? 1 : 0;
+          // }
+        });
       }
     },
     userSelected: function userSelected(user) {

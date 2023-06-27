@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Host;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -200,4 +201,10 @@ function date_formater($date){
     $date = date_create($date);
     return date_format($date,"d M, Y h:i:s a");
 }
+
+
+function totalLiveUsers() {
+    return Host::where('is_online', 1)->count();
+}
+
 
