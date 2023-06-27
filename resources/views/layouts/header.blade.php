@@ -31,7 +31,11 @@
 
     <div class="total_live d-flex align-items-center mob-disnone">
         <span class="total_live--icon">●</span>
-        <span class="color-white text-upper total_live--count">0 Live</span>
+        <span class="color-white text-upper total_live--count">
+        <?php
+                                                $count = totalLiveUsers();
+                                            ?>
+        {{ $count}} Live</span>
     </div>
     @php
         $search = request('search') ?? null;
