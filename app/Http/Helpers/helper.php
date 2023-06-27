@@ -1,8 +1,10 @@
 <?php
 
 use App\Models\Host;
+use App\Models\TokenSpent;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 function currentUserId()
 {
@@ -205,6 +207,10 @@ function date_formater($date){
 
 function totalLiveUsers() {
     return Host::where('is_online', 1)->count();
+}
+
+function hostTodayRecievedToken($uid) {
+    return TokenSpent::where('host_id', $uid)->sum('token');
 }
 
 

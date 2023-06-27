@@ -115,7 +115,12 @@
                                 class="search-bar-toggle nav-link nav-icon"
                                 style="font-size: 0.8rem; color: #f8f8f8; margin-top:2px; margin-left: 0.2rem">{{ $user->favorites_count }}</span>
                         <span class="search-bar-toggle nav-link nav-icon"
-                              style="font-size: 0.8rem; color: #f8f8f8; margin-top:2px">{{ $user->coin ?? 0 }} tk</span>
+                              style="font-size: 0.8rem; color: #f8f8f8; margin-top:2px">
+                              <?php
+                              $total_token = hostTodayRecievedToken($user->uuid)
+                              ?>
+                              {{ $total_token ?? 0 }} tk
+                            </span>
                         @endrole
                         @role('user')
                         <a href="{{ url('buy-token') }}" title="Buy Token" class="buyTkn">
