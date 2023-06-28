@@ -90,23 +90,23 @@
                 </li>
                 <li class="nav-item ms-2  me-2 d-block desktop-d-none mob-disblock chat__icon">
                     <a href="{{ url('chat') }}">
-                        <i class="bi bi-chat-left-text search-bar-toggle nav-link nav-icon  cursor-pointer"
+                        <i class="bi bi-chat-left-text  ms-2 mt-1 search-bar-toggle nav-link nav-icon  cursor-pointer"
                            style="color: #f8f8f8;     font-size: 1.1rem;"></i>
                            <span style="color:#fff; font-size:12px">Chat</span>
                     </a>
                 </li> 
                  <li class="nav-item d-block ms-2 text-center desktop-d-none mob-disblock chat__icon">
-                 <a href="{{ url('buy-token') }}" title="Buy Token" class="buyTkn">
+                 <a href="{{ url('buy-token') }}" title="Buy Token" class="buyTkn line-height-22">
                             
                             <span class="search-bar-toggle nav-link nav-icon"
                                   style="font-size: 0.8rem; color: #f8f8f8; margin-top:2px;margin-left:5px;">
                                  {{ Auth::user()->token ?? 0 }} tk <br/>+ Buy Token</span> 
             </a>    
                 </li>
-                <li class="nav-item d-block mob-disnone notification__icon">
+                <!-- <li class="nav-item d-block mob-disnone notification__icon">
                     <i class="bi bi-bell search-bar-toggle nav-link nav-icon  "
                        style="color: #f8f8f8;     font-size: 1.1rem;"></i>
-                </li>
+                </li> -->
                 <li class="nav-item d-block mob-disnone">
                     <div class="d-flex align-items-center">
                         @role('model')
@@ -244,9 +244,22 @@
                     </ul>
                 </li>
             @endguest
-            <li class="nav-item d-none mob-disnone" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-three-dots-vertical"></i>
-            </li>
+            @guest
+            <li class="display-mobile me-3">
+                        <a href="javascript::void();" class="dropdown-item line-height-10 text-center align-items-center cursor-pointer"
+                           data-bs-toggle="modal" data-bs-target="#basicModal">
+                           <i class="bi bi-person fs-3"></i> <br/>
+                            Create Account
+                        </a>
+                    </li>
+                    <li class="display-mobile me-3">
+                        <a class="dropdown-item  text-center line-height-10  align-items-center"
+                           href="javascript::void();" data-bs-toggle="modal" data-bs-target="#loginModal"> 
+                           <i class="bi bi-box-arrow-in-right fs-3"></i><br/>
+                            Log In
+                        </a>
+                    </li>
+            @endguest
             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile pt-0 text-white"
                 style="background-color: #373737; right: 1rem">
                 @guest
@@ -256,28 +269,28 @@
                             Create Account
                         </a>
                     </li>
-                    <li class="nav-item d-block">
+                    <li class="nav-item display-mobile">
                         <a class="dropdown-item d-flex align-items-center"
                            href="javascript::void();" data-bs-toggle="modal" data-bs-target="#loginModal">
                             Log In
                         </a>
                     </li>
                 @else
-                    <li class="dropdown-item nav-item d-block">
+                    <li class="dropdown-item nav-item display-desktop">
                         <a href="{{ url('chat') }}" class="d-flex align-items-center">
                             <i class="bi bi-chat-left-text nav-icon  cursor-pointer"
                                style="color: #f8f8f8;     font-size: 1.1rem;"></i>
                             Chat
                         </a>
                     </li>
-                    <li class="dropdown-item nav-item d-block">
+                    <!-- <li class="dropdown-item nav-item display-desktop">
                         <a href="{{ url('notifications') }}" class="d-flex align-items-center">
                             <i class="bi bi-bell nav-icon cursor-pointer"
                                style="color: #f8f8f8;font-size: 1.1rem;"></i>
                             Notification
                         </a>
-                    </li>
-                    <li class="dropdown-item nav-item d-block">
+                    </li> -->
+                    <li class="dropdown-item nav-item display-desktop">
                         <a href="{{ url('buy-token') }}" class="d-flex align-items-center">
                             <i class="bi bi-plus nav-icon cursor-pointer"
                                style="color: #f8f8f8;font-size: 1.1rem;"></i>

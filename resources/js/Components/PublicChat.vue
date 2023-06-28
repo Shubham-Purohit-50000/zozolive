@@ -248,7 +248,7 @@
     </div>
   
     </div>
-    <div :class="['my-2 chat__box', !sended_tip ? 'top_postion_chat_box' : '']" v-if="authUser && authUserLevelData.token > 0">
+    <div :class="['my-2 chat__box', !sended_tip ? 'top_postion_chat_box' : 'top_postion_chat_box-2']" v-if="authUser && authUserLevelData.token > 0">
       <div class="input-group chat__box--wrapper">
         <input
             type="text"
@@ -610,7 +610,11 @@ export default {
     margin-top: 0px ;
 }
 .top_postion_chat_box {
-  margin-top: -230px !important;
+  margin-top: -180px !important;
+}
+
+.top_postion_chat_box-2 {
+  margin-top: 0px !important;
 }
 .token_box input {
   margin-top:0px;

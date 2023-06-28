@@ -400,9 +400,9 @@
             height: 100vh !important;
         }
 
-        /* body aside {
+        body aside {
             display: none;
-        } */
+        }
 
         body.toggle-sidebar aside {
             display: block !important;

@@ -597,7 +597,7 @@
             </section>
             <section id="photo_album" class="mt-5 photo_album_area">
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-12 mt-3">
                         My Photos
                     </div>
                     <div class="col-md-12">
@@ -1883,6 +1883,10 @@ input[type="range"]::-ms-fill-upper {
 @media (max-width: 700px) {
     .video-group {
     min-height: 200px;
+}
+.album_photo {
+    width:100%;
+   
 }
 .mt-3rem {
     margin-top: 3rem !important;
