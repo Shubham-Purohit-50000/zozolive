@@ -162,12 +162,30 @@ h6 {
     background-color: #f6f9ff;
 }
 
+/* Display block desktop mobile & desktop css */ 
+
+.display-mobile {
+    display: none;
+}
+
+.display-desktop {
+    display: block;
+}
+.line-height-10 {
+    line-height: 20px;
+    font-size: 12px;
+}
+
+.line-height-22 {
+    line-height: 22px !important;
+}
+
 @media (min-width: 768px) {
     .dropdown-menu-arrow::before {
         content: "";
         width: 13px;
         height: 13px;
-        background: #fff;
+        background: #333;
         position: absolute;
         top: -7px;
         right: 20px;
@@ -1942,6 +1960,13 @@ input[type="file"]::before {
 @media screen and (max-width: 600px) {
     .special-deals {
         font-size: 0.75rem;
+    }
+    .display-mobile {
+        display: block;
+    }
+
+    .display-desktop {
+        display: none;
     }
  
 }
