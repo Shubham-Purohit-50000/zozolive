@@ -51,7 +51,7 @@
                   class="text-white text-hover-primary font-weight-bold font-size-h6"
               >{{ hostDetail?.user?.name }}</span> <br/>
              <button class="btn btn-link"  style="text-decoration: none;" v-if="hostDetail && hostDetail.user.is_online || hostDetail.is_online" @click="makeCall">
-              <i  class="bi bi-telephone-inbound-fill"></i><span > {{ '/'+private_call_token+'tk'}}</span>
+              <i  class="bi bi-telephone-inbound-fill"></i><span > {{ '/'+private_call_token}} <img src="/assets/coin2.png" width="18" class="mb-4px" /></span>
              </button>
               <span :class="[hostDetail && hostDetail.user.is_online ? 'text-success' : 'text-danger']"> {{  hostDetail && hostDetail.user.is_online ? 'Online' : 'Offline' }}</span>
               

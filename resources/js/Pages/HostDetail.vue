@@ -33,7 +33,7 @@
                                 style="padding: 0; background: #3b3b3b"
                             >
                                 <div class="video-group relative h-100" >
-                                    <div id="remote-playerlist" :style="hostDetail.user.is_online ? 'background-image:url(/images/' +hostDetail.user.profile_image+')' : ''">
+                                    <div id="remote-playerlist" :style="'background:url(/images/' +hostDetail.user.profile_image+') center'">
                                       
                                         <h4
                                             class="text-center stream__offline--text"
@@ -65,7 +65,7 @@
                                         class="btn btn-warning btn-sm"
                                         >
                                         <i class="bi bi-check-circle-fill"></i> <br/>
-                                        Join Now <span style="font-weight:bold">{{  latest_ticket_show ? '/'+ latest_ticket_show.token + ' tk': '' }} </span>
+                                        Join Now <span style="font-weight:bold">{{  latest_ticket_show ? '/'+ latest_ticket_show.token: '' }} <img src="/assets/coin2.png" width="18" class="mb-2px"/></span>
                                     </button>
                                     <a
                                         v-else-if="authUser && parseInt(authUser.token) <= 0"
@@ -169,7 +169,7 @@
                                             class="bg-dark ms-2"
                                             @click="placeCall()"
                                         >
-                                            Private Call {{ '/'+private_call_token+'tk'}}
+                                            Private Call {{ '/'+private_call_token}} <img src="/assets/coin2.png" width="18" class="mb-1"/>
                                         </button>
                                         <button
                                             v-else
@@ -566,7 +566,7 @@
                                             class="btn btn-success "
                                             @click="placeCall()"
                                         >
-                                        <i class="bi bi-camera-video-fill " ></i>  Private Call {{ '/'+private_call_token+'tk'}}
+                                        <i class="bi bi-camera-video-fill " ></i>  Private Call {{ '/'+private_call_token}}  <img src="/assets/coin2.png" width="18" class="mb-4px"/>
                                         </button>
                                         <button
                                             v-else-if="authUser && parseInt(authUser.token) < 1"
@@ -923,6 +923,7 @@ import PrivateChat from "@/Components/PrivateChat.vue";
 import SignupModal from "@/Components/SignupModal.vue";
 import LoginModal from "@/Components/LoginModal.vue";
 import OutgoingCallModal from "./Chat/Shared/OutgoingCallModal.vue";
+import EventBus from '../event-bus';
 export default {
     name: "HostDetail",
     components: {
@@ -933,7 +934,6 @@ export default {
         LoginModal,
         OutgoingCallModal,
     },
-    emits:['host-page'],
     props: [
         "hosts",
         "hostDetail",
@@ -953,6 +953,7 @@ export default {
             tip_menu_token_amount: 20,
             latest_ticket_show: [],
             messages: [],
+            message: '',
             isLike: this.$props.like,
             totalLikes: this.$props.totalLike,
             client: "",
@@ -1168,8 +1169,8 @@ export default {
                       window.location.href = "/buy-token";
                       
                     } else {
-                      this.message = 'tipped ' + this.tip_menu_token_amount + ' tk';
-                      this.send();
+                      this.message = 'tipped ' + this.tip_menu_token_amount.toString();
+                      EventBus.emit('send-tip', this.message);
                       this.sended_tip = true;
                     }
                    

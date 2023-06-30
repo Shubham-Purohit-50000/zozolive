@@ -21,7 +21,7 @@
                   <span v-else>
                     {{  msg.send_by_user }} 
                   </span>
-                  {{ msg.msg }}
+                  {{ msg.msg }} <img src="/assets/coin2.png" width="18" class="mb-4px" />
                   
                   </div>
                 
@@ -39,7 +39,7 @@
                     <div class="toast-header">
                       <!-- <img src="..." class="rounded me-2" alt="..."> -->
                       <span class="badge me-auto" :style="{'background-color':msg.level_data ? msg.level_data.color : ''}">Level : {{ msg.level_data ? msg.level_data.level : null  }}</span>
-                      <span class="badge  badge-pill badge-primary"><span class="text-white">Tk : </span>{{ msg.user_token }}</span> 
+                      <span class="badge  badge-pill badge-primary"><span class="text-white"><img src="/assets/coin2.png" width="18" class="mb-4px" /></span>{{ msg.user_token }}</span> 
                     
                       <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close" @click="closeToast(msg.user_token)">
                         <i class=" bi bi-x-lg"></i>
@@ -278,9 +278,10 @@
 
 <script>
 import firebase from "@/firebase";
-
+import EventBus from '../event-bus';
 export default {
   name: "PublicChat",
+  emits:['send-tip'],
   props: {
     hostDetail: String,
     activeTab: String
@@ -333,15 +334,21 @@ export default {
     this.scrollBottom();
     this.getUserLevels();
     this.getHostTipMenu();
+
+    EventBus.on('send-tip', (value) => {
+      console.log(value);
+			this.message = value;
+      this.send();
+		});
   },
   methods: {
     sendUserTip(value = null) {
-      console.log(value);
+      console.log(value, 'values');
             try {
                 axios.post("/user/send-tip", {
                     user_id: this.authUser.uuid,
                     host_id: this.hostDetail.user_id,
-                    token_amount: value ? value.token : this.tip_menu_token_amount,
+                    token_amount: value && value.token ? value.token : this.tip_menu_token_amount,
                 }).then((resp)=>{
                     this.$refs.cancelButton.click();
                     console.log(resp);
@@ -349,7 +356,12 @@ export default {
                       window.location.href = "/buy-token";
                       
                     } else {
-                      this.message = 'tipped ' + value ? value.token : this.tip_menu_token_amount + ' tk';
+                      if(value && value.token) {
+                        this.message = 'tipped ' + value.token.toString();
+                      } else {
+                        this.message = 'tipped ' + this.tip_menu_token_amount.toString();
+                      }
+                     
                       this.send();
                       this.sended_tip = true;
                     }

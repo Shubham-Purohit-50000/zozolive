@@ -17,10 +17,15 @@
                 alt="..."
             /> 
             <img v-else
-              :src="host.user.is_online ? '/images/'+host.user.profile_image : ''"
+              :src="'/images/'+host.user.profile_image"
                 class="card-img-top"
                 alt="..."
             />
+            <!-- <img v-else
+                src="/assets/plus-18-movie.png"
+                class="card-img-top"
+                alt="..."
+            /> -->
             <div class="caption">
                 <span>{{ host.user.name }}  <img :src="host.cflag" /></span>
                 <span class="me-2" v-if="host.user.is_online"><i class="bi bi-telephone-inbound-fill"></i></span>

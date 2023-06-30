@@ -88,19 +88,19 @@
                            style="color: #f8f8f8;     font-size: 1.1rem;"></i>
                     </a>
                 </li>
-                <li class="nav-item ms-2  me-2 d-block desktop-d-none mob-disblock chat__icon">
+                <li class="nav-item ms-2 header_btn me-2 d-block desktop-d-none mob-disblock chat__icon">
                     <a href="{{ url('chat') }}">
                         <i class="bi bi-chat-left-text  ms-2 mt-1 search-bar-toggle nav-link nav-icon  cursor-pointer"
-                           style="color: #f8f8f8;     font-size: 1.1rem;"></i>
-                           <span style="color:#fff; font-size:12px">Chat</span>
+                           style="font-size: 1.1rem;"></i>
+                           <span style="font-size:12px">Chat</span>
                     </a>
                 </li> 
-                 <li class="nav-item d-block ms-2 text-center desktop-d-none mob-disblock chat__icon">
-                 <a href="{{ url('buy-token') }}" title="Buy Token" class="buyTkn line-height-22">
+                 <li class="nav-item d-block ms-2  me-2 header_btn nav-item text-center desktop-d-none mob-disblock chat__icon">
+                 <a href="{{ url('buy-token') }}" title="Buy Token" class=" line-height-22">
                             
-                            <span class="search-bar-toggle nav-link nav-icon"
-                                  style="font-size: 0.8rem; color: #f8f8f8; margin-top:2px;margin-left:5px;">
-                                 {{ Auth::user()->token ?? 0 }} tk <br/>+ Buy Token</span> 
+                            <span 
+                                  style="font-size: 0.8rem; margin-top:2px;margin-left:5px;">
+                                 {{ Auth::user()->token ?? 0 }} <img src="/assets/coin2.png" width="18" class="mb-4px"/> <br/>+ My Token</span> 
             </a>    
                 </li>
                 <!-- <li class="nav-item d-block mob-disnone notification__icon">
@@ -119,7 +119,7 @@
                               <?php
                               $total_token = hostTodayRecievedToken($user->uuid)
                               ?>
-                              {{ $total_token ?? 0 }} tk
+                             <span class="wegiht-600"> {{ $total_token ?? 0 }} </span> <img src="/assets/coin2.png" width="18" class="mb-4px"/>
                             </span>
                         @endrole
                         @role('user')
@@ -128,15 +128,22 @@
                                style="color: #f8f8f8;font-size: 1.1rem; margin-right:1px"> </i>
                             <span class="search-bar-toggle nav-link nav-icon"
                                   style="font-size: 0.8rem; color: #f8f8f8; margin-top:2px;margin-left:5px;">{{ Auth::user()->token ?? 0 }}
-                                        tk</span>
+                                  <img src="/assets/coin2.png" width="22"/> </span>
                             <span class="bg-green buy_token_plus_btn">+</span></a>
                         @endrole
                     </div>
                 </li>
                 @role('model')
-                <li class="nav-item d-block">
+                <li class="nav-item display-mobile header_btn ms-1 me-2">
+                <a href="/live-stream/start">
+                        <i class="bi bi-play-circle  ms-2 mt-1 search-bar-toggle nav-link nav-icon  cursor-pointer"
+                           style="font-size: 1.1rem;"></i>
+                           <span style="font-size:12px"> Live</span>
+                    </a>
+                </li>
+                <li class="nav-item display-desktop">
                     <a href="/live-stream/start"
-                       class="search-bar-toggle loginLink outline_button nav-link nav-icon broadcast_center"
+                       class="search-bar-toggle  loginLink outline_button nav-link nav-icon broadcast_center"
                        style="background-color: #79943D;"><i class="bi bi-play-fill d-inline-block"></i>
                         <span class="broadcast_center--text">Broadcast centre</span>
                     </a>
@@ -245,20 +252,30 @@
                 </li>
             @endguest
             @guest
-            <li class="display-mobile me-3">
+            
+            <li class="nav-item display-mobile me-3">
+                            <a class="dropdown-item d-flex align-items-center  search-bar-toggle  outline_button"
+                               data-bs-toggle="modal" data-bs-target="#basicModal">
+                                Sign Up
+                            </a>
+                        </li>
+                        <li class="nav-item d-none  mob-disblock" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-three-dots-vertical"></i>
+            </li>
+            <!-- <li class="display-mobile me-3">
                         <a href="javascript::void();" class="dropdown-item line-height-10 text-center align-items-center cursor-pointer"
                            data-bs-toggle="modal" data-bs-target="#basicModal">
                            <i class="bi bi-person fs-3"></i> <br/>
                             Create Account
                         </a>
-                    </li>
-                    <li class="display-mobile me-3">
+                    </li> -->
+                    <!-- <li class="display-mobile me-3">
                         <a class="dropdown-item  text-center line-height-10  align-items-center"
                            href="javascript::void();" data-bs-toggle="modal" data-bs-target="#loginModal"> 
                            <i class="bi bi-box-arrow-in-right fs-3"></i><br/>
                             Log In
                         </a>
-                    </li>
+                    </li> -->
             @endguest
             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile pt-0 text-white"
                 style="background-color: #373737; right: 1rem">
@@ -266,13 +283,20 @@
                     <li>
                         <a href="javascript::void();" class="dropdown-item d-flex align-items-center cursor-pointer"
                            data-bs-toggle="modal" data-bs-target="#basicModal">
-                            Create Account
+                           <i class="bi bi-person"></i> Create Account
+                        </a>
+                    </li>
+                   
+                    <li class="nav-item display-mobile">
+                        <a class="dropdown-item d-flex align-items-center"
+                           href="javascript::void();" data-bs-toggle="modal" data-bs-target="#loginModal">
+                           <i class="bi bi-box-arrow-in-right"></i>  Log In
                         </a>
                     </li>
                     <li class="nav-item display-mobile">
                         <a class="dropdown-item d-flex align-items-center"
-                           href="javascript::void();" data-bs-toggle="modal" data-bs-target="#loginModal">
-                            Log In
+                           href="javascript::void();" data-bs-toggle="modal" data-bs-target="#modelSignup">
+                           <i class="bi bi-camera-video-fill ms-1"></i>  Become a model
                         </a>
                     </li>
                 @else

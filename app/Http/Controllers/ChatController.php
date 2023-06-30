@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Country;
+use App\Models\Host;
 use App\Models\Language;
+use App\Models\TicketShow;
 use App\Models\User;
 use Illuminate\Support\Str;
 
@@ -36,8 +38,15 @@ class ChatController extends Controller
                 $role = isRole('user') ? 'model' : 'user';
                 return User::whereRelation('roles', 'name', $role)->get()
                 ->map(function ($item) {
+                    $ticketShow = null;
+                    $host = Host::where('user_id', $item->uuid)->first();
+                    if(!empty($host)) {
+                        $ticketShow = TicketShow::where('host_id', $host->user_id)->first();
+                    }
+                  
                     $item->avatar = $item->avatar ? storageUrl($item->avatar) : '';
                     $item->send_at = null;
+                    $item->private_call =  $ticketShow ? $ticketShow->token : null;
                     return $item;
                 });
             }),

@@ -106,14 +106,18 @@
                                 @click="stopTicketShow"
                                 class="ms-2 start_stream_btn"
                             >
-                            <i class="bi bi-ticket-perforated"></i>  End Show <span style="font-weight:bold">{{  hostDetails.ticket_show ? '/'+ hostDetails.ticket_show.token + 'tk': '' }} </span>
+                            <i class="bi bi-ticket-perforated"></i>  End Show <span style="font-weight:bold">{{  hostDetails.ticket_show ? '/'+ hostDetails.ticket_show.token : '' }} </span>
+                             <img v-if ="hostDetails.ticket_show"
+                                src="/assets/coin2.png" width="18" class="mb-2px" />
                             </button>
                             <button
                                 v-if="isStreamStarted && !show_started"
                                 @click="startTicketShow"
                                 class="ms-2 start_stream_btn"
                             >
-                            <i class="bi bi-ticket-perforated"></i>  Start Show <span style="font-weight:bold">{{  hostDetails.ticket_show ? '/'+ hostDetails.ticket_show.token + 'tk': '' }} </span>
+                            <i class="bi bi-ticket-perforated"></i>  Start Show <span style="font-weight:bold">{{  hostDetails.ticket_show ? '/'+ hostDetails.ticket_show.token: '' }} 
+                                <img v-if ="hostDetails.ticket_show"
+                                src="/assets/coin2.png" width="18" class="mb-2px" /></span>
                             </button>
                             </div>
                             <!-- <div class="tip"><button>Send Tip</button></div> -->
@@ -216,7 +220,7 @@
                   <span v-else>
                     {{  msg.send_by_user }} 
                   </span>
-                  {{ msg.msg }}
+                  {{ msg.msg }} <img src="/assets/coin2.png" width="18" class="mb-4px" />
                   
                   </div>
 

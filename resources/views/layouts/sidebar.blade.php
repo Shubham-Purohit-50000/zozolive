@@ -22,14 +22,22 @@
             </a>
         </li> -->
 
-
+        @guest
         <li class="nav-item">
             <a class="nav-link" href="{{ url('become-a-model') }}">
                 <i class="bi bi-people-fill"></i>
                 <span>Become a Model</span>
             </a>
         </li>
-
+        @endguest
+        @role('user')
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url('become-a-model') }}">
+                <i class="bi bi-people-fill"></i>
+                <span>Become a Model</span>
+            </a>
+        </li>
+        @endrole
         <hr />
         <br />
         <p class="special_category mb-0">Country</p>
