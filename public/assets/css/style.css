@@ -180,6 +180,35 @@ h6 {
     line-height: 22px !important;
 }
 
+.wegiht-600 {
+    font-weight: 600;
+}
+
+.text-danger {
+    color: rgb(179, 32, 32) !important;
+}
+.mb-4px {
+    margin-bottom: 3px !important;
+}
+.mb-2px {
+    margin-bottom: 2px !important;
+}
+.header_btn  {
+    background: #ffe1e1;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 2px 2px 2px #3f1d1d;
+    text-align: center;
+    padding: 2px 2px;
+
+}
+.header_btn i {
+    color: rgb(179, 32, 32) !important;
+    left: 3px !important;
+}
+.header_btn a {
+    color: rgb(46, 46, 46) !important;
+}
 @media (min-width: 768px) {
     .dropdown-menu-arrow::before {
         content: "";

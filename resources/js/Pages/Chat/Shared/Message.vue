@@ -18,14 +18,22 @@
           >
         </div>
         <div
-            v-if="isCustomer && isOnline"
+            v-if="isCustomer && selectedUser.is_online"
             class="d-flex flex-column callActionBox"
         >
-          <i
+        <button
+              v-if="authUser && parseInt(authUser.token) > 0"
+              type="button"
+              class="btn btn-sm  btn-success "
+              @click="placeCall(selectedUser.uuid, selectedUser.name)"
+          >
+          <i class="bi bi-camera-video-fill " ></i> <span>Private Call</span>  {{ '/'+selectedUser.private_call}}  <img src="/assets/coin2.png" width="18" class="mb-4px" />
+        </button>
+          <!-- <i
               class="bi bi-camera-video"
               @click="placeCall(selectedUser.uuid, selectedUser.name)"
           ></i>
-          <span class="private_call_text">PRIVATE CALL</span>
+          <span class="private_call_text">PRIVATE CALL</span> -->
         </div>
         <!-- <div>
 <span class="label label-dot label-success"></span>
@@ -417,6 +425,17 @@ export default {
     onSelectEmoji(emoji) {
       this.message += emoji.i;
     },
+    setUserToken() {
+      try {
+           axios.post("/user/"+this.authUser.uuid, {
+            host_id:this.selectedUser.uuid
+           }).then((resp)=> {
+            });
+           
+        } catch (error) {
+            console.log(error);
+        }
+    },
     async sendMessage() {
       if (this.message) {
         this.db
@@ -441,6 +460,7 @@ export default {
                     .child(this.currentChatKey)
                     .child("message")
                     .set(msgClone);
+                this.setUserToken();
                 this.message = "";
               } else {
                 const data = {
@@ -459,6 +479,8 @@ export default {
                     .ref("private-chats")
                     .child(this.currentChatKey)
                     .set(data);
+
+                this.setUserToken();
                 this.message = "";
               }
             });
@@ -719,7 +741,6 @@ export default {
 }
 
 .callActionBox i {
-  font-size: 25px;
   color: #fff;
   cursor: pointer;
 }

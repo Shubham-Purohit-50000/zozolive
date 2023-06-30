@@ -225,7 +225,7 @@
                             "
                         >
                             <span>
-                                <h6 style="color: #f8f8f8 !important">Private Call Token</h6>
+                                <h6 style="color: #f8f8f8 !important">Private Call <img src="/assets/coin2.png" width="18" class="mb-4px" /></h6>
                             </span>
                             
                         </div>
@@ -480,7 +480,7 @@
                                         class="card-text mb-0 mt-2"
                                         style="color: #5b5b5b; font-size: 13px"
                                     >
-                                        PRICE , tk
+                                        PRICE , <img src="/assets/coin2.png" width="18" class="mb-4px" />
                                     </p>
 
                                     <input class="inputBox" v-model="token_amount" type="text" />

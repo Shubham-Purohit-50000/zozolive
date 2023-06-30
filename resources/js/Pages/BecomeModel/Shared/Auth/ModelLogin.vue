@@ -98,7 +98,7 @@
                     >Forgot password?</a
                     >
                   </div>
-
+                  <div v-if="errorMsg" class="text-danger"> {{  errorMsg }}</div>
                 </form>
               </div>
             </div>
@@ -151,7 +151,11 @@ export default {
               $("#modelLogin").modal("hide");
               this.$emit('updateLoginUsername', this.form.username);
               $("#afterLogin").modal("show");
-            } else if (err.response.status == 400) {
+            }
+            else if (err.response.status == 401) {
+              this.errorMsg = 'Authentication failed, please check your login details';
+            }
+            else if (err.response.status == 400) {
               this.errorMsg = err.response.data.msg;
               $('#loginToast').removeClass('hide');
               $('#loginToast').addClass('show');
