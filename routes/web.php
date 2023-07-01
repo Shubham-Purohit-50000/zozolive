@@ -154,7 +154,7 @@ Route::post('agorabroadcasting/auth', function () {
 
 //---------Shubham Route------------------------
 Route::post('uplaod/profile/image', [FrontendController::class, 'updateProfileImage']);
-Route::get('user_level/{token}', [FrontendController::class, 'userLevel']);
+Route::get('user_level/{user}', [FrontendController::class, 'userLevel']);
 // Token deduction
 Route::post('user/{token}', [FrontendController::class, 'setUserToken']);
 // Put screen capture into database

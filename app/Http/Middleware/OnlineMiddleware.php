@@ -27,7 +27,7 @@ class OnlineMiddleware
             $users_to_online->update(['is_online' => true]);
         }
         if (auth()->check()) {
-            $cache_value = Cache::put('user-is-online', auth()->id(), \Carbon\Carbon::now()->addMinutes(1));
+            $cache_value = Cache::put('user-is-online', auth()->id(), \Carbon\Carbon::now()->addMinutes(3));
             $user = User::find(Cache::get('user-is-online'));
             $user->last_activity = now()->addMinutes(1);
             $user->is_online = true;

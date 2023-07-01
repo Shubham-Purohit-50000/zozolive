@@ -528,8 +528,9 @@ class FrontendController extends Controller
         ]);
     }
 
-    public function userLevel($token)
-    {
+    public function userLevel(User $user)
+    {   
+        $token = $user->token;
         $token = (int)$token;
         // dd($token);
         $level = array();
