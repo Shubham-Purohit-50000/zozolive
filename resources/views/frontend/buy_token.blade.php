@@ -4,6 +4,91 @@
 @endsection
 @section('css')
     <style type="text/css">
+        body {
+            background-color: #fff;
+        }
+        /*----New card UI */
+                    
+            .my-card{
+                border: 2px solid #bdbaba;
+                border-radius: 1rem;
+            }
+
+            .my-card:hover{
+                background-color: #fff6f7;
+                border: 2px solid #a2262e;
+            }
+  .ribbon {
+    height: 270px;
+    position: relative;
+    margin-bottom: 30px;
+    background: url(https://html5book.ru/wp-content/uploads/2015/10/snow-road.jpg);
+    background-size: cover;
+    text-transform: uppercase;
+    color: #333;
+    background-color: #fff;;
+    text-align: center;
+  }
+  .wrap {
+    width: 100%;
+    height: 270px;
+    position: absolute;
+    top: -8px;
+    left: 8px;
+    overflow: hidden;
+  }
+  .wrap:before, .wrap:after {
+    content: ""; 
+    position: absolute;
+  }
+  .wrap:before {
+    width: 40px;
+    height: 8px;
+    right: 100px;
+    background: #4D6530;
+    border-radius: 8px 8px 0px 0px;
+  }
+  .wrap:after {
+    width: 8px;
+    height: 40px;
+    right: 0px;
+    top: 100px;
+    background: #4D6530;
+    border-radius: 0px 8px 8px 0px;
+  }
+  .ribbon6 {
+    width: 180px;
+    height: 40px;
+    line-height: 40px;
+    position: absolute;
+    top: 30px;
+    right: -50px;
+    z-index: 2;
+    overflow: hidden;
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+    border: 1px dashed;
+    box-shadow:0 0 0 3px #57DD43,  0px 21px 5px -18px rgba(0,0,0,0.6);
+    background: #57DD43;
+    text-align: center;
+  }
+  .w-50 {
+    width: 50%!important;
+}
+
+.ribbon h5 {
+        margin-top: 20px;
+    }
+  @media (max-width: 600px) {
+    .ribbon {
+      /* width: 48%; */
+    }
+
+    .ribbon h5 {
+        margin-top: 60px;
+    }
+  }
+        /*----End card UI */
         .card.active {
             background: #1f1f1f;
             border-radius:20px;
@@ -41,8 +126,8 @@
         }
 
         .badge2 {
-            color: #b30a0a;
-            background-color: #fff6f6;
+            color: #333;
+            background-color: #57DD43;
             position: absolute;
             top: -10px;
             border-radius: 50%;
@@ -104,7 +189,7 @@
         <section class="section container">
             <div class="row align-items-top token">
                 <div class="col-md-12">
-                    <h3 class="mb-3">Tokens Details</h3>
+                    <h3 class="mb-5 text-black">Get Tokens</h3>
                 </div>
                 @if ($errors && count($errors))
                     <div class="alert alert-elevate" id="errors" role="alert" style="color: #a2262e">
@@ -118,7 +203,27 @@
                     </div>
                 @endif
                 @foreach ($list as $key => $data)
-                    <div class="col-lg-2 col-sm-2 token_list">
+                <div class="col-6 col-md-3">
+          <div class="mb-4 box-shadow my-card ribbon">
+            <div class="wrap">
+              <span class="ribbon6">OFFER {{round(100 - ($data->amount - $data->discount)*100/$data->amount, 1)}}%</span>
+              <div class="card-body my-body">
+                <h5 class="card-title ">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="none" viewBox="0 0 12 12" class="uSYgE"><path fill="#FFD200" fill-rule="evenodd" d="M6 12A6 6 0 1 0 6 0a6 6 0 0 0 0 12Z" clip-rule="evenodd"></path><path fill="#FFE749" fill-rule="evenodd" d="M6 10.125a4.125 4.125 0 1 0 0-8.25 4.125 4.125 0 0 0 0 8.25Z" clip-rule="evenodd"></path><path fill="#FEBE43" fill-rule="evenodd" d="M6.14 7.68a.3.3 0 0 0-.28 0l-1.211.637a.3.3 0 0 1-.435-.316l.231-1.35a.3.3 0 0 0-.086-.265l-.98-.955a.3.3 0 0 1 .166-.512l1.354-.197a.3.3 0 0 0 .226-.164l.606-1.228a.3.3 0 0 1 .538 0l.606 1.228a.3.3 0 0 0 .226.164l1.355.197a.3.3 0 0 1 .166.512l-.98.955a.3.3 0 0 0-.087.266L7.787 8a.3.3 0 0 1-.436.316L6.14 7.68Z" clip-rule="evenodd"></path></svg>
+                    <strong class="text-dark">{{$data->coin}}</strong>
+                </h5>
+                <div>
+                    <img src="https://cget.tango.me/contentserver/download/YKf5PQAA3Egw8vDtTOpkMw/X5v2GYQx" alt="" class="w-50">
+                </div>
+                <ul class="list-unstyled mt-3 mb-4">
+                  <li><strong class="text-dark">₹ {{$data->amount - $data->discount}}</strong></li>
+                  <li><del class="text-dark">₹ {{$data->amount}}</del></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+                    <!-- <div class="col-lg-2 col-sm-2 token_list">
                         <div class="card toggleClass">
                             <div class="card-body" style="padding:0;text-align: center;">
                                 <label for="plan_{{ $key }}" style="color: #000;padding: 15px;text-align: center;">
@@ -140,7 +245,7 @@
                                 </label>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 @endforeach
               <div class="col-md-12 mb-5">
               <!-- <button type="button" id="submit_button" class="btn theme-btn"
@@ -149,9 +254,7 @@
             </div>
             <div class="row">
                 <!-- offline -->
-                <div class="col-md-4 col-12">
-
-
+                <div class="col-md-6 col-12">
                         <div class="card bg-dark text-white" style="min-height: 170px;">
                         <img src="/img/photo.jpg" class="card-img" >
                         <div class="card-img-overlay">
