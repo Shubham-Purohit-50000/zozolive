@@ -128,7 +128,7 @@
                                style="color: #f8f8f8;font-size: 1.1rem; margin-right:1px"> </i>
                             <span class="search-bar-toggle nav-link nav-icon"
                                   style="font-size: 0.8rem; color: #f8f8f8; margin-top:2px;margin-left:5px;">{{ Auth::user()->token ?? 0 }}
-                                  <img src="/assets/coin2.png" width="22"/> </span>
+                                  <img src="/assets/coin2.png" width="18"/> </span>
                             <span class="bg-green buy_token_plus_btn">+</span></a>
                         @endrole
                     </div>
