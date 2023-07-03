@@ -158,6 +158,13 @@
 .font-size-20 {
     font-size: 20px;
 }
+.shub-tab{
+  background: #a2262e;
+  color: #fff !important;
+  padding: 5px;
+  border-radius: 1.3rem;
+  border: 3px solid #141415;
+}
         @media (max-width: 640px) {
   
             .token .col-sm-2 {
@@ -188,6 +195,13 @@
         ]) !!}
         <section class="section container">
             <div class="row align-items-top token">
+                <div class="col-12 mx-auto rounded">
+                    <div class="my-4 text-center">
+                        <span class="shub-tab px-3 py-2">shub@gmail.com</span>
+                        <span class="d-block my-3" style="color:#141415;">Remember your email to buy tokens with our official site. <a href="https://zozotoken.com" class="">zozotoken.com</a></span>
+                        <span class="d-block my-3" style="color:#141415;">[ हमारी आधिकारिक साइट से टोकन खरीदने के लिए अपना ईमेल याद रखें. <a href="https://zozotoken.com" class="">zozotoken.com</a> ]</span>
+                    </div>
+                </div>
                 <div class="col-md-12">
                     <h3 class="mb-5 text-black">Get Tokens</h3>
                 </div>
@@ -223,6 +237,7 @@
             </div>
           </div>
         </div>
+        
                     <!-- <div class="col-lg-2 col-sm-2 token_list">
                         <div class="card toggleClass">
                             <div class="card-body" style="padding:0;text-align: center;">
