@@ -1976,7 +1976,18 @@ display: inline !important;
 .dropdown-menu .dropdown-item a{
     color: #fff !important;
 }
-
+.btn-white {
+    border: 2px solid #000;
+    color: #000;
+    background: #fff;
+    width: 180px;
+    height: 180px;
+    text-align: center;
+}
+.btn-white i {
+    color: #000;
+    font-size: 40px;
+}
 
 /* media queries */
 @media screen and (max-width: 990px){

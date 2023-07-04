@@ -8,10 +8,19 @@
                 <div class="circleModal">
                     <img
                         class="user__avatar"
-                        v-if="user.profile_image"
+                        v-if="user.profile_image && !editAvatar"
+                        :src="'images/'+user.profile_image"
+                        alt=""
+                    /> 
+                    <img
+                         id="fileinput2_img"
+                        class="user__avatar"
+                        v-else-if="editAvatar"
                         :src="'images/'+user.profile_image"
                         alt=""
                     />
+                   
+                    
                     <h1
                         v-else
                         class="d-flex justify-content-center align-items-center h-100"
@@ -19,8 +28,31 @@
                         {{ nameFirstLetter }}
                     </h1>
                 </div>
-                <div style="margin: 2rem 9rem">
+                
+                <div style="margin: 1rem  1rem 1rem 9rem">
+                    <div
+                        role="button"
+                        v-if="user.profile_image"
+                        @click="editAvatar = true"
+                    >
+                        <i class="bi bi-pencil"></i>
+                    </div>
                     <h4>{{ user.name }}</h4>
+                </div>
+                <div v-if="editAvatar" class="mt-1">
+                    <form @submit.prevent="updateProfile2" method="post" enctype="multipart/form-data" class="row">
+                        <div class="form-group col-6">
+                            <!-- <img :src="'/images/'+user.profile_image" id="fileinput2_img" class="uploading-image bg-basic m-2 rounded"> -->
+                            <input type="file" class="form-control" accept="image/jpeg" @change=uploadImage1>
+                        </div>
+                        <!-- <div class="form-group col-6">
+                            <img src="previewImage2" id="fileinput3_img" class="uploading-image bg-basic m-2 rounded"> 
+                            <input type="file" class="form-control" accept="image/jpeg" @change=uploadImage2>
+                        </div> -->
+                        <div class="form-group my-2">
+                            <button class="btn btn-sm text-white" style="background-color: rgb(162, 38, 46)!important;" type="submit">Update</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -90,33 +122,33 @@
             <div class="PrfileDiv2">
                 <div style="display: flex; justify-content: space-between">
                     <div>Profile Photo</div>
-                    <div
+                    <!-- <div
                         role="button"
                         v-if="user.avatar"
                         @click="editAvatar = true"
                     >
                         <i class="bi bi-pencil"></i>
-                    </div>
+                    </div> -->
                 </div>
-                <div v-if="user.avatar && !editAvatar">
-                    <img :src="'/images/'+user.profile_image" alt="" class="profile__img" />
+                <div v-if="user.profile_image">
+                    <img :src="'/images/'+user.profile_image"  alt="" class="profile__img mt-3" />
                 </div>
-                <div v-else>
+                <!-- <div v-else>
                     <form @submit.prevent="updateProfile2" method="post" enctype="multipart/form-data" class="row">
                         <div class="form-group col-6">
                             <img :src="'/images/'+user.profile_image" id="fileinput2_img" class="uploading-image bg-basic m-2 rounded">
                             <input type="file" class="form-control" accept="image/jpeg" @change=uploadImage1>
                         </div>
-                        <!-- <div class="form-group col-6">
+                        <div class="form-group col-6">
                             <img src="previewImage2" id="fileinput3_img" class="uploading-image bg-basic m-2 rounded"> 
                             <input type="file" class="form-control" accept="image/jpeg" @change=uploadImage2>
-                        </div> -->
+                        </div>
                         <div class="form-group my-2">
                             <button class="btn btn-sm text-white" style="background-color: rgb(162, 38, 46)!important;" type="submit">Update</button>
                         </div>
                     </form>
 
-                </div>
+                </div> -->
                 <!-- <div class="profile__img_actions">
                     <button
                         class="btn text-white"
@@ -419,7 +451,7 @@ export default {
     /* left: 0; */
     background: #222222;
     width: 100%;
-    height: 5rem;
+    height: 6rem;
 }
 
 .circleModal {

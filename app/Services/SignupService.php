@@ -19,7 +19,7 @@ class SignupService
                 'name'   => $request['name'],
                 'avatar' => $request['profile_image']->store('users/avatar', 'public'),
                 'gender' => $request['gender'],
-                'dob'    => $request['birth_date'],
+                // 'dob'    => $request['birth_date'],
             ]
         );
     }
@@ -41,11 +41,11 @@ class SignupService
             'subculture_id'      => $request['subculture_id'],
             'about_me'           => $request['about'],
             // 'cover_image'        => $request['cover_image']->store('models/cover-images', 'public'),
-            'id_number'          => $request['id_number'],
-            'id_issuing_country' => $request['id_issuing_country'],
+            // 'id_number'          => $request['id_number'],
+            // 'id_issuing_country' => $request['id_issuing_country'],
             'country_id'         => $request['country_id'],
             'state_id'           => $request['state_id'],
-            'address'            => $request['address'],
+            // 'address'            => $request['address'],
             'id_photo'           => $request['id_photo']->store('models/id_photos', 'public'),
             'document'           => $request['document']->store('models/documents', 'public'),
         ]);
