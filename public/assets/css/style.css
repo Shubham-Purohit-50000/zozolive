@@ -1988,7 +1988,30 @@ display: inline !important;
     color: #000;
     font-size: 40px;
 }
+.cursor_pointer {
+    cursor: pointer;
+}
+.upload_box {
+    background: #fff;
+    color: #333;
+    text-align: center;
+    vertical-align: middle;
+    height: 161px;
+}
+.upload_box img {
+    width: 100%;
+    height: 161px;
+}
 
+.upload_box  i {
+    font-size: 30px;
+}
+.upload_box .remove_icon  {
+    font-size: 30px;
+    color: #333;
+    top: -50px;
+    position: relative;
+}
 /* media queries */
 @media screen and (max-width: 990px){
     .contact-form form{
