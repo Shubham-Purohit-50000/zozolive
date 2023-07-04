@@ -91,16 +91,16 @@
                 <li class="nav-item ms-2 header_btn me-2 d-block desktop-d-none mob-disblock chat__icon">
                     <a href="{{ url('chat') }}">
                         <i class="bi bi-chat-left-text  ms-2 mt-1 search-bar-toggle nav-link nav-icon  cursor-pointer"
-                           style="font-size: 1.1rem;"></i>
-                           <span style="font-size:12px">Chat</span>
+                           ></i>
+                           <span >Chat</span>
                     </a>
                 </li> 
-                 <li class="nav-item d-block ms-2  me-2 header_btn nav-item text-center desktop-d-none mob-disblock chat__icon">
-                 <a href="{{ url('buy-token') }}" title="Buy Token" class=" line-height-22">
+                 <li class="nav-item d-block me-0 header_btn nav-item text-center desktop-d-none mob-disblock chat__icon">
+                 <a href="{{ url('buy-token') }}" title="Buy Token">
                             
                             <span 
-                                  style="font-size: 0.8rem; margin-top:2px;margin-left:5px;">
-                                 {{ Auth::user()->token ?? 0 }} <img src="/assets/coin2.png" width="18" class="mb-4px"/> <br/>+ My Token</span> 
+                                >
+                                 <img src="/assets/coin2.png" width="16" class="mb-2px"/> tk <br/> {{ Auth::user()->token ?? 0 }}</span> 
             </a>    
                 </li>
                 <!-- <li class="nav-item d-block mob-disnone notification__icon">
@@ -134,7 +134,7 @@
                     </div>
                 </li>
                 @role('model')
-                <li class="nav-item display-mobile header_btn ms-1 me-2">
+                <li class="nav-item display-mobile header_btn ms-2">
                 <a href="/live-stream/start">
                         <i class="bi bi-play-circle  ms-2 mt-1 search-bar-toggle nav-link nav-icon  cursor-pointer"
                            style="font-size: 1.1rem;"></i>
@@ -154,29 +154,32 @@
                     //$user_total_token = auth()->user()->
                     $name = auth()->user()->username ?? auth()->user()?->name;
                 @endphp
-                <li class="nav-item dropdown pe-3">
-                    <a class="nav-link nav-profile d-flex align-items-center pe-0 show" href="#"
+                <li class="nav-item ms-2 dropdown  text-center header_btn display-mobile me-2">
+                     <a class="nav-link  show text-center" href="#"
                        data-bs-toggle="dropdown" aria-expanded="true">
-                        @if (auth()->user()->avatar)
+                        @if (auth()->user()->profile_image)
                         
-                            <img class="search-bar-toggle loginLink dotImage nav-icon" src="/images/{{  $user->profile_image }}"
-                                 alt=""/>
+                            <img class="search-bar-toggle " width="18" height="18" src="/images/{{  $user->profile_image }}"
+                                 alt="" style="margin-top:2px; border-radius:20px"/>
                         @else
-                            <span class="username__label">{{ substr($name, 0, 1) }}</span>
+                        <i class="bi bi-person ms-2 mt-1 search-bar-toggle nav-link nav-icon  cursor-pointer"></i>
                         @endif
                         <span class="d-none d-md-block dropdown-toggle ps-2"></span>
                     </a>
+                    <span >{{ substr($name, 0, 4) }}</span>
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile pt-0"
                         data-popper-placement="bottom-end">
                         <li class="dropdown-header">
                             <div class="username_detail">
                                 @php
                                     $name = auth()->user()->username ?? auth()->user()->name;
+                                    $email = auth()->user()->email ?? auth()->user()->email;
+                                   
                                 @endphp
                                 @if ($user->avatar)
                                     <img class="search-bar-toggle loginLink dotImage nav-icon ml-0"
                                          src="/images/{{$user->profile_image }}" alt=""/>
-                                    {{ $name }}
+                                    {{ $name }} 
                                 @else
                                     {{-- <span class="username__label">{{ substr($name, 0, 1) }}</span> --}}
                                     <span class="username_first">{{ substr($name, 0, 1) }}</span>
@@ -195,8 +198,120 @@
                                 @endif
                             </div>
                         </li>
+                        <li class="copyText">
+                             <input type="text" class="copy_text_input" id="copyText2" value="{{ $email }}">
+                             <button class="btn btn-sm btn-link" onclick="copyToClipboard('copyText2')"><i class="bi bi-clipboard-fill mt-4 ms-1"></i>  </button>
+                            </li>
                         <li>
-                            <hr class="dropdown-divider">
+                        <li>
+                            <hr class="dropdown-divider mt-2">
+                        </li>
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" href="{{ url('profile') }}">
+                                <i class="bi bi-person"></i>
+                                <span>My Profile</span>
+                            </a>
+                        </li>
+                        @role('user')
+                        {{--                                <li>--}}
+                        {{--                                    <a class="dropdown-item d-flex align-items-center" href="{{ url('profile') }}">--}}
+                        {{--                                        <i class="bi bi-contact"></i>--}}
+                        {{--                                        <span>My Collection</span>--}}
+                        {{--                                    </a>--}}
+                        {{--                                </li>--}}
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" href="{{ url('profile') }}">
+                                <i class="bi bi-people"></i>
+                                <span>My Friends</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" href="{{ url('my-favorites') }}">
+                                <i class="bi bi-heart"></i>
+                                <span>My Favorities</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" href="{{ url('call-history') }}">
+                                <i class="bi bi-telephone-fill"></i>
+                                <span>Token History</span>
+                            </a>
+                        </li>
+                        @endrole
+                        @role('model')
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" href="{{ url('call-history') }}">
+                                <i class="bi bi-telephone-fill"></i>
+                                <span>Token History</span>
+                            </a>
+                        </li>
+                        @endrole
+                        <li>
+                            <form method="post" action="{{ url('logout') }}">
+                                @csrf
+
+                                <button class="dropdown-item" type="submit"><i
+                                            class="bi bi-box-arrow-right d-inline-block"></i>
+                                    Logout
+                                </button>
+                            </form>
+                        </li>
+                    <!-- <a href="{{ url('chat') }}">
+                        <i class="bi bi-chat-left-text  ms-2 mt-1 search-bar-toggle nav-link nav-icon  cursor-pointer"
+                           ></i>
+                           
+                    </a> -->
+            </ul>
+                </li> 
+                <li class="nav-item dropdown pe-3 display-desktop">
+                    <a class="nav-link nav-profile d-flex align-items-center pe-0 show" href="#"
+                       data-bs-toggle="dropdown" aria-expanded="true">
+                        @if (auth()->user()->profile_image)
+                        
+                            <img class="search-bar-toggle loginLink dotImage nav-icon" src="/images/{{  $user->profile_image }}"
+                                 alt=""/>
+                        @else
+                        <span class="username__label">{{ substr($name, 0, 1) }}</span>
+                        @endif
+                        <span class="d-none d-md-block dropdown-toggle ps-2"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile pt-0"
+                        data-popper-placement="bottom-end">
+                        <li class="dropdown-header">
+                            <div class="username_detail">
+                                @php
+                                    $name = auth()->user()->username ?? auth()->user()->name;
+                                    $email = auth()->user()->email ?? auth()->user()->email;
+                                @endphp
+                                @if ($user->avatar)
+                                    <img class="search-bar-toggle loginLink dotImage nav-icon ml-0"
+                                         src="/images/{{$user->profile_image }}" alt=""/>
+                                    {{ $name }}
+                                    
+                                @else
+                                    {{-- <span class="username__label">{{ substr($name, 0, 1) }}</span> --}}
+                                    <span class="username_first">{{ substr($name, 0, 1) }}</span>
+                                    <div class="d-flex flex-column">
+                                        <p class="mb-0">
+                                            {{ $name }}
+                                        </p>
+                                        <p class="mb-0">
+                                            <?php
+                                                $level_data = get_user_level($user->token);
+                                            ?>
+                                            Level {{$level_data['level']}}
+                                        </p>
+                                    </div>
+
+                                @endif
+                            </div>
+                        </li>
+                        <li class="copyText">
+                             <input type="text" class="copy_text_input" id="copyText" value="{{ $email }}">
+                             <button class="btn btn-sm btn-link" onclick="copyToClipboard('copyText')"><i class="bi bi-clipboard-fill mt-4 ms-1"></i>  </button>
+                            </li>
+                        <li>
+                            <hr class="dropdown-divider mt-2">
                         </li>
                         <li>
                             <a class="dropdown-item d-flex align-items-center" href="{{ url('profile') }}">
@@ -295,7 +410,7 @@
                     </li>
                     <li class="nav-item display-mobile">
                         <a class="dropdown-item d-flex align-items-center"
-                           href="javascript::void();" data-bs-toggle="modal" data-bs-target="#modelSignup">
+                           href="/become-a-model">
                            <i class="bi bi-camera-video-fill ms-1"></i>  Become a model
                         </a>
                     </li>
@@ -457,3 +572,10 @@
     </nav>
 
 </header>
+<script>
+       function copyToClipboard(id) {
+        console.log(id);
+        document.getElementById(id).select();
+        document.execCommand('copy');
+    }
+</Script>
