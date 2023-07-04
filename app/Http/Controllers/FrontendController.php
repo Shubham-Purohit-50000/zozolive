@@ -26,6 +26,8 @@ use Inertia\ResponseFactory;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Str;
 use App\Models\TokenSpent;
+use App\Models\Recharge;
+use Log;
 
 class FrontendController extends Controller
 {
@@ -528,10 +530,17 @@ class FrontendController extends Controller
         ]);
     }
 
-    public function userLevel($token)
-    {
-        $token = (int)$token;
-        // dd($token);
+    public function userLevel(User $user)
+    {   
+        $token_am = Recharge::where('user_id', $user->uuid)->sum('coin');
+        $token = 0;
+        if(filled($token)){
+            $token = (int)$token_am;
+        }
+
+        // $token = $user->token;
+        // $token = (int)$token;
+        Log::info($token);
         $level = array();
         $add_amount = 0;
         for($i=1; $i<=50; $i++) {
