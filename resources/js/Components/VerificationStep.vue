@@ -414,7 +414,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="row mb-2">
+                      <!-- <div class="row mb-2">
                         <div class="col-3 inputLabel">
                           Birth date:
                         </div>
@@ -429,8 +429,8 @@
                               errors && errors.birth_date ? errors.birth_date.toString() : '' }}
                           </div>
                         </div>
-                      </div>
-                      <div class="row mb-2">
+                      </div> -->
+                      <!-- <div class="row mb-2">
                         <div class="col-3 inputLabel">
                           ID number:
                         </div>
@@ -444,8 +444,8 @@
                               errors && errors.id_number ? errors.id_number.toString() : '' }}
                           </div>
                         </div>
-                      </div>
-                      <div class="row mb-2">
+                      </div> -->
+                      <!-- <div class="row mb-2">
                         <div class="col-3 inputLabel">
                           Address:
                         </div>
@@ -458,8 +458,8 @@
                               errors && errors.address ? errors.address.toString() : '' }}
                           </div>
                         </div>
-                      </div>
-                      <div class="row mb-2 inputLabel">
+                      </div> -->
+                      <!-- <div class="row mb-2 inputLabel">
                         <div class="col-3">
                           ID Issuing Country:
                         </div>
@@ -476,7 +476,7 @@
                               errors && errors.id_issuing_country ? errors.id_issuing_country.toString() : '' }}
                           </div>
                         </div>
-                      </div>
+                      </div> -->
                       <div class="row mb-2">
                         <div class="col-3 inputLabel">
                           Country:
