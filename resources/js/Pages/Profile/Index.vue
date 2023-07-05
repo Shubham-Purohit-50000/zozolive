@@ -164,27 +164,165 @@
 
             <!-- Photo album start-->
             <div class="col-md-12 mt-5 ">
-                <div class="photo_album_wrapper {
-">
+                <div class="photo_album_wrapper">
+
+        <!-- <button class="btn btn-sm text-white" style="background-color: rgb(162, 38, 46)!important;" type="submit">Upload</button> -->
                 <div>
-                    <div>Upload Photos</div>
+                    <div class="mb-2">Upload Photos</div>
+
+                    <div class="row">
+                        <div class="col-md-2">
+                           <div class="upload_box">
+                            <div v-if="photo_album_url_1">
+                                <img :src="photo_album_url_1" />
+                                <button class="btn btn-link remove_icon" @click="removeImage(host_gallery_array[0])">
+                                <i class="bi bi-x-circle"></i>
+                               </button>
+                            </div> 
+                            <div v-else-if="host_gallery_array.length > 0 ">
+                                <img :src="host_gallery_array[0].image" />
+                                <button class="btn btn-link remove_icon" @click="removeImage(host_gallery_array[0])">
+                                <i class="bi bi-x-circle"></i>
+                               </button>
+                            </div> 
+                            <div v-else>
+                                <label for="my-file" class="cursor_pointer mt-5">Select Image
+                                    <div><i class="bi bi-cloud-arrow-up"></i> </div>
+                                    <input type="file" accept="image/*" @change="previewImage" class="form-control-file d-none" id="my-file">
+                                </label>
+                               
+                            </div>
+                           
+                           </div>
+                        </div>
+                        <div class="col-md-2">
+                           <div class="upload_box">
+                            <div v-if="photo_album_url_2">
+                                <img :src="photo_album_url_2" />
+                                <button class="btn btn-link remove_icon" @click="removeImage(host_gallery_array[1])">
+                                <i class="bi bi-x-circle"></i>
+                               </button>
+                                
+                            </div> 
+                            <div v-else-if="host_gallery_array.length > 1 ">
+                               
+                                <img :src="host_gallery_array[1].image"  />
+                                <button class="btn btn-link remove_icon" @click="removeImage(host_gallery_array[1])">
+                                <i class="bi bi-x-circle"></i>
+                               </button>
+                                
+                            </div> 
+                            <div v-else>
+                                <label for="my-file-2" class="cursor_pointer mt-5">Select Image
+                                    <div><i class="bi bi-cloud-arrow-up"></i> </div>
+                                    <input type="file" accept="image/*" @change="previewImage22" class="form-control-file d-none" id="my-file-2">
+                                </label>
+                               
+                            </div>
+                           
+                           </div>
+                        </div>
+
+                        <div class="col-md-2">
+                           <div class="upload_box">
+                            <div v-if="photo_album_url_3">
+                                <img :src="photo_album_url_3"  />
+                                <button class="btn btn-link remove_icon" @click="removeImage(host_gallery_array[2])">
+                                <i class="bi bi-x-circle"></i>
+                               </button>
+                            </div> 
+                            <div v-else-if="host_gallery_array.length > 2 ">
+                                <img :src="host_gallery_array[2].image" />
+                                <button class="btn btn-link remove_icon" @click="removeImage(host_gallery_array[2])">
+                                <i class="bi bi-x-circle"></i>
+                               </button>
+                            </div> 
+                            <div v-else>
+                                <label for="my-file-3" class="cursor_pointer mt-5">Select Image
+                                    <div><i class="bi bi-cloud-arrow-up"></i> </div>
+                                    <input type="file" accept="image/*" @change="previewImage3" class="form-control-file d-none" id="my-file-3">
+                                </label>
+                            
+                               
+                            </div>
+                           
+                           </div>
+                        </div>
+
+                        <div class="col-md-2">
+                           <div class="upload_box">
+                            <div v-if="photo_album_url_4">
+                                <img :src="photo_album_url_4"  />
+                                <button class="btn btn-link remove_icon" @click="removeImage(host_gallery_array[3])">
+                                <i class="bi bi-x-circle"></i>
+                               </button>
+                            </div> 
+                            <div v-else-if="host_gallery_array.length > 3 ">
+                                <img :src="host_gallery_array[3].image" />
+                                <button class="btn btn-link remove_icon" @click="removeImage(host_gallery_array[3])">
+                                <i class="bi bi-x-circle"></i>
+                               </button>
+                            </div> 
+                            <div v-else>
+                                <label for="my-file-4" class="cursor_pointer mt-5">Select Image
+                                    <div><i class="bi bi-cloud-arrow-up"></i> </div>
+                                    <input type="file" accept="image/*" @change="previewImage4" class="form-control-file d-none" id="my-file-4">
+                                </label>
+                            
+                               
+                            </div>
+                           
+                           </div>
+                        </div>
+
+                        <div class="col-md-2">
+                           <div class="upload_box">
+                            <div v-if="photo_album_url_5">
+                                <img :src="photo_album_url_5"  />
+                                <button class="btn btn-link remove_icon" @click="removeImage(host_gallery_array[4])">
+                                <i class="bi bi-x-circle"></i>
+                               </button>
+                            </div> 
+                            <div v-else-if="host_gallery_array.length > 4 ">
+                                <img :src="host_gallery_array[4].image" />
+                                <button class="btn btn-link remove_icon" @click="removeImage(host_gallery_array[4])">
+                                <i class="bi bi-x-circle"></i>
+                               </button>
+                            </div> 
+                            <div v-else>
+                                <label for="my-file-5" class="cursor_pointer mt-5">Select Image
+                                    <div><i class="bi bi-cloud-arrow-up"></i> </div>
+                                    <input type="file" accept="image/*" @change="previewImage5" class="form-control-file d-none" id="my-file-5">
+                                </label>
+                            
+                               
+                            </div>
+                           
+                           </div>
+                        </div>
+
+                    </div>
+
                     <div >
-                    <form @submit.prevent="uploadAlbumPhoto" method="post" enctype="multipart/form-data" class="row">
+                    <!-- <form @submit.prevent="uploadAlbumPhoto" method="post" enctype="multipart/form-data" class="row">
                         <div class="form-group">
                                 <div class="row">
                                     <div class="m-2 col-md-2 col-12" v-for="(image, index) in host_gallery_array">
 
-<!-- <img :src="image" style="width: 300px; height: 300px; margin:10px" v-if="image" /> -->
 <img :src="image.image" style="width: 100%; height: auto; "  />
 <button class="btn btn-primary btn-sm bg-dark" @click="removeImage(image)">Remove image</button>
 </div>
                                 </div>
                         </div>
-                        <div class="form-group my-2 col-md-3 mt-3">
-                            <input type="file" id="file" class="form-control mb-3" multiple accept="image/jpeg" @change="uploadAlbum($event)">
-                            <button class="btn btn-sm text-white" style="background-color: rgb(162, 38, 46)!important;" type="submit">Upload</button>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <img :src="preview" style="width: 100%; height: auto; "  />
+                            </div>
                         </div>
-                    </form>
+                        <div class="form-group my-2 col-md-3 mt-3">
+                            
+                        </div>
+                    </form> -->
 
                 </div>
                 </div>
@@ -221,6 +359,7 @@ export default {
             editMode: false,
             editAvatar: false,
             previewImage1:null,
+            preview:null,
             previewImage2:null,
             photo_album_url_1:null,
             photo_album_url_2:null,
@@ -265,6 +404,7 @@ export default {
             try {
                        axios.get("host/remove/gallary-image/" + e.uuid).then((resp)=> {
                         this.getHostGallery();
+                        window.location.reload();
                         });
                     } catch (error) {
                         console.log(error);
@@ -280,23 +420,93 @@ export default {
             $('#fileinput2_img').attr('src', file1);
 
         }, 
-        uploadAlbum(e){
-            var files = e.target.files || e.dataTransfer.files;
-            if (!files.length) return;
-            this.createImage(files);
-          
-        },
-        createImage(files) {
-        var vm = this;
-        for (var index = 0; index < files.length; index++) {
-            var reader = new FileReader();
-            reader.onload = function(event) {
-            const imageUrl = event.target.result;
-            vm.album_photos.push(imageUrl);
+        previewImage(event) {
+            var input = event.target;
+            if (input.files) {
+                var reader = new FileReader();
+                reader.onload = (e) => {
+                this.photo_album_url_1 = e.target.result;
+                this.uploadAlbumPhoto(e.target.result);
+                }
+                this.photo_album_url_1=input.files[0];
+                reader.readAsDataURL(input.files[0]);
             }
-            reader.readAsDataURL(files[index]);
-        }
-    },
+           
+         },
+
+         previewImage22(event) {
+            var input = event.target;
+            if (input.files) {
+                var reader = new FileReader();
+                reader.onload = (e) => {
+                this.photo_album_url_2 = e.target.result;
+                this.uploadAlbumPhoto(e.target.result);
+                }
+                this.photo_album_url_2=input.files[0];
+                reader.readAsDataURL(input.files[0]);
+            }
+           
+         },
+
+         previewImage3(event) {
+            var input = event.target;
+            if (input.files) {
+                var reader = new FileReader();
+                reader.onload = (e) => {
+                this.photo_album_url_3 = e.target.result;
+                this.uploadAlbumPhoto(e.target.result);
+                }
+                this.photo_album_url_3=input.files[0];
+                reader.readAsDataURL(input.files[0]);
+            }
+           
+         },
+
+         previewImage4(event) {
+            var input = event.target;
+            if (input.files) {
+                var reader = new FileReader();
+                reader.onload = (e) => {
+                this.photo_album_url_4 = e.target.result;
+                this.uploadAlbumPhoto(e.target.result);
+                }
+                this.photo_album_url_4=input.files[0];
+                reader.readAsDataURL(input.files[0]);
+            }
+           
+         },
+
+         previewImage5(event) {
+            var input = event.target;
+            if (input.files) {
+                var reader = new FileReader();
+                reader.onload = (e) => {
+                this.photo_album_url_5 = e.target.result;
+                this.uploadAlbumPhoto(e.target.result);
+                }
+                this.photo_album_url_5=input.files[0];
+                reader.readAsDataURL(input.files[0]);
+            }
+           
+         },
+
+    //     uploadAlbum(e){
+    //         var files = e.target.files || e.dataTransfer.files;
+    //         if (!files.length) return;
+    //         this.createImage(files);
+          
+    //     },
+    //     createImage(files) {
+    //     var vm = this;
+    //     for (var index = 0; index < files.length; index++) {
+    //         var reader = new FileReader();
+    //         reader.onload = function(event) {
+    //         const imageUrl = event.target.result;
+    //         vm.album_photos.push(imageUrl);
+    //         }
+    //         reader.readAsDataURL(files[index]);
+    //     }
+    // },
         uploadImage2(e){
             this.previewImage2 = e.target.files[0];
             let file2 = URL.createObjectURL(this.previewImage2);
@@ -337,29 +547,11 @@ export default {
         },
 
          uploadAlbumPhoto(event){
+            console.log(event);
             //--------------------------------------------------------
-                const inputFile = document.getElementById("file");
-                // console.log(inputFile.files[0].name, inputFile.files.length);
-                // let all_images = [];
-                // all_images.push(inputFile.files[0]);
-                
-                // if(inputFile.files[1]) {
-                //     all_images.push(inputFile.files[1].name);
-                // }
-                // if(inputFile.files[2]) {
-                //     all_images.push(inputFile.files[2].name);
-                // }
-                // if(inputFile.files[3]) {
-                //     all_images.push(inputFile.files[3].name);
-                // }
-                // if(inputFile.files[4]) {
-                //     all_images.push(inputFile.files[4].name);
-                // }
-               
-                // console.log(all_images);
                 try {
                     axios.post("user/host/gallery", {
-                    images:this.album_photos,
+                    images:event,
                     host_id:this.user.uuid,
                  }).then((resp)=> {
                     this.getHostGallery();
@@ -368,19 +560,6 @@ export default {
                 } catch (error) {
                     console.log(error);
                 }
-
-                
-            //-------------------------------------------------------
-
-            // axios.post('/shub/test', this.profile, ) 
-            //     .then(res => {
-            //         if (res.status == 200) {
-            //             console.log('request handled!' + JSON.stringify(res));
-            //         }
-            //     }).catch(err => {
-            //     console.log(err);
-            // })
-            // console.log(this.profile + 'After form submit');
         }
     },
 };
