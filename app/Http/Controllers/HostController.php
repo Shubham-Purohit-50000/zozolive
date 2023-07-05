@@ -217,31 +217,32 @@ class HostController extends Controller
 
     public function uploadGallery(Request $request){
 
-   
+       
         if ($request->images) {
-            $images =$request->images;
+            HostGallery::create([
+                'host_id'=>$request->host_id,
+                'image'=>$request->images
+            ]);
+            // $images =$request->images;
             
-            foreach ($images as $image) {
+            // foreach ($images as $image) {
                
-                // // Generate a unique name for the image
-                // // $imageName = time() . '_' . $image->getClientOriginalName();
+            //     // // Generate a unique name for the image
+            //     // // $imageName = time() . '_' . $image->getClientOriginalName();
                 
-                // // Move the image to the desired storage location
-                // // $image->storeAs('public/host/gallery',  $image);
-                // $image->move(public_path('/host/gallery'), $image);
-                // // You can also save the image path in the database if needed
-                // $imagePath = 'storage/host/gallery/' . $image;
+            //     // // Move the image to the desired storage location
+            //     // // $image->storeAs('public/host/gallery',  $image);
+            //     // $image->move(public_path('/host/gallery'), $image);
+            //     // // You can also save the image path in the database if needed
+            //     // $imagePath = 'storage/host/gallery/' . $image;
 
-                HostGallery::create([
-                    'host_id'=>$request->host_id,
-                    'image'=>$image
-                ]);
-                // Save the $imagePath in the database
+               
+            //     // Save the $imagePath in the database
                 
-                // Optionally, you can resize or manipulate the image using Laravel's image intervention package
+            //     // Optionally, you can resize or manipulate the image using Laravel's image intervention package
                 
-                // Display success message or perform any additional operations
-            }
+            //     // Display success message or perform any additional operations
+            // }
             
             return response()->json([
                 'status'=>True,
@@ -267,7 +268,7 @@ class HostController extends Controller
 
     public function indexGallery($host_id){
       
-        $host_gallery = HostGallery::where('host_id', $host_id)->get();
+        $host_gallery = HostGallery::where('host_id', $host_id)->orderBy('created_at', 'asc')->get();
       
         return response()->json([
             'status'=>True,
