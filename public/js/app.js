@@ -4972,17 +4972,17 @@ __webpack_require__.r(__webpack_exports__);
     }
   }
 });
-$(document).ready(function () {
-  navigator.mediaDevices.getUserMedia({
-    audio: true,
-    video: true
-  }).then(function (stream) {
-    console.log('Camera and microphone permission granted!');
-    // Do something with the stream if needed
-  })["catch"](function (error) {
-    console.log('Error accessing camera and microphone:', error);
-  });
-});
+
+// $(document).ready(function() {
+//     navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+//       .then(function(stream) {
+//         console.log('Camera and microphone permission granted!');
+//         // Do something with the stream if needed
+//       })
+//       .catch(function(error) {
+//         console.log('Error accessing camera and microphone:', error);
+//       });
+// });
 
 /***/ }),
 
@@ -5967,6 +5967,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
             disableF5 = function _disableF(e) {
               if ((e.which || e.keyCode) == 116) e.preventDefault();
             };
+            window.addEventListener("beforeunload", _this.setHostOffline);
             $(document).mouseleave(function () {
               // To disable f5
               /* jQuery < 1.7 */
@@ -6035,9 +6036,9 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
             //         }
             //     );
             // });
-            _context.next = 10;
+            _context.next = 11;
             return _this.generateToken();
-          case 10:
+          case 11:
             _this.token = _context.sent;
             _this.localTracks = {
               videoTrack: null,
@@ -6055,7 +6056,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
               //After requesting a new token
               _this.client.renewToken(token);
             });
-          case 15:
+          case 16:
           case "end":
             return _context.stop();
         }

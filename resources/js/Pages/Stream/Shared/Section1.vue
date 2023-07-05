@@ -489,10 +489,8 @@ export default {
             return 0;
         },
     },
-
     async mounted() {
-
-      
+        window.addEventListener("beforeunload", this.setHostOffline);
         $(document).mouseleave(function() {
             // To disable f5
             /* jQuery < 1.7 */
