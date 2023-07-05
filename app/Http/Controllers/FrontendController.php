@@ -537,10 +537,6 @@ class FrontendController extends Controller
         if(filled($token)){
             $token = (int)$token_am;
         }
-
-        // $token = $user->token;
-        // $token = (int)$token;
-        Log::info($token);
         $level = array();
         $add_amount = 0;
         for($i=1; $i<=50; $i++) {
@@ -598,6 +594,63 @@ class FrontendController extends Controller
         return response()->json([
             'data' => $level_data,
         ]);
+    }
+
+    public function levelChart(){
+        $level = array();
+        $add_amount = 0;
+        for($i=1; $i<=50; $i++) {
+            $item = array();
+            if($i<=5) {
+                $add_amount += 100;
+                $item['color'] = '#b35d1c';
+                $item['name'] = 'Bronze';
+                $item['token'] = $add_amount;
+                $item['icon'] = '\f005';
+            } elseif($i<=10) {
+                $add_amount += 500;
+                $item['color'] = '#6085aa';
+                $item['name'] = 'Silver';
+                $item['token'] = $add_amount;
+                $item['icon'] = '\f005';
+            } elseif($i<=20) {
+                $add_amount += 1000;
+                $item['color'] = '#dea20c';
+                $item['name'] = 'Gold';
+                $item['token'] = $add_amount;
+                $item['icon'] = '\f005';
+            } elseif($i<=35) {
+                $add_amount += 5000;
+                $item['color'] = '#ce2fe4';
+                $item['name'] = 'Diamond';
+                $item['token'] = $add_amount;
+                $item['icon'] = '\f005';
+            } elseif($i<=49) {
+                $add_amount += 10000;
+                $item['color'] = '#e33534';
+                $item['name'] = 'Royal';
+                $item['token'] = $add_amount;
+                $item['icon'] = '\f005';
+            } else {
+                $add_amount += 272000;
+                $item['color'] = '#278000';
+                $item['name'] = 'Legend';
+                $item['token'] = $add_amount;
+                $item['icon'] = '\f005';
+            }
+            array_push($level, $item);
+        }
+
+        $level_chart = array(
+            '0'=>$level[0],
+            '6'=>$level[5],
+            '11'=>$level[10],
+            '21'=>$level[20],
+            '36'=>$level[35],
+            '50'=>$level[49],
+        );
+
+        return response()->json($level_chart);
     }
 
     public function setUserToken(Request $req, $id)
