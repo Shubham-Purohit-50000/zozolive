@@ -295,21 +295,50 @@
                                         <p class="mb-0">
                                             {{ $name }}
                                         </p>
-                                        <p class="mb-0">
-                                            <?php
-                                                $level_data = get_user_level($user->token);
-                                            ?>
-                                            Level {{$level_data['level']}}
-                                        </p>
                                     </div>
 
                                 @endif
                             </div>
                         </li>
-                        <li class="copyText">
+                        <li class="user_level">
+                             <p class="mb-0">
+                                            <?php
+                                                $level_data = get_user_level($user->token);
+                                            ?>
+                                            <div class="d-flex">
+                                            <div class="me-5 ">
+                                                <span class="badge badge-pill p-2 me-1" style="background-color:{{ $level_data['color'] }}">
+                                                {{$level_data['level']}} 
+                                                </span>
+                                                 Level
+                                            </div>
+                                            <div>
+                                                <a href="#" style="color:{{ $level_data['color'] }}" class="mt-1 d-flex">
+                                                {{$level_data['name']}} <i class="bi bi-arrow-right-short mt-1 ms-1"></i>
+            </a>
+                                            </div>
+                                            </div>
+                            </p>
+                          
+                            <div class="progress">
+                            <?php 
+                                $percent = $level_data['token'] / ($level_data['remaining_token'] + $level_data['token'])  * 100;
+                             ?>
+                        <div class="progress-bar bg-progress" role="progressbar" style="width: {{ $percent }}%">
+                        <!-- aria-valuenow="25" aria-valuemin="0" aria-valuemax="100 -->
+                       
+                        <span class="ms-2 p-absolute"> {{ $level_data['level']}} / {{ $level_data['remaining_token'] }}</span> 
+                       <span class="p-absolute-2"> Level {{ $level_data['next_level'] }}</span> 
+                        </div>
+                        </div>
+                        
+    
+                            <p class="mb-0 mt-0">Get {{ $level_data['remaining_token'] }} token for level {{ $level_data['next_level']}}  </p>
+                         </li> 
+                         <li class="copyText">
                              <input type="text" class="copy_text_input" id="copyText" value="{{ $email }}">
                              <button class="btn btn-sm btn-link" onclick="copyToClipboard('copyText')"><i class="bi bi-clipboard-fill mt-4 ms-1"></i>  </button>
-                            </li>
+                         </li>
                         <li>
                             <hr class="dropdown-divider mt-2">
                         </li>

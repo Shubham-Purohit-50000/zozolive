@@ -148,36 +148,48 @@ function levels()
             $item['name'] = 'Bronze';
             $item['token'] = $add_amount;
             $item['icon'] = '\f005';
+            $item['next_level'] = $i+1;
+            $item['remaining_token'] = 100;
         }elseif($i<=10){
             $add_amount += 500;
             $item['color'] = '#6085aa';
             $item['name'] = 'Silver';
             $item['token'] = $add_amount;
             $item['icon'] = '\f005';
+            $item['next_level'] = $i+1;
+            $item['remaining_token'] = 500;
         }elseif($i<=20){
             $add_amount += 1000;
             $item['color'] = '#dea20c';
             $item['name'] = 'Gold';
             $item['token'] = $add_amount;
             $item['icon'] = '\f005';
+            $item['next_level'] = $i+1;
+            $item['remaining_token'] = 1000;
         }elseif($i<=35){
             $add_amount += 5000;
             $item['color'] = '#ce2fe4';
             $item['name'] = 'Diamond';
             $item['token'] = $add_amount;
             $item['icon'] = '\f005';
+            $item['next_level'] = $i+1;
+            $item['remaining_token'] = 5000;
         }elseif($i<=49){
             $add_amount += 10000;
             $item['color'] = '#e33534';
             $item['name'] = 'Royal';
             $item['token'] = $add_amount;
             $item['icon'] = '\f005';
+            $item['next_level'] = $i+1;
+            $item['remaining_token'] = 10000;
         }else{
             $add_amount += 272000;
             $item['color'] = '#278000';
             $item['name'] = 'Legend';
             $item['token'] = $add_amount;
             $item['icon'] = '\f005';
+            $item['next_level'] = $i+1;
+            $item['remaining_token'] = 272000;
         }
         array_push($level, $item);
     }
