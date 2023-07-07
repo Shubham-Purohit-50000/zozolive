@@ -37,7 +37,7 @@ return [
     'google'   => [
         'client_id'     => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
-        'redirect'      => 'https://zozolive.com/google/auth/callback',
+        'redirect'      => env('GOOGLE_REDIRECT_URL'),
     ],
     'twitter'   => [
         'client_id'     => env('TWITTER_CLIENT_ID'),
@@ -47,7 +47,7 @@ return [
     'facebook'   => [
         'client_id'     => env('FACEBOOK_CLIENT_ID'),
         'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
-        'redirect'      => 'https://zozolive.com/facebook/auth/callback',
+        'redirect'      => env('FACEBOOK_REDIRECT_URL'),
     ],
 
     'stripe' => [

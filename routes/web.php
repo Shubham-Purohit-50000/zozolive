@@ -155,6 +155,7 @@ Route::post('agorabroadcasting/auth', function () {
 //---------Shubham Route------------------------
 Route::post('uplaod/profile/image', [FrontendController::class, 'updateProfileImage']);
 Route::get('user_level/{user}', [FrontendController::class, 'userLevel']);
+Route::get('level_chart', [FrontendController::class, 'levelChart']);
 // Token deduction
 Route::post('user/{token}', [FrontendController::class, 'setUserToken']);
 Route::get('user/level-system', [FrontendController::class, 'userLevelSystem']);
