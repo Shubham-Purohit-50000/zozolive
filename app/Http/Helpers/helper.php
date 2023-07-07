@@ -150,6 +150,7 @@ function levels()
             $item['icon'] = '\f005';
             $item['next_level'] = $i+1;
             $item['remaining_token'] = 100;
+            $item['previous_level'] = $add_amount-100;
         }elseif($i<=10){
             $add_amount += 500;
             $item['color'] = '#6085aa';
@@ -158,6 +159,7 @@ function levels()
             $item['icon'] = '\f005';
             $item['next_level'] = $i+1;
             $item['remaining_token'] = 500;
+            $item['previous_level'] = $add_amount-500;
         }elseif($i<=20){
             $add_amount += 1000;
             $item['color'] = '#dea20c';
@@ -166,6 +168,7 @@ function levels()
             $item['icon'] = '\f005';
             $item['next_level'] = $i+1;
             $item['remaining_token'] = 1000;
+            $item['previous_level'] = $add_amount-1000;
         }elseif($i<=35){
             $add_amount += 5000;
             $item['color'] = '#ce2fe4';
@@ -174,6 +177,7 @@ function levels()
             $item['icon'] = '\f005';
             $item['next_level'] = $i+1;
             $item['remaining_token'] = 5000;
+            $item['previous_level'] = $add_amount-5000;
         }elseif($i<=49){
             $add_amount += 10000;
             $item['color'] = '#e33534';
@@ -182,6 +186,7 @@ function levels()
             $item['icon'] = '\f005';
             $item['next_level'] = $i+1;
             $item['remaining_token'] = 10000;
+            $item['previous_level'] = $add_amount-10000;
         }else{
             $add_amount += 272000;
             $item['color'] = '#278000';
@@ -190,6 +195,7 @@ function levels()
             $item['icon'] = '\f005';
             $item['next_level'] = $i+1;
             $item['remaining_token'] = 272000;
+            $item['previous_level'] = $add_amount-272000;
         }
         array_push($level, $item);
     }

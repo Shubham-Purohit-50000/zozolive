@@ -1,3 +1,49 @@
+<?php
+ $user = auth()
+ ->user();
+$level_data = get_user_level($user->token);
+ ?>
+<style>
+    .hexagon {
+    width: 30px;
+    height: 27.735px;
+    position: relative;
+    top: 3px;
+  }
+  .hexagon::before {
+    content: "";
+    position: absolute;
+    top: -9.8675px;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-left:20px solid transparent;
+    border-right: 20px solid transparent;
+    border-bottom: 18.8675px solid;
+    border-bottom-color: {{$level_data['color']}};
+    z-index: 0;
+  }
+  .hexagon::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-top: 18.8675px solid;
+    border-top-color: {{$level_data['color']}};
+  }
+  .hexagon span {
+    z-index: 100;
+    position: absolute;
+    left: 15px;
+    top: 0px;
+    font-weight: bold;
+    font-size: 12px;
+  }
+  
+</style>
 <header id="header" class="header fixed-top d-flex align-items-center">
 
     <!-- Modal -->
@@ -306,14 +352,14 @@
                                                 $level_data = get_user_level($user->token);
                                             ?>
                                             <div class="d-flex">
-                                            <div class="me-5 ">
-                                                <span class="badge badge-pill p-2 me-1" style="background-color:{{ $level_data['color'] }}">
-                                                {{$level_data['level']}} 
-                                                </span>
-                                                 Level
+                                            <div class="me-5 d-flex ">
+                                                <div class="hexagon p-2 me-1">
+                                              <span>  {{$level_data['level']}} </span>
+                                            </div>
+                                            <strong class="ms-2 mt-1">Level</strong>
                                             </div>
                                             <div>
-                                                <a href="#" style="color:{{ $level_data['color'] }}" class="mt-1 d-flex">
+                                                <a href="/user/level-system" style="color:{{ $level_data['color'] }}" class="mt-1 d-flex">
                                                 {{$level_data['name']}} <i class="bi bi-arrow-right-short mt-1 ms-1"></i>
             </a>
                                             </div>
@@ -322,18 +368,18 @@
                           
                             <div class="progress">
                             <?php 
-                                $percent = $level_data['token'] / ($level_data['remaining_token'] + $level_data['token'])  * 100;
+                                $percent = ($user['token']- $level_data['previous_level'])  / $level_data['token']  * 100;
                              ?>
                         <div class="progress-bar bg-progress" role="progressbar" style="width: {{ $percent }}%">
                         <!-- aria-valuenow="25" aria-valuemin="0" aria-valuemax="100 -->
                        
-                        <span class="ms-2 p-absolute"> {{ $level_data['level']}} / {{ $level_data['remaining_token'] }}</span> 
-                       <span class="p-absolute-2"> Level {{ $level_data['next_level'] }}</span> 
+                        <span class="ms-2 p-absolute"> {{ $user['token']}} / {{ $level_data['token'] }}</span> 
+                       <span class="p-absolute-2"> Level {{ $level_data['level'] }}</span> 
                         </div>
                         </div>
                         
     
-                            <p class="mb-0 mt-0">Get {{ $level_data['remaining_token'] }} token for level {{ $level_data['next_level']}}  </p>
+                            <p class="mb-0 mt-0">Get {{ $level_data['token']-$user['token'] }} token for level {{ $level_data['level']}}  </p>
                          </li> 
                          <li class="copyText">
                              <input type="text" class="copy_text_input" id="copyText" value="{{ $email }}">

@@ -2042,6 +2042,7 @@ display: inline !important;
     height: 100%;
 }
 
+
 /* media queries */
 @media screen and (max-width: 990px){
     .contact-form form{

@@ -645,4 +645,15 @@ class FrontendController extends Controller
 
     }
 
+    // user level details 
+
+     /**
+     * @return Response|ResponseFactory
+     */
+    public function userLevelSystem()
+    {
+        return inertia('Profile/level', [
+            'user'  =>  Auth::user(),
+        ]);
+    }
 }

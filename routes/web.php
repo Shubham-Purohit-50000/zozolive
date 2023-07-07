@@ -157,4 +157,5 @@ Route::post('uplaod/profile/image', [FrontendController::class, 'updateProfileIm
 Route::get('user_level/{user}', [FrontendController::class, 'userLevel']);
 // Token deduction
 Route::post('user/{token}', [FrontendController::class, 'setUserToken']);
+Route::get('user/level-system', [FrontendController::class, 'userLevelSystem']);
 // Put screen capture into database
