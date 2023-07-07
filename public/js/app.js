@@ -5586,10 +5586,26 @@ __webpack_require__.r(__webpack_exports__);
   components: {},
   props: ['user'],
   data: function data() {
-    return {};
+    return {
+      level_chart: []
+    };
+  },
+  mounted: function mounted() {
+    this.getLevelChart();
   },
   computed: {},
-  methods: {}
+  methods: {
+    getLevelChart: function getLevelChart() {
+      var _this = this;
+      try {
+        axios.get("/level_chart").then(function (resp) {
+          _this.level_chart = resp.data.level_chart;
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
 });
 
 /***/ }),
@@ -14713,9 +14729,108 @@ var _hoisted_1 = /*#__PURE__*/_withScopeId(function () {
 var _hoisted_2 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, "Each user has a level. Your level determines what league you belong to. Levels are based on how much XP you have. The big colored horizontal bar tracks your progress.", -1 /* HOISTED */);
 });
-var _hoisted_3 = [_hoisted_1, _hoisted_2];
+var _hoisted_3 = {
+  "class": "row"
+};
+var _hoisted_4 = {
+  "class": "col-md-2"
+};
+var _hoisted_5 = {
+  "class": "nav flex-column nav-pills nav-pills-custom",
+  id: "v-pills-tab",
+  role: "tablist",
+  "aria-orientation": "vertical"
+};
+var _hoisted_6 = {
+  "class": "nav-link mb-3 p-3 active shadow",
+  id: "v-pills-home-tab",
+  "data-toggle": "pill",
+  href: "#v-pills-home",
+  role: "tab",
+  "aria-controls": "v-pills-home",
+  "aria-selected": "true"
+};
+var _hoisted_7 = {
+  xmlns: "http://www.w3.org/2000/svg",
+  viewBox: "0 0 100 100"
+};
+var _hoisted_8 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
+    fill: "#ccc",
+    d: "M43.681 2.863a12.69 12.69 0 0112.638 0l15.865 9.108 15.803 8.988a12.693 12.693 0 016.418 11.058L94.367 50l.038 17.983a12.692 12.692 0 01-6.418 11.058l-15.803 8.988-15.865 9.108a12.69 12.69 0 01-12.638 0l-15.865-9.108-15.803-8.988a12.69 12.69 0 01-6.418-11.058L5.633 50l-.038-17.983a12.691 12.691 0 016.418-11.058l15.803-8.988 15.865-9.108z"
+  }, null, -1 /* HOISTED */);
+});
+var _hoisted_9 = ["fill"];
+var _hoisted_10 = {
+  "text-anchor": "middle",
+  fill: "white",
+  "font-weight": "bold",
+  "font-size": "51",
+  x: "50%",
+  y: "50%",
+  dy: "20",
+  style: {
+    "color": "#fff"
+  }
+};
+var _hoisted_11 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "col-md-9"
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Tabs content "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "tab-content",
+    id: "v-pills-tabContent"
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "tab-pane fade shadow rounded bg-white show active p-5",
+    id: "v-pills-home",
+    role: "tabpanel",
+    "aria-labelledby": "v-pills-home-tab"
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h4", {
+    "class": "font-italic mb-4"
+  }, "Personal information"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+    "class": "font-italic text-muted mb-2"
+  }, "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.")]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "tab-pane fade shadow rounded bg-white p-5",
+    id: "v-pills-profile",
+    role: "tabpanel",
+    "aria-labelledby": "v-pills-profile-tab"
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h4", {
+    "class": "font-italic mb-4"
+  }, "Bookings"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+    "class": "font-italic text-muted mb-2"
+  }, "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.")]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "tab-pane fade shadow rounded bg-white p-5",
+    id: "v-pills-messages",
+    role: "tabpanel",
+    "aria-labelledby": "v-pills-messages-tab"
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h4", {
+    "class": "font-italic mb-4"
+  }, "Reviews"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+    "class": "font-italic text-muted mb-2"
+  }, "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.")]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "tab-pane fade shadow rounded bg-white p-5",
+    id: "v-pills-settings",
+    role: "tabpanel",
+    "aria-labelledby": "v-pills-settings-tab"
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h4", {
+    "class": "font-italic mb-4"
+  }, "Confirm booking"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+    "class": "font-italic text-muted mb-2"
+  }, "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.")])])], -1 /* HOISTED */);
+});
+
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("section", null, _hoisted_3);
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("section", null, [_hoisted_1, _hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Tabs nav "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" start level "), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.level_chart, function (level, i) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
+      key: i
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_6, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("svg", _hoisted_7, [_hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
+      fill: level.color,
+      d: "M43.9419 4.777a12.1761 12.1761 90 0112.1262 0l15.2225 8.7391l15.163 8.624a12.1789 12.1789 90 016.1581 10.6102L92.5751 50.005l0.0365 17.2547a12.178 12.178 90 01-6.1581 10.6102l-15.163 8.624l-15.2225 8.7391a12.1761 12.1761 90 01-12.1262 0l-15.2225-8.7391l-15.163-8.624a12.1761 12.1761 90 01-6.1581-10.6102L7.4349 50.005l-0.0365-17.2547a12.177 12.177 90 016.1581-10.6102l15.163-8.624l15.2225-8.7391z",
+      "class": "level-badge-stroke"
+    }, null, 8 /* PROPS */, _hoisted_9), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("text", _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(i), 1 /* TEXT */)])), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+      "class": "font-weight-bold ms-2 text-uppercase",
+      style: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeStyle)('color:' + level.color)
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(level.name), 5 /* TEXT, STYLE */)])]);
+  }), 128 /* KEYED_FRAGMENT */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" end level ")])]), _hoisted_11])]);
 }
 
 /***/ }),
@@ -18956,7 +19071,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\np[data-v-11ec6c76] {\n    opacity: .8;\n}\n\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\np[data-v-11ec6c76] {\n    opacity: .8;\n}\n.font-weight-bold[data-v-11ec6c76]  {\n    font-weight: 600;\n}\n.nav-link svg[data-v-11ec6c76] {\n    width: 40px;\n    height: 40px;\n}\n.nav-pills-custom .nav-link[data-v-11ec6c76] {\n    color: #aaa;\n    background: #000;\n    position: relative;\n}\n.nav-pills-custom .nav-link.active[data-v-11ec6c76] {\n    color: #45b649;\n    background: #242424;\n}\n\n\n/* Add indicator arrow for the active tab */\n@media (min-width: 992px) {\n.nav-pills-custom .nav-link[data-v-11ec6c76]::before {\n        content: '';\n        display: block;\n        border-top: 8px solid transparent;\n        border-left: 10px solid #242424;\n        border-bottom: 8px solid transparent;\n        position: absolute;\n        top: 50%;\n        right: -10px;\n        transform: translateY(-50%);\n        opacity: 0;\n}\n}\n.nav-pills-custom .nav-link.active[data-v-11ec6c76]::before {\n    opacity: 1;\n}\nbody[data-v-11ec6c76] {\n    min-height: 100vh;\n    background: linear-gradient(to left, #dce35b, #45b649);\n}\n\n\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

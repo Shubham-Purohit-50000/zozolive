@@ -5,40 +5,13 @@ $level_data = get_user_level($user->token);
  ?>
 <style>
     .hexagon {
-        margin-top: 10px;
+        margin-top: 0px;
         width: 40px;
-        height: 16px;
-        position: relative;
-        display: inline-block;
-        background-color: {{$level_data['color']}};
+        height: 40px;
         
   }
-  .hexagon::before {
-    content: " ";
-    width: 0; height: 0;
-    border-color: inherit;
-    border-left: 20px solid transparent;
-    border-right: 20px solid transparent;
-    position: absolute;
-    top: -15px;
-    border-bottom: 15px solid {{$level_data['color']}};
-  }
-  .hexagon::after {
-    content: "";
-    width: 0;
-    position: absolute;
-    bottom: -13px;
-    border-top: 13px solid;
-    border-color: {{$level_data['color']}};
-    border-left: 20px solid transparent;
-    border-right: 20px solid transparent;
-   
-  }
+ 
   .hexagon span {
-    z-index: 100;
-    position: absolute;
-    left: 15px;
-    top: 0px;
     font-weight: bold;
     font-size: 12px;
   }
@@ -354,12 +327,19 @@ $level_data = get_user_level($user->token);
                                             <div class="d-flex">
                                             <div class="me-5 d-flex ">
                                                 <div class="hexagon  me-1">
-                                              <span>  {{$level_data['level']}} </span>
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                                                    <path fill="white"  d="M43.681 2.863a12.69 12.69 0 0112.638 0l15.865 9.108 15.803 8.988a12.693 12.693 0 016.418 11.058L94.367 50l.038 17.983a12.692 12.692 0 01-6.418 11.058l-15.803 8.988-15.865 9.108a12.69 12.69 0 01-12.638 0l-15.865-9.108-15.803-8.988a12.69 12.69 0 01-6.418-11.058L5.633 50l-.038-17.983a12.691 12.691 0 016.418-11.058l15.803-8.988 15.865-9.108z"></path>
+                                                <path  fill="{{ $level_data['color']}}" d="M43.9419 4.777a12.1761 12.1761 90 0112.1262 0l15.2225 8.7391l15.163 8.624a12.1789 12.1789 90 016.1581 10.6102L92.5751 50.005l0.0365 17.2547a12.178 12.178 90 01-6.1581 10.6102l-15.163 8.624l-15.2225 8.7391a12.1761 12.1761 90 01-12.1262 0l-15.2225-8.7391l-15.163-8.624a12.1761 12.1761 90 01-6.1581-10.6102L7.4349 50.005l-0.0365-17.2547a12.177 12.177 90 016.1581-10.6102l15.163-8.624l15.2225-8.7391z" class="level-badge-stroke"></path>
+                                                <text text-anchor="middle" fill="white" font-weight="bold" font-size="51" x="50%" y="50%" dy="20" style="color:#fff">
+                                                {{$level_data['level']}}
+                                                </text>
+                                            </svg>
+            
                                             </div>
-                                            <strong class="ms-2 mt-1">Level</strong>
+                                            <strong class="ms-1 mt-2">Level</strong>
                                             </div>
                                             <div>
-                                                <a href="/user/level-system" style="color:{{ $level_data['color'] }}" class="mt-1 d-flex">
+                                                <a href="/user/level-system" style="color:{{ $level_data['color'] }}" class="mt-2 d-flex">
                                                 {{$level_data['name']}} <i class="bi bi-arrow-right-short mt-1 ms-1"></i>
             </a>
                                             </div>

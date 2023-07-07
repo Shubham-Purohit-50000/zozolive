@@ -650,7 +650,9 @@ class FrontendController extends Controller
             '50'=>$level[49],
         );
 
-        return response()->json($level_chart);
+        return response()->json([
+            'level_chart' => $level_chart
+        ]);
     }
 
     public function setUserToken(Request $req, $id)
