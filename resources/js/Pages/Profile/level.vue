@@ -1,6 +1,9 @@
 <template>
     <section>
-       <p style="color: #fff;">ddd</p>
+       <h5>League & Level System
+</h5>
+<p>Each user has a level. Your level determines what league you belong to. Levels are based on how much XP you have.
+The big colored horizontal bar tracks your progress.</p>
     </section>
 </template>
 
@@ -23,3 +26,9 @@ export default {
 };
 </script>
 
+<style scoped>
+p {
+    opacity: .8;
+}
+
+</style>

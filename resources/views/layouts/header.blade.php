@@ -5,34 +5,34 @@ $level_data = get_user_level($user->token);
  ?>
 <style>
     .hexagon {
-    width: 30px;
-    height: 27.735px;
-    position: relative;
-    top: 3px;
+        margin-top: 10px;
+        width: 40px;
+        height: 16px;
+        position: relative;
+        display: inline-block;
+        background-color: {{$level_data['color']}};
+        
   }
   .hexagon::before {
-    content: "";
-    position: absolute;
-    top: -9.8675px;
-    left: 0;
-    width: 0;
-    height: 0;
-    border-left:20px solid transparent;
+    content: " ";
+    width: 0; height: 0;
+    border-color: inherit;
+    border-left: 20px solid transparent;
     border-right: 20px solid transparent;
-    border-bottom: 18.8675px solid;
-    border-bottom-color: {{$level_data['color']}};
-    z-index: 0;
+    position: absolute;
+    top: -15px;
+    border-bottom: 15px solid {{$level_data['color']}};
   }
   .hexagon::after {
     content: "";
-    position: absolute;
-    left: 0;
     width: 0;
-    height: 0;
+    position: absolute;
+    bottom: -13px;
+    border-top: 13px solid;
+    border-color: {{$level_data['color']}};
     border-left: 20px solid transparent;
     border-right: 20px solid transparent;
-    border-top: 18.8675px solid;
-    border-top-color: {{$level_data['color']}};
+   
   }
   .hexagon span {
     z-index: 100;
@@ -353,7 +353,7 @@ $level_data = get_user_level($user->token);
                                             ?>
                                             <div class="d-flex">
                                             <div class="me-5 d-flex ">
-                                                <div class="hexagon p-2 me-1">
+                                                <div class="hexagon  me-1">
                                               <span>  {{$level_data['level']}} </span>
                                             </div>
                                             <strong class="ms-2 mt-1">Level</strong>
