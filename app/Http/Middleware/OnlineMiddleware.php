@@ -29,7 +29,7 @@ class OnlineMiddleware
         if (auth()->check()) {
             $cache_value = Cache::put('user-is-online', auth()->id(), \Carbon\Carbon::now()->addMinutes(3));
             $user = User::find(Cache::get('user-is-online'));
-            $user->last_activity = now()->addMinutes(1);
+            $user->last_activity = now()->addMinutes(3);
             $user->is_online = true;
             $user->save();
         } elseif(!auth()->check() and filled(Cache::get('user-is-online'))) {
