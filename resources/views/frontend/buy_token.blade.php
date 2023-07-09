@@ -187,17 +187,18 @@
 @endsection
 @section('content')
     @if ($list && count($list) > 0)
-        {!! Form::open([
+        {{-- {!! Form::open([
             'method' => 'POST',
             'route' => 'checkout',
             'class' => 'kt-form',
             'id' => 'checkoutForm',
-        ]) !!}
+        ]) !!} --}}
         <section class="section container">
             <div class="row align-items-top token">
                 <div class="col-12 mx-auto rounded">
                     <div class="my-4 text-center">
-                        <span class="shub-tab px-3 py-2">shub@gmail.com</span>
+                        <?php $user =  $user = auth()->user() ?>
+                        <span class="shub-tab px-3 py-2">{{ $user->email }}</span>
                         <span class="d-block my-3" style="color:#141415;">Remember your email to buy tokens with our official site. <a href="https://zozotoken.com" class="">zozotoken.com</a></span>
                         <span class="d-block my-3" style="color:#141415;">[ हमारी आधिकारिक साइट से टोकन खरीदने के लिए अपना ईमेल याद रखें. <a href="https://zozotoken.com" class="">zozotoken.com</a> ]</span>
                     </div>
@@ -219,22 +220,24 @@
                 @foreach ($list as $key => $data)
                 <div class="col-6 col-md-3">
           <div class="mb-4 box-shadow my-card ribbon">
-            <div class="wrap">
-              <span class="ribbon6">OFFER {{round(100 - ($data->amount - $data->discount)*100/$data->amount, 1)}}%</span>
-              <div class="card-body my-body">
-                <h5 class="card-title ">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="none" viewBox="0 0 12 12" class="uSYgE"><path fill="#FFD200" fill-rule="evenodd" d="M6 12A6 6 0 1 0 6 0a6 6 0 0 0 0 12Z" clip-rule="evenodd"></path><path fill="#FFE749" fill-rule="evenodd" d="M6 10.125a4.125 4.125 0 1 0 0-8.25 4.125 4.125 0 0 0 0 8.25Z" clip-rule="evenodd"></path><path fill="#FEBE43" fill-rule="evenodd" d="M6.14 7.68a.3.3 0 0 0-.28 0l-1.211.637a.3.3 0 0 1-.435-.316l.231-1.35a.3.3 0 0 0-.086-.265l-.98-.955a.3.3 0 0 1 .166-.512l1.354-.197a.3.3 0 0 0 .226-.164l.606-1.228a.3.3 0 0 1 .538 0l.606 1.228a.3.3 0 0 0 .226.164l1.355.197a.3.3 0 0 1 .166.512l-.98.955a.3.3 0 0 0-.087.266L7.787 8a.3.3 0 0 1-.436.316L6.14 7.68Z" clip-rule="evenodd"></path></svg>
-                    <strong class="text-dark">{{$data->coin}}</strong>
-                </h5>
-                <div>
-                    <img src="https://cget.tango.me/contentserver/download/YKf5PQAA3Egw8vDtTOpkMw/X5v2GYQx" alt="" class="w-50">
-                </div>
-                <ul class="list-unstyled mt-3 mb-4">
-                  <li><strong class="text-dark">₹ {{$data->amount - $data->discount}}</strong></li>
-                  <li><del class="text-dark">₹ {{$data->amount}}</del></li>
-                </ul>
-              </div>
-            </div>
+            <a class="btn btn-link" href="https://zozotoken.com?email={{ $user->email }}" target="_blank">
+                <div class="wrap">
+                    <span class="ribbon6">OFFER {{round(100 - ($data->amount - $data->discount)*100/$data->amount, 1)}}%</span>
+                    <div class="card-body my-body">
+                      <h5 class="card-title ">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="none" viewBox="0 0 12 12" class="uSYgE"><path fill="#FFD200" fill-rule="evenodd" d="M6 12A6 6 0 1 0 6 0a6 6 0 0 0 0 12Z" clip-rule="evenodd"></path><path fill="#FFE749" fill-rule="evenodd" d="M6 10.125a4.125 4.125 0 1 0 0-8.25 4.125 4.125 0 0 0 0 8.25Z" clip-rule="evenodd"></path><path fill="#FEBE43" fill-rule="evenodd" d="M6.14 7.68a.3.3 0 0 0-.28 0l-1.211.637a.3.3 0 0 1-.435-.316l.231-1.35a.3.3 0 0 0-.086-.265l-.98-.955a.3.3 0 0 1 .166-.512l1.354-.197a.3.3 0 0 0 .226-.164l.606-1.228a.3.3 0 0 1 .538 0l.606 1.228a.3.3 0 0 0 .226.164l1.355.197a.3.3 0 0 1 .166.512l-.98.955a.3.3 0 0 0-.087.266L7.787 8a.3.3 0 0 1-.436.316L6.14 7.68Z" clip-rule="evenodd"></path></svg>
+                          <strong class="text-dark">{{$data->coin}}</strong>
+                      </h5>
+                      <div>
+                          <img src="https://cget.tango.me/contentserver/download/YKf5PQAA3Egw8vDtTOpkMw/X5v2GYQx" alt="" class="w-50">
+                      </div>
+                      <ul class="list-unstyled mt-3 mb-4">
+                        <li><strong class="text-dark">₹ {{$data->amount - $data->discount}}</strong></li>
+                        <li><del class="text-dark">₹ {{$data->amount}}</del></li>
+                      </ul>
+                    </div>
+                  </div>
+                </a>
           </div>
         </div>
         
@@ -317,7 +320,7 @@
         
   </div>
         </section>
-        {!! Form::close() !!}
+        {{-- {!! Form::close() !!} --}}
         <div class="modal fade" id="showPaymentModel" tabindex="-1">
     <div class="modal-dialog modal-sm">
       <div class="modal-content" style="background: transparent">
