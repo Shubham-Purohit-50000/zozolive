@@ -46,7 +46,7 @@
                                         />
                                         <span
                                             v-show="errors && errors.username"
-                                            class="error_msg ml-2"
+                                            class="error_msg"
                                             >{{
                                                 errors && errors.username
                                                     ? errors.username.toString()
@@ -72,7 +72,7 @@
                                         <!-- <div class="invalid-feedback">Please enter your password!</div> -->
                                         <span
                                             v-show="errors && errors.password"
-                                            class="error_msg ml-2"
+                                            class="error_msg"
                                             >{{
                                                 errors && errors.password
                                                     ? errors.password.toString()

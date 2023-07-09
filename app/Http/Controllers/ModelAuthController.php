@@ -83,7 +83,7 @@ class ModelAuthController extends Controller
             }
         } else {
             return response()->json([
-                'msg' => 'Authentication failed, please check your login details'
+                'msg' => 'Authentication failed.'
             ], 401);
         }
     }

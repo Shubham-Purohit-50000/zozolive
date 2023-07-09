@@ -110,19 +110,25 @@
 .buyTkn {
     /*height: 35px;*/
     /*width: 35px;*/
-    display: flex;
+    /* display: flex; */
     align-items: center;
     justify-content: center;
-    margin-right: 25px;
+    margin-right: 0px;
     font-size: 22px;
     color: #000;
+}
+.buy-token-label {
+    font-size: 12px;
+    color: #fff;
+  
 }
 .bg-green{
     background: #96cd1f;
 }
 .buy_token_plus_btn{
     border-radius: 50%;
-    width: 2.3rem;
+    width: 20px;
+    height: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
