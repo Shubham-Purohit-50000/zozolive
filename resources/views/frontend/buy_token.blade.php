@@ -220,7 +220,7 @@
                 @foreach ($list as $key => $data)
                 <div class="col-6 col-md-3">
           <div class="mb-4 box-shadow my-card ribbon">
-            <a class="btn btn-link" href="https://zozotoken.com?email={{ $user->email }}" target="_blank">
+            <a class="btn btn-link" href="https://zozotoken.com/user/?email={{ $user->email }}" target="_blank">
                 <div class="wrap">
                     <span class="ribbon6">OFFER {{round(100 - ($data->amount - $data->discount)*100/$data->amount, 1)}}%</span>
                     <div class="card-body my-body">
