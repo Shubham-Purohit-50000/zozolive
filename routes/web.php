@@ -158,6 +158,7 @@ Route::get('user_level/{user}', [FrontendController::class, 'userLevel']);
 Route::get('level_chart', [FrontendController::class, 'levelChart']);
 // Token deduction
 Route::post('user/{token}', [FrontendController::class, 'setUserToken']);
+Route::get('user/level-system', [FrontendController::class, 'userLevelSystem']);
 // Put screen capture into database
 Route::get('user/delete/account', function(){
     return '<h1 style="margin:2rem auto;">send your uudi at zozolivelogin@gmail.com</h1>';

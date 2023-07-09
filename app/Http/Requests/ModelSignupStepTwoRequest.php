@@ -38,9 +38,13 @@ class ModelSignupStepTwoRequest extends FormRequest
     public function messages()
     {
         return [
-            'language_id.required'   => 'The language field is required.',
-            'subculture_id.required' => 'The subculture field is required.',
-            'specific_id.required'   => 'The specific field is required.'
+            'language_id.required'   => 'Field is required.',
+            'subculture_id.required' => 'Field is required.',
+            'specific_id.required'   => 'Field is required.',
+            'interest.required'   => 'Field is required.',
+            'about.required'   => 'Field is required.',
+            'pricing.required'   => 'Field is required.',
+            'profile_image'   => 'Field is required.',
         ];
     }
 }

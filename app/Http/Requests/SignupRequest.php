@@ -40,4 +40,18 @@ class SignupRequest extends FormRequest
         $attributes['password'] = bcrypt($this->password);
         return $attributes;
     }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'email.required' => 'field is required',
+            'username.required' => 'field is required',
+            'password.required' => 'field is required',
+        ];
+    }
 }
