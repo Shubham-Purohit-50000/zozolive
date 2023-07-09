@@ -182,7 +182,7 @@
     {{-- <script src="/assets/js/m2m-live.js"></script> --}}
 </head>
 
-<body class="">
+<body class="@if (!Request::is('/')) toggle-sidebar @endif">
 <!-- ======= Header ======= -->
 @include('layouts.header')
 <!-- ======= Sidebar ======= -->
@@ -206,33 +206,11 @@
 <!-- ======= Footer ======= -->
 <!-- End Footer -->
 
-<footer class="site-footer section"
+<footer class="site-footer section main"
         style="bottom: 0;
-                    position:  relative; margin-left: 0; z-index: 1; width: 100%; ">
+                    position:  relative; margin-left: 0; z-index: 10; width: 100%; ">
     <div class="p-20">
         <div class="row">
-            <!-- <div class="col-sm-12 col-md-5">
-        <h6>About</h6>
-        <p class="text-justify font-7">
-            Welcome to Zozo Live! We're a free online
-            community where you can come and watch our
-            amazing amateur performer perform live interactive
-            shows.
-            <br />
-            <br /> Zozo Live is 100% free and access
-            is instant. Browse through hundreds of performer
-            from Women, Men, Couples, and Transsexuals
-            performing live sex shows 24/7. Besides watching
-            free live cam shows, you also have the option
-            for Private shows, spying, Cam to Cam, and
-            messaging performer.
-            <br />
-            <br />
-            All performer appearing on this site have
-            contractually confirmed to us that they are 18
-            years of age or older.
-        </p>
-    </div> -->
             <div class="col-xs-4 col-md-2">
                 <h6>LEGAL AND SAFETY</h6>
                 <hr/>
@@ -436,7 +414,7 @@
 
         .sidebar {
             left: 0 !important;
-            width: 80% !important;
+            width: 50% !important;
             height: 100vh !important;
         }
 

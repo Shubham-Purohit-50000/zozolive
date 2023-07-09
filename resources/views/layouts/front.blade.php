@@ -179,7 +179,7 @@
 <!-- ======= Footer ======= -->
 <!-- End Footer -->
 
-<footer class="site-footer section"
+<footer class="site-footer section main"
         style="bottom: 0; position: relative; margin-left: 0; z-index: 1; width: 100%; ">
     <div class="p-20">
         <div class="row">
