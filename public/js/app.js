@@ -2572,7 +2572,7 @@ __webpack_require__.r(__webpack_exports__);
           _this.$emit('updateLoginUsername', _this.form.username);
           $("#afterLogin").modal("show");
         } else if (err.response.status == 401) {
-          _this.errorMsg = 'Authentication failed, please check your login details';
+          _this.errorMsg = 'Authentication failed.';
         } else if (err.response.status == 400) {
           _this.errorMsg = err.response.data.msg;
           $('#loginToast').removeClass('hide');
@@ -8010,7 +8010,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }),
     required: ""
   }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.username]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-    "class": "error_msg ml-2"
+    "class": "error_msg"
   }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.errors && $data.errors.username ? $data.errors.username.toString() : ""), 513 /* TEXT, NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.errors && $data.errors.username]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"invalid-feedback\">Please enter your username.</div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" </div> ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <label for=\"yourPassword\" class=\"form-label\">Password</label> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "password",
     name: "username",
@@ -8021,7 +8021,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }),
     required: ""
   }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.password]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <input type=\"password\" name=\"password\" class=\"form-control\" id=\"yourPassword\" required=\"\"> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"invalid-feedback\">Please enter your password!</div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-    "class": "error_msg ml-2"
+    "class": "error_msg"
   }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.errors && $data.errors.password ? $data.errors.password.toString() : ""), 513 /* TEXT, NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.errors && $data.errors.password]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     onClick: _cache[2] || (_cache[2] = function () {
       return $options.loginUser && $options.loginUser.apply($options, arguments);
@@ -8921,7 +8921,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }),
     "class": "bi bi-magic d-flex justify-content-center align-items-center username__input--icon"
   })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-    "class": "error_msg ml-2"
+    "class": "error_msg"
   }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.errors && $data.errors.username ? $data.errors.username.toString() : ""), 513 /* TEXT, NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.errors]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     placeholder: "Password",
     type: "password",
@@ -8932,7 +8932,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "class": "form-control username__input",
     required: ""
   }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.password]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-    "class": "error_msg ml-2"
+    "class": "error_msg"
   }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.errors && $data.errors.password ? $data.errors.password.toString() : ""), 513 /* TEXT, NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.errors]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     placeholder: "Email",
     type: "text",
@@ -8944,7 +8944,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "class": "form-control username__input",
     required: ""
   }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.email]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-    "class": "error_msg ml-2"
+    "class": "error_msg"
   }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.errors && $data.errors.email ? $data.errors.email.toString() : ""), 513 /* TEXT, NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.errors]]), _hoisted_17]), _hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "btn btn-primary w-100 btn-login submitButton",
     onClick: _cache[4] || (_cache[4] = function () {
@@ -10984,9 +10984,13 @@ var _hoisted_11 = {
   "class": "col-12"
 };
 var _hoisted_12 = {
+  key: 0,
+  "class": "text-danger"
+};
+var _hoisted_13 = {
   "class": "col-12"
 };
-var _hoisted_13 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_14 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     "class": "col-12 mt-0",
     style: {
@@ -11004,28 +11008,21 @@ var _hoisted_13 = /*#__PURE__*/_withScopeId(function () {
     }
   }, "Forgot password?")], -1 /* HOISTED */);
 });
-var _hoisted_14 = {
-  key: 0,
-  "class": "text-danger"
-};
-var _hoisted_15 = {
-  "class": "position-fixed top-0 end-0 p-3",
-  style: {
-    "z-index": "11"
-  }
-};
-var _hoisted_16 = {
-  id: "loginToast",
-  "class": "toast hide",
-  role: "alert",
-  "aria-live": "assertive",
-  "aria-atomic": "true"
-};
-var _hoisted_17 = {
-  "class": "toast-body"
-};
-var _hoisted_18 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+var _hoisted_15 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "position-fixed top-0 end-0 p-3",
+    style: {
+      "z-index": "11"
+    }
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    id: "loginToast",
+    "class": "toast hide",
+    role: "alert",
+    "aria-live": "assertive",
+    "aria-atomic": "true"
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "toast-body"
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
     "aria-hidden": "true",
     "class": "w-5 h-5 mr-2",
     fill: "#198754",
@@ -11035,15 +11032,12 @@ var _hoisted_18 = /*#__PURE__*/_withScopeId(function () {
     "fill-rule": "evenodd",
     d: "M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z",
     "clip-rule": "evenodd"
-  })], -1 /* HOISTED */);
-});
-var _hoisted_19 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  })]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "button",
     "class": "btn-close",
     "data-bs-dismiss": "toast",
     "aria-label": "Close"
-  }, null, -1 /* HOISTED */);
+  })])])], -1 /* HOISTED */);
 });
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -11075,13 +11069,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     required: ""
   }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.password]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <input type=\"password\" name=\"password\" class=\"form-control\" id=\"yourPassword\" required=\"\"> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"invalid-feedback\">Please enter your password!</div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
     "class": "error_msg ml-2"
-  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.errors && $data.errors.password ? $data.errors.password.toString() : ""), 513 /* TEXT, NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.errors && $data.errors.password]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.errors && $data.errors.password ? $data.errors.password.toString() : ""), 513 /* TEXT, NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.errors && $data.errors.password]])]), $data.errorMsg ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.errorMsg), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     onClick: _cache[2] || (_cache[2] = function () {
       return $options.loginUser && $options.loginUser.apply($options, arguments);
     }),
     "class": "btn btn-primary w-100 btn-login",
     type: "submit"
-  }, " Login ")]), _hoisted_13, $data.errorMsg ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.errorMsg), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 32 /* HYDRATE_EVENTS */)])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [_hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.errorMsg), 1 /* TEXT */), _hoisted_19])])])]);
+  }, " Login ")]), _hoisted_14], 32 /* HYDRATE_EVENTS */)])])])])])]), _hoisted_15]);
 }
 
 /***/ }),
@@ -11222,7 +11216,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     id: "yourUsername",
     required: ""
   }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.username]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-    "class": "error_msg ml-2"
+    "class": "error_msg"
   }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.errors && $data.errors.username ? $data.errors.username.toString() : ""), 513 /* TEXT, NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.errors]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     placeholder: "Password",
     type: "password",
@@ -11234,7 +11228,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     id: "yourUsername",
     required: ""
   }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.password]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-    "class": "error_msg ml-2"
+    "class": "error_msg"
   }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.errors && $data.errors.password ? $data.errors.password.toString() : ""), 513 /* TEXT, NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.errors]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     placeholder: "Email",
     type: "text",
@@ -11246,7 +11240,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "class": "form-control username__input",
     required: ""
   }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.email]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-    "class": "error_msg ml-2"
+    "class": "error_msg"
   }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.errors && $data.errors.email ? $data.errors.email.toString() : ""), 513 /* TEXT, NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.errors]]), _hoisted_17]), _hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "btn btn-primary w-100 btn-login submitButton",
     onClick: _cache[3] || (_cache[3] = function () {

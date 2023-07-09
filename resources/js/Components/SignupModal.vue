@@ -56,7 +56,7 @@
                             class="bi bi-magic d-flex justify-content-center align-items-center username__input--icon"
                         ></i>
                       </div>
-                      <span v-show="errors" class="error_msg ml-2">{{
+                      <span v-show="errors" class="error_msg">{{
                           errors && errors.username
                               ? errors.username.toString()
                               : ""
@@ -75,7 +75,7 @@
                             required=""
                         />
                       </div>
-                      <span v-show="errors" class="error_msg ml-2">{{
+                      <span v-show="errors" class="error_msg">{{
                           errors && errors.password
                               ? errors.password.toString()
                               : ""
@@ -96,7 +96,7 @@
                             required=""
                         />
                       </div>
-                      <span v-show="errors" class="error_msg ml-2">{{
+                      <span v-show="errors" class="error_msg">{{
                           errors && errors.email
                               ? errors.email.toString()
                               : ""

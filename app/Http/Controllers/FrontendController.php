@@ -244,7 +244,13 @@ class FrontendController extends Controller
         $request->validate([
             'username' => 'required|exists:users,' . $login_with,
             'password' => 'required'
-        ]);
+        ],
+        [
+            'username.required' => 'Field is required',
+            'password.required' => 'Field is required',
+        ]
+        ,
+    );
         $user = User::where("$login_with", $request->$login_with)->first();
         $creds = [
             "$login_with" => $request->username,
@@ -259,7 +265,7 @@ class FrontendController extends Controller
             ]);
         } else {
             return response()->json([
-                'errors' => (object)['username' => 'Authentication failed, please check your login details']
+                'errors' => (object)['username' => 'Authentication failed']
             ], 401);
         }
     }
@@ -448,7 +454,7 @@ class FrontendController extends Controller
             ]);
         } else {
             return response()->json([
-                'msg' => 'Authentication failed, please check your login details'
+                'msg' => 'Authentication failed.'
             ], 401);
         }
     }
@@ -489,6 +495,11 @@ class FrontendController extends Controller
             'from' => 'required',
             'about'=> 'required',
             'dob'  => 'required'
+        ], [
+            'name.required' => 'Field required',
+            'from.required' => 'Field required',
+            'about.required'=> 'Field required',
+            'dob.required'  => 'Field required'
         ]);
         auth()->user()->update([
             'name' => $request->name,
