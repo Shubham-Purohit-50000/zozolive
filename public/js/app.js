@@ -772,7 +772,6 @@ __webpack_require__.r(__webpack_exports__);
     this.getUserLevels();
     this.getHostTipMenu();
     _event_bus__WEBPACK_IMPORTED_MODULE_1__["default"].on('send-tip', function (value) {
-      console.log(value);
       _this.message = value;
       _this.send();
     });
@@ -884,7 +883,7 @@ __webpack_require__.r(__webpack_exports__);
               msg: _this5.message,
               send_by: _this5.authUser.uuid,
               send_by_user: _this5.authUser.name,
-              user_token: _this5.authUser.token,
+              user_token: _this5.authUser.token = _this5.authUser.token - parseInt(_this5.tip_menu_token_amount),
               level_data: _this5.authUserLevelData
               // avatar: this.authUser.avatar,
               // send_at: date,

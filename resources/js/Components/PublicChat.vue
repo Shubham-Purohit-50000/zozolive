@@ -336,7 +336,6 @@ export default {
     this.getHostTipMenu();
 
     EventBus.on('send-tip', (value) => {
-      console.log(value);
 			this.message = value;
       this.send();
 		});
@@ -455,7 +454,7 @@ export default {
                     msg: this.message,
                     send_by: this.authUser.uuid,
                     send_by_user: this.authUser.name,
-                    user_token: this.authUser.token,
+                    user_token: this.authUser.token = (this.authUser.token-parseInt(this.tip_menu_token_amount)),
                     level_data: this.authUserLevelData,
                     // avatar: this.authUser.avatar,
                     // send_at: date,
