@@ -1885,6 +1885,9 @@ input[type="range"]::-ms-fill-upper {
     .video-group {
     min-height: 240px;
 }
+.informationDiv {
+    width: 90%;
+}
 .album_photo {
     width:100%;
    
