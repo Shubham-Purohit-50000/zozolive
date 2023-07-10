@@ -690,7 +690,7 @@ export default {
     padding: 0.3rem 1.3rem;
 }
 
-@media screen and (max-width: 400px){
+@media screen and (max-width: 600px){
   .profile_edit_wrapper{
     align-items: center;
     flex-direction: column;
