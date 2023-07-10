@@ -1883,7 +1883,7 @@ input[type="range"]::-ms-fill-upper {
 
 @media (max-width: 700px) {
     .video-group {
-    min-height: 200px;
+    min-height: 240px;
 }
 .album_photo {
     width:100%;
@@ -1892,6 +1892,23 @@ input[type="range"]::-ms-fill-upper {
 .mt-3rem {
     margin-top: 3rem !important;
 }
+.action_box .private  button {
+    padding: 5px !important
+}
 }
 
+@media (max-width: 500px) {
+   .ticket_show i {
+    top: 0% !important;
+   }
+   .ticket_show h4 {
+    top: 15% !important;
+   }
+   .ticket_show h5 {
+    top: 20% !important;
+   }
+   .action_box {
+    bottom: 20px;
+   }
+}
 </style>

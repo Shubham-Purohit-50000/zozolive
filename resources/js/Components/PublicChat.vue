@@ -336,7 +336,6 @@ export default {
     this.getHostTipMenu();
 
     EventBus.on('send-tip', (value) => {
-      console.log(value);
 			this.message = value;
       this.send();
 		});
@@ -399,20 +398,12 @@ export default {
     },
     getUserLevels(token = null) {
       try {
-            if(token) {
-              axios.get("/user_level/"+token).then((resp)=> {
-              // console.log(resp);
-              this.authUserLevelData = resp.data.data;
-            });
-            } else {
-              if(this.authUser) {
-                axios.get("/user_level/"+this.authUser.token).then((resp)=> {
-              // console.log(resp);
-              this.authUserLevelData = resp.data.data;
+            if(this.authUser) {
+                axios.get("/user_level/"+this.authUser.uuid).then((resp)=> {
+                // console.log(resp);
+                this.authUserLevelData = resp.data.data;
             
-            });
-              }
-              
+                });
             }
            
         } catch (error) {
@@ -442,7 +433,7 @@ export default {
                   send_by_user: this.authUser.name,
                   // avatar: 2,
                   send_at: date,
-                  user_token: this.authUser.token,
+                  user_token: this.authUser.token = (this.authUser.token-parseInt(this.tip_menu_token_amount)),
                   level_data: this.authUserLevelData,
                 };
                 var msgClone = this.messages;
@@ -463,7 +454,7 @@ export default {
                     msg: this.message,
                     send_by: this.authUser.uuid,
                     send_by_user: this.authUser.name,
-                    user_token: this.authUser.token,
+                    user_token: this.authUser.token = (this.authUser.token-parseInt(this.tip_menu_token_amount)),
                     level_data: this.authUserLevelData,
                     // avatar: this.authUser.avatar,
                     // send_at: date,
@@ -602,10 +593,10 @@ export default {
       position:absolute;
       top:15%;
       width: 100%;
-      height: 27rem;
+     
 }
 .top_postion {
-  top:45% !important;
+      top:45% !important;
       width: 100%;
       height: 17rem !important;
 }

@@ -284,7 +284,7 @@
 
                                 <button class="dropdown-item" type="submit"><i
                                             class="bi bi-box-arrow-right d-inline-block"></i>
-                                    Logout
+                                    <span>Logout</span>
                                 </button>
                             </form>
                         </li>
