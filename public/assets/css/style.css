@@ -1999,6 +1999,7 @@ display: inline !important;
     text-align: center;
     vertical-align: middle;
     height: 161px;
+    margin-bottom: 20px;
 }
 .upload_box img {
     width: 100%;
@@ -2070,6 +2071,9 @@ display: inline !important;
     .contact-form form{
         width: 100%;
     }
+    .profilebackgroundImage {
+        height: 300px !important;
+    }
 }
 
 
@@ -2104,7 +2108,6 @@ display: inline !important;
     .display-desktop {
         display: none;
     }
- 
 }
 
 @media screen and (max-width: 520px) {

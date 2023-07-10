@@ -59,10 +59,10 @@ const submit = () => {
             </div>
             <div class="video-call-wrapper" v-if="callPlaced">
                 <div class="video-participant" id="remote-video">
-                    <div class="participant-actions">
+                    <!-- <div class="participant-actions">
                         <button class="btn-mute"></button>
                         <button class="btn-camera"></button>
-                    </div>
+                    </div> -->
                     <!-- <a href="#" class="name-tag">Andy Will</a> -->
                     <!--<img src="https://images.unsplash.com/photo-1566821582776-92b13ab46bb4?ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=900&amp;q=60" alt="participant">-->
                 </div>
@@ -632,7 +632,14 @@ export default {
     },
 };
 </script>
-<style>
+
+<style scoped>
+ @media screen and (max-width: 520px) {
+    .video-call-actions {
+  position: absolute !important;
+  top: 70px !important;
+}
+  }
 .d-flex {
     display: flex;
     justify-content: center;

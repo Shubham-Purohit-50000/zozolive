@@ -384,6 +384,7 @@ a {
   align-items: center;
   padding-top: 64px;
   max-width: 500px;
+  position: absolute;
 }
 
 .video-action-button {
