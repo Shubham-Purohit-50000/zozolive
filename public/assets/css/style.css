@@ -194,15 +194,10 @@ h6 {
     margin-bottom: 2px !important;
 }
 .header_btn  {
-    background: transparent;
-    border-radius: 50%;
     text-align: center;
     /* box-shadow: 2px 2px 2px #3f1d1d; */
     text-align: center;
     padding: 3px;
-    border:1px solid #fff;
-    width: 48px;
-    height: 48px;
 
 }
 .header_btn i {

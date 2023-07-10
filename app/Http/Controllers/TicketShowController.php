@@ -95,4 +95,14 @@ class TicketShowController extends Controller
         ]);
     }
 
+    // get host ticket show details 
+
+    public function getTicketShowToken(Request $request, User $user)
+    {  
+        $ticket_show = TicketShow::where('host_id', $user->uuid)->orderBy('created_at', 'desc')->first();
+        return response()->json([
+            'ticket_show' =>  $ticket_show
+        ]);
+    }	
+
 }
