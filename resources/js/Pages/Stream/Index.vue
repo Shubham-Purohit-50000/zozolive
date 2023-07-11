@@ -9,6 +9,7 @@
         :appCertificate="appCertificate"
         :currentUser="currentUser"
         :isCustomer="isCustomer"
+        :ticket-show-details="ticketShowDetails"
     />
     <section>
         <div class="row">
@@ -46,7 +47,8 @@
                                     type="text"
                                     quoted_printable_decode
                                     v-model="goal"
-                                    :disabled="!this.disableGoalFied && goal"
+                                    :disabled="!disableGoalFied && goal!==null"
+                                    @focus="disableGoalFied=true"
                                 />
                             </div>
                             <div class="col-md-4">
@@ -55,7 +57,8 @@
                                     placeholder="1104"
                                     type="text"
                                     v-model="goalToken"
-                                    :disabled="!this.disableGoalFied && goalToken"
+                                    :disabled="!disableGoalFied && goalToken!==null"
+                                    @focus="disableGoalFied=true"
                                     style="width: 100%"
                                 />
                             </div>
@@ -135,14 +138,15 @@
                                     type="text"
                                     v-model="ticketShowToken"
                                     style="width: 100%"
-                                    :disabled="ticketShowToken && !disableTokenShow"
+                                    :disabled="ticketShowToken!==null && !disableTokenShow"
+                                    @focus="disableTokenShow=true"
                                 />
                             </div>
                         </div>
                         <div class="d-flex">
                             <!-- <div class="col-md-6"> -->
                             <button
-                                @click="startTicketShow"
+                                @click="setTicketShowPrice()"
                                 class="saveButton"
                                 style="background-color: #859e4f"
                             >
@@ -187,6 +191,7 @@
                                     type="text"
                                     v-model="todayTopic"
                                     :disabled="!disableTopicField && todayTopic"
+                                    @focus="disableTopicField=true"
                                 />
                             </div>
                         </div>
@@ -598,6 +603,7 @@ export default {
             disableTokenShow:false,
             disableTopicField:false,
             disablePrivateCallField:false,
+            ticketShowDetails:null,
         };
     },
     computed: {
@@ -620,8 +626,9 @@ export default {
     methods: {
         getHostTicketShowToken() {
         try {
-        axios.get("/checker/host/details/ticket-show-token/"+this.authUser.uuid).then((resp)=> {
+        axios.get("/checker/host/details/ticket-show-token/"+this.authUser.model.uuid).then((resp)=> {
             this.ticketShowToken = resp.data.ticket_show.token;
+            this.ticketShowDetails = resp.data.ticket_show;
             });
             } catch (error) {
                 console.log(error);
@@ -658,9 +665,29 @@ export default {
         startTicketShow() {
         try {
         axios.post("/checker/host/start/ticket-show", {
-            host_id:this.authUser.uuid,
+            host_id:this.authUser.model.uuid,
             token:this.ticketShowToken,
             start_time:this.ticketShowTime,
+        }).then((resp)=> {
+            this.show_start = resp.data.ticket_show;
+            this.disableTokenShow = false;
+            Swal.fire(
+                'Token Saved',
+                '',
+                'success'
+            )
+            });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        setTicketShowPrice() {
+        try {
+        axios.post("/checker/host/start/ticket-show", {
+            host_id:this.authUser.model.uuid,
+            token:this.ticketShowToken,
+            start_time:this.ticketShowTime,
+            status:0,
         }).then((resp)=> {
             this.show_start = resp.data.ticket_show;
             this.disableTokenShow = false;
