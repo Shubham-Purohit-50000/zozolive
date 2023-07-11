@@ -764,7 +764,7 @@ export default {
            
         },
         saveGoal() {
-            this.isLoading = true;
+            // this.isLoading = true;
             if (this.goal && this.goalToken) {
                 axios
                     .post("/goals", {

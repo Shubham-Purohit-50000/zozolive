@@ -1318,5 +1318,12 @@ input[type="range"]::-ms-fill-upper {
   background-color: #000;
   border-radius: 0;
 }
+.action_box {
+    width: 100%;
+}
+.stream_toggle_btn {
+    top: 0px;
+    bottom: revert;
+}
 }
 </style>
