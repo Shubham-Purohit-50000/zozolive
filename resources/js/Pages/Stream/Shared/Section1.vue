@@ -106,8 +106,8 @@
                                 @click="stopTicketShow"
                                 class="ms-2 start_stream_btn"
                             >
-                            <i class="bi bi-ticket-perforated"></i>  End Show <span style="font-weight:bold">{{  hostDetails.ticket_show ? '/'+ hostDetails.ticket_show.token : '' }} </span>
-                             <img v-if ="hostDetails.ticket_show"
+                            <i class="bi bi-ticket-perforated"></i>  End Show <span style="font-weight:bold">{{  ticketShowDetails ? '/'+ ticketShowDetails.token : '' }} </span>
+                             <img v-if ="ticketShowDetails"
                                 src="/assets/coin2.png" width="18" class="mb-2px" />
                             </button>
                             <button
@@ -115,8 +115,8 @@
                                 @click="startTicketShow"
                                 class="ms-2 start_stream_btn"
                             >
-                            <i class="bi bi-ticket-perforated"></i>  Start Show <span style="font-weight:bold">{{  hostDetails.ticket_show ? '/'+ hostDetails.ticket_show.token: '' }} 
-                                <img v-if ="hostDetails.ticket_show"
+                            <i class="bi bi-ticket-perforated"></i>  Start Show <span style="font-weight:bold">{{  ticketShowDetails ? '/'+ ticketShowDetails.token: '' }} 
+                                <img v-if ="ticketShowDetails"
                                 src="/assets/coin2.png" width="18" class="mb-2px" /></span>
                             </button>
                             </div>
@@ -388,6 +388,9 @@ export default {
         },
         hostDetails: {
             type: Object,
+        }, 
+        ticketShowDetails: {
+            type: Object,
         },
         authuserid: {
             type: String,
@@ -505,27 +508,27 @@ export default {
        $(document).off("keydown", disableF5);
        // Mouse has left the screen
         console.log('Mouse left the screen');
-        if($('video')[0]) {
-            Swal.fire({
-        title: 'Are you stoping video streaming ?',
-        showDenyButton: true,
-        showCancelButton: false,
-        confirmButtonText: 'Yes',
-        denyButtonText: 'No',
-        customClass: {
-            actions: 'my-actions',
-            cancelButton: 'order-1 right-gap',
-            confirmButton: 'order-2',
-            denyButton: 'order-3',
-        }
-        }).then((result) => {
-        if (result.isConfirmed) {
-           window.location.reload();
-        } else if (result.isDenied) {
-            Swal.fire('Thanks', '', 'info')
-        }
-        })
-        }
+        // if($('video')[0]) {
+        //     Swal.fire({
+        // title: 'Are you stoping video streaming ?',
+        // showDenyButton: true,
+        // showCancelButton: false,
+        // confirmButtonText: 'Yes',
+        // denyButtonText: 'No',
+        // customClass: {
+        //     actions: 'my-actions',
+        //     cancelButton: 'order-1 right-gap',
+        //     confirmButton: 'order-2',
+        //     denyButton: 'order-3',
+        // }
+        // }).then((result) => {
+        // if (result.isConfirmed) {
+        //    window.location.reload();
+        // } else if (result.isDenied) {
+        //     Swal.fire('Thanks', '', 'info')
+        // }
+        // })
+        // }
         // Additional actions you want to perform
         });
 
@@ -535,6 +538,7 @@ export default {
 
 
         this.setHostOffline();
+        this.refreshTicketShow();
         this.ref
             .child(this.chatKey)
             .child(this.hostKey)
@@ -584,6 +588,7 @@ export default {
             //After requesting a new token
             this.client.renewToken(token);
         });
+
     },
     methods: {
         showToast(token) {
@@ -626,12 +631,23 @@ export default {
                 console.log(error);
             }
         },
-        startTicketShow() {
-        
+        refreshTicketShow() {
+        try {
+        axios.post("/checker/host/end/refresh-ticket-show", {
+            host_id:this.hostDetails.uuid,
+        }).then((resp)=> {
+            this.show_started = false;
+            });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        startTicketShow(status=1) {
         try {
         axios.post("/checker/host/start/ticket-show", {
-            host_id:this.authUser.uuid,
-            token:this.hostDetails.ticket_show ? this.hostDetails.ticket_show.token : null,
+            host_id:this.hostDetails.uuid,
+            token:this.ticketShowDetails ? this.ticketShowDetails.token : null,
+            status:status,
         }).then((resp)=> {
             this.show_started = true;
             this.ticket_show = resp.data.ticket_show;
@@ -1301,6 +1317,13 @@ input[type="range"]::-ms-fill-upper {
 #chat_boxContent .chat__box .chat__box--wrapper {
   background-color: #000;
   border-radius: 0;
+}
+.action_box {
+    width: 100%;
+}
+.stream_toggle_btn {
+    top: 0px;
+    bottom: revert;
 }
 }
 </style>

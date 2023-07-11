@@ -7,6 +7,7 @@ use App\Models\TicketShow;
 use App\Models\User;
 use App\Models\TokenSpent;
 use App\Models\CallLog;
+use App\Models\Host;
 use Auth;
 use Carbon\Carbon;
 
@@ -17,12 +18,12 @@ class TicketShowController extends Controller
         $time_format = Carbon::parse($request->input('start_time'))->format('Y-m-d H:i:s');
         // $end_time = Carbon::createFromFormat('Y-m-d H:i',  $time_format);
         // dd($time_format,  $end_time);
-
-        $ticket_show = TicketShow::create([
+        $ticket_show = TicketShow::updateOrCreate([
             'host_id' => $request->host_id,
+        ], [
             'token' => $request->token,
             'start_time' => $time_format,
-            'status' => '1'
+            'status' =>  $request->status === 0 ? 0:1
         ]);
 
         return response()->json([
@@ -77,7 +78,8 @@ class TicketShowController extends Controller
 
     public function show_details(Request $request){
         $ticket_show = TicketShow::where('uuid', $request->show_id)->first();
-        $ticket_show->host_name = User::where('uuid', $ticket_show->host_id)->first()->name;
+        $host = Host::where('uuid', $ticket_show->host_id)->first();
+        $ticket_show->host_name = User::where('uuid', $host->user_id)->first()->name;
         $user_ids = json_decode($ticket_show->user_ids);
         if(!empty($user_ids)) {
             $ticket_show->total_user = $user_ids ? count($user_ids) : 0;
@@ -95,4 +97,23 @@ class TicketShowController extends Controller
         ]);
     }
 
+    // get host ticket show details 
+
+    public function getTicketShowToken(Request $request, $uuid)
+    {  
+        $ticket_show = TicketShow::where('host_id', $uuid)->orderBy('created_at', 'desc')->first();
+        return response()->json([
+            'ticket_show' =>  $ticket_show
+        ]);
+    }	
+
+    public function refreshTicketShow(Request $request){
+        $ticket_show = TicketShow::where('host_id', $request->host_id)->first();
+        $ticket_show->status = 0;
+        $ticket_show->save();
+        return response()->json([
+            'status'=>true,
+            'msg'=>'show ended successfully'
+        ]);
+    }
 }

@@ -49,13 +49,22 @@ class SignupService
             'id_photo'           => $request['id_photo']->store('models/id_photos', 'public'),
             'document'           => $request['document']->store('models/documents', 'public'),
         ]);
-        foreach (json_decode($request['pricing']) as $pricing) {
-            \App\Models\HostPricing::create([
-                'host_id'    => $host->uuid,
-                'user_id'    => $host->user_id,
-                'pricing_id' => $pricing->pricing_id,
-                'token'      => $pricing->token
-            ]);
-        }
+       
+        // Default ticket show
+        \App\Models\TicketShow::create([
+            'host_id'    => $host->uuid,
+            'status'    => 0,
+            'token'      => $request['ticket_show'] ? $request['ticket_show'] : 10
+        ]);
+
+        // Private Token Price 
+        \App\Models\HostPricing::create([
+            'host_id'    => $host->uuid,
+            'user_id'    => $host->user_id,
+            'pricing_id' => '0ca96632-8636-43cd-9071-0614fdccb73a',
+            'token'      => $request['private_call'] ? $request['private_call'] : 10
+        ]);
+
+
     }
 }

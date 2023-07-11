@@ -332,21 +332,53 @@
                         <div class="col-3"></div>
                       </div> -->
                       <div class="row mb-2">
-                        <div class="col-3">
-                          <h6>Pricing</h6>
-                        </div>
                         <div
-                            class="col-9 inputLabel"
-                        ></div>
+                            class="col-12 inputLabel"
+                        >
+                        <PlanPricingItem  @updateTokenPrice="updateTokenPrice"/>
+                        <div class="row">
+                          <div class="col-md-3">
+
+                          </div>
+                          <div class="col-md-9">
+                            <div class="text-danger">{{ errors && errors.private_call ? errors.private_call.toString() : '' }}
+                          </div>
+                        </div>
                       </div>
-                      <div class="text-danger">{{ errors && errors.pricing ? errors.pricing.toString() : '' }}</div>
-                      <PlanPricingItem v-for="plan in pricing" :key="plan.uuid" :plan="plan" @updateTokenPrice="updateTokenPrice"/>
+                      </div>
+    
+                      
+                     </div>
+                      <div class="row mb-2">
+                            <div class="col-3 inputLabel">
+                            Ticket Show
+                            </div>
+                            <div class="col-6">
+                              <input
+                              type="text"
+                              v-model="form.ticket_show"
+                              name="ticket_show"
+                              class="inputBox"
+                              id="ticket_show"
+                              style="color: rgb(136, 136, 136);"
+                            />
+                            <div class="text-danger">{{
+                              errors && errors.ticket_show ? errors.ticket_show.toString() : '' }}
+                          </div>
+                            </div>
+                            <div
+                                class="col-2 inputLabel"
+                                style="margin-top: 7px"
+                            >
+                              Tokens/min
+                            </div>
+                        </div>
                       <hr
                           style="
-                                                            color: black;
-                                                            width: 100%;
-                                                            margin-top: 1rem;
-                                                        "
+                            color: black;
+                            width: 100%;
+                            margin-top: 1rem;
+                        "
                       />
                       <div class="d-flex justify-content-end">
                         <button
@@ -716,6 +748,8 @@ export default {
         state_id: "",
         document: "",
         id_photo: "",
+        ticket_show: "",
+        private_call: "",
 
       },
       cover_image: null,
@@ -793,14 +827,19 @@ export default {
       })
     },
     updateTokenPrice(val) {
-      if (this.form.pricing && this.form.pricing.length > 0) {
-        const index = this.form.pricing.findIndex(item => item.pricing_id == val.pricing_id);
-        if (index != -1) {
-          this.form.pricing[index] = val;
-        }
-        this.form.pricing.push(val);
-        if(this.form.interest!==null && this.form.language_id && this.form.subculture_id && this.form.specific_id 
-      && this.form.about && this.profile_image!==null && this.form.pricing.length > 1) {
+      // if (this.form.pricing && this.form.pricing.length > 0) {
+      //   const index = this.form.pricing.findIndex(item => item.pricing_id == val.pricing_id);
+      //   if (index != -1) {
+      //     this.form.pricing[index] = val;
+      //   }
+      //   this.form.pricing.push(val);
+       
+      //   return;
+      // }i
+      this.form.private_call= val.token;
+     
+      if(this.form.interest!==null && this.form.language_id && this.form.subculture_id && this.form.specific_id 
+      && this.form.about && this.profile_image!==null && this.form.ticket_show && this.form.private_token) {
         console.log('inside');
         $('.tab-pane').removeClass('active');
               $('#email-verification-tab').removeClass('active');
@@ -810,10 +849,6 @@ export default {
               $('#verification-tab-identification-content').addClass('active show');
               this.step = 3;
       }
-        return;
-      }
-      this.form.pricing.push(val);
-     
     },
     previousStep() {
       $('.tab-pane').removeClass('active');

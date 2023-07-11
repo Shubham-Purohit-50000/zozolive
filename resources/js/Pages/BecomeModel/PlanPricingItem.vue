@@ -1,27 +1,28 @@
 <template>
   <div class="row mb-2">
     <div class="col-3 inputLabel">
-      {{ plan.plan_name }}
+     Private
     </div>
-    <div class="col-3">
-      <div></div>
+    <div class="col-6">
       <select
           class="inputBox"
           style="color: #888"
           v-model="selectedToken"
       >
-        <option v-for="i in (plan.maximum_token_limit - plan.minimum_token_limit+1)"
-                :value="i+(plan.minimum_token_limit - 1)"
-        >
-          {{ i + (plan.minimum_token_limit - 1) }}
-        </option>
+        <option value="10" style="font-size: small"> 10 tk </option>
+        <option value="10" style="font-size: small"> 15 tk </option>
+        <option value="10" style="font-size: small"> 18 tk </option>
+        <option value="10" style="font-size: small"> 20 tk </option>
+        <option value="10" style="font-size: small"> 25 tk </option>
+        <option value="10" style="font-size: small"> 30 tk </option>
+        <option value="10" style="font-size: small"> 35 tk </option>                         
       </select>
     </div>
     <div
         class="col-2 inputLabel"
         style="margin-top: 7px"
     >
-      tokens/min
+      Tokens/min
     </div>
     <div class="col-4"></div>
   </div>
@@ -30,21 +31,15 @@
 <script>
 export default {
   name: "PlanPricingItem",
-  props: {
-    plan: {
-      type: [Array, Object]
-    }
-  },
+  props: ['plan'],
   data(){
     return {
-      selectedPlan: this.plan.uuid,
-      selectedToken: ""
+      selectedToken: "",
     }
   },
   watch:{
     selectedToken(val){
       this.$emit('updateTokenPrice',{
-        pricing_id: this.selectedPlan,
         token: val
       });
     }

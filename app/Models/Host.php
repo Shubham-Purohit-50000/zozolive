@@ -95,7 +95,7 @@ class Host extends BaseModel
 
     public function ticketShow(): BelongsTo
     {
-        return $this->belongsTo(TicketShow::class, 'user_id', 'host_id');
+        return $this->belongsTo(TicketShow::class, 'uuid', 'host_id');
     }
     
 }

@@ -28,8 +28,10 @@ class ModelSignupStepTwoRequest extends FormRequest
             'language_id'   => 'required',
             'subculture_id' => 'required',
             'about'         => 'required',
-            'pricing'       => 'required',
+            // 'pricing'       => 'required',
             'specific_id'   => 'required',
+            'private_call'   => 'required',
+            'ticket_show'   => 'required',
             'profile_image' => 'required|image',
             // 'cover_image'   => 'required|image'
         ];
@@ -43,8 +45,10 @@ class ModelSignupStepTwoRequest extends FormRequest
             'specific_id.required'   => 'Field is required.',
             'interest.required'   => 'Field is required.',
             'about.required'   => 'Field is required.',
-            'pricing.required'   => 'Field is required.',
+            // 'pricing.required'   => 'Field is required.',
             'profile_image'   => 'Field is required.',
+            'private_call'   => 'Field is required.',
+            'ticket_show'   => 'Field is required.',
         ];
     }
 }

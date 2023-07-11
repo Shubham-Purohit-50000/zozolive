@@ -9,6 +9,7 @@
         :appCertificate="appCertificate"
         :currentUser="currentUser"
         :isCustomer="isCustomer"
+        :ticket-show-details="ticketShowDetails"
     />
     <section>
         <div class="row">
@@ -46,6 +47,8 @@
                                     type="text"
                                     quoted_printable_decode
                                     v-model="goal"
+                                    :disabled="!disableGoalFied && goal!==null"
+                                    @focus="disableGoalFied=true"
                                 />
                             </div>
                             <div class="col-md-4">
@@ -54,6 +57,8 @@
                                     placeholder="1104"
                                     type="text"
                                     v-model="goalToken"
+                                    :disabled="!disableGoalFied && goalToken!==null"
+                                    @focus="disableGoalFied=true"
                                     style="width: 100%"
                                 />
                             </div>
@@ -78,6 +83,7 @@
                             <button
                                 class="saveButton ml-2"
                                 style="background-color: #5b5b5b"
+                                @click="disableGoalFied=true"
                             >
                                 Cancel
                             </button>
@@ -132,24 +138,27 @@
                                     type="text"
                                     v-model="ticketShowToken"
                                     style="width: 100%"
+                                    :disabled="ticketShowToken!==null && !disableTokenShow"
+                                    @focus="disableTokenShow=true"
                                 />
                             </div>
                         </div>
                         <div class="d-flex">
                             <!-- <div class="col-md-6"> -->
                             <button
-                                :disabled="!ticketShowTime || !ticketShowToken"
-                                @click="startTicketShow"
+                                @click="setTicketShowPrice()"
                                 class="saveButton"
                                 style="background-color: #859e4f"
                             >
                                 Save
                             </button>
-                            <!-- </div> -->
-
-                            <!-- <div class="announce col-md-6">
-                                <i class="bi bi-send-fill"></i>Announce in chat
-                            </div> -->
+                            <button
+                                class="saveButton ml-2"
+                                style="background-color: #5b5b5b"
+                                @click="disableTokenShow=true"
+                            >
+                                Cancel
+                            </button>
                         </div>
 
                     </div>
@@ -181,6 +190,8 @@
                                     placeholder="Topic"
                                     type="text"
                                     v-model="todayTopic"
+                                    :disabled="!disableTopicField && todayTopic"
+                                    @focus="disableTopicField=true"
                                 />
                             </div>
                         </div>
@@ -195,6 +206,7 @@
                             <button
                                 class="saveButton ml-2"
                                 style="background-color: #5b5b5b"
+                                @click="disableTopicField=true"
                             >
                                 Cancel
                             </button>
@@ -237,9 +249,11 @@
                             </div> -->
                             <div class="col-md-12">
                                 <select
-                                    name="activity" v-model="private_call_token"
+                                    name="activity"
+                                    v-model="private_call_token"
                                     class="inputBox"
                                     style="font-size: small"
+                                    :disabled="!disablePrivateCallField && private_call_token"
                                     @change="setPrivateCallToken($event)"
                                 >
                                     <option
@@ -296,11 +310,13 @@
                             >
                                 Save
                             </button>
-                            <!-- </div> -->
-
-                            <!-- <div class="announce col-md-6">
-                                <i class="bi bi-send-fill"></i>Announce in chat
-                            </div> -->
+                            <button
+                                class="saveButton ml-2"
+                                style="background-color: #5b5b5b"
+                                @click="disablePrivateCallField=true"
+                            >
+                                Cancel
+                            </button>
                         </div>
 
                     </div>
@@ -320,14 +336,14 @@
                         >
                             <span>
                                 <h6 style="color: #f8f8f8 !important">
-                                    <i class="bi bi-list"></i>Tip menu
+                                    <i class="bi bi-geo-fill"></i>   Tip menu
                                 </h6>
                             </span>
                              <span>
                                 <h6 style="color: #f8f8f8 !important">
                                     <a  href="#" data-bs-toggle="modal"
         data-bs-target="#tipMenuModel"
-        @click="showtipMenu()">  <i class="bi bi-geo-fill"></i> </a>
+        @click="showtipMenu()"> <i class="bi bi-list"></i>  </a>
                                 </h6>
                             </span>
                         </div>
@@ -439,7 +455,12 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                
+                            </div>
                                 </div>
+                               
                             </div>
                         <hr />
                         <div class="row">
@@ -451,7 +472,8 @@
                                         Activity
                                     </p>
                                 <select
-                                    name="activity" v-model="activity_name"
+                                    name="activity"
+                                    v-model="activity_name"
                                     class="inputBox"
                                     style="font-size: small"
                                     @change="setActivity($event)"
@@ -485,36 +507,6 @@
 
                                     <input class="inputBox" v-model="token_amount" type="text" />
                             </div>
-                            <!-- <div class="row mt-1">
-                                <div class="col-md-6">
-                                 
-                                </div>
-                                <div class="col-md-4">
-                                   
-                                </div>
-                                <div class="col-md-1"></div>
-                            </div> -->
-                            <!-- <div class="row">
-                                <div class="col-md-6 ml-1 pr-0">
-                                    <p
-                                        class="card-text"
-                                        style="color: #5b5b5b; font-size: 13px"
-                                    >
-                                        <input class="inputBox"  type="text" />
-                                    </p>
-                                </div>
-                                <div class="col-md-4 pl-2 pr-0">
-                                    <p
-                                        class="card-text"
-                                        style="color: #5b5b5b; font-size: 13px"
-                                    >
-                                       
-                                    </p>
-                                </div>
-                                <div class="col-md-1 close_btn">
-                                    <h3><i class="bi bi-x"></i></h3>
-                                </div>
-                            </div> -->
                         </div>
                         <div class="d-flex">
                             <button
@@ -607,6 +599,11 @@ export default {
             ticketShowTime: new Date(),
             ticketShowToken:null,
             show_start:[],
+            disableGoalFied:false,
+            disableTokenShow:false,
+            disableTopicField:false,
+            disablePrivateCallField:false,
+            ticketShowDetails:null,
         };
     },
     computed: {
@@ -615,18 +612,28 @@ export default {
         },
     },
     mounted() {
-        
         if (this.authUser) {
             this.goal = this.authUser?.model?.goal;
             this.goalToken = this.authUser?.model?.goal_token;
             this.todayTopic = this.authUser?.model?.today_topic;
             this.getHostTipMenu();
             this.getPrivateToken();
+            this.getHostTicketShowToken();
            
         }
 
     },
     methods: {
+        getHostTicketShowToken() {
+        try {
+        axios.get("/checker/host/details/ticket-show-token/"+this.authUser.model.uuid).then((resp)=> {
+            this.ticketShowToken = resp.data.ticket_show.token;
+            this.ticketShowDetails = resp.data.ticket_show;
+            });
+            } catch (error) {
+                console.log(error);
+            }
+        },
         privateCallToken() {
         try {
         axios.post("/checker/host/update/private-call-token", {
@@ -634,6 +641,12 @@ export default {
             token:this.private_call_token,
         }).then((resp)=> {
             this.private_call_token = resp.data.token;
+            this.disablePrivateCallField = false;
+            Swal.fire(
+            'Private Token Saved',
+            '',
+            'success'
+            )
             });
             } catch (error) {
                 console.log(error);
@@ -650,16 +663,39 @@ export default {
         },  
         
         startTicketShow() {
-        
         try {
         axios.post("/checker/host/start/ticket-show", {
-            host_id:this.authUser.uuid,
+            host_id:this.authUser.model.uuid,
             token:this.ticketShowToken,
             start_time:this.ticketShowTime,
         }).then((resp)=> {
             this.show_start = resp.data.ticket_show;
-            EventBus.emit('project-created', true);
-            console.log('ab');
+            this.disableTokenShow = false;
+            Swal.fire(
+                'Token Saved',
+                '',
+                'success'
+            )
+            });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        setTicketShowPrice() {
+        try {
+        axios.post("/checker/host/start/ticket-show", {
+            host_id:this.authUser.model.uuid,
+            token:this.ticketShowToken,
+            start_time:this.ticketShowTime,
+            status:0,
+        }).then((resp)=> {
+            this.show_start = resp.data.ticket_show;
+            this.disableTokenShow = false;
+            Swal.fire(
+                'Token Saved',
+                '',
+                'success'
+            )
             });
             } catch (error) {
                 console.log(error);
@@ -681,9 +717,11 @@ export default {
                 axios.get("/host-tip-menu/?host_id="+this.authUser.uuid).then((resp)=> {
                     // console.log(resp);
                     this.host_tip_menus = resp.data.host_tip_menu;
-                    let values = this.host_tip_menus.find(node=> node.menu_title === 'Love');
-                    this.token_amount = values.token;
-                    this.activity_name = values.menu_title;
+                    if(this.host_tip_menus) {
+                        let values = this.host_tip_menus.find(node=> node.menu_title.toUpperCase() === 'LOVE');
+                        this.token_amount = values.token;
+                        this.activity_name = values.menu_title;
+                    }
                     });
                 
                 } catch (error) {
@@ -692,7 +730,7 @@ export default {
     },
     setActivity(event) {
             if(event.target.value) {
-                let values = this.host_tip_menus.find(node=> node.menu_title === event.target.value);
+                let values = this.host_tip_menus.find(node=> node.menu_title.toUpperCase() === event.target.value.toUpperCase());
                 if(values) {
                     this.token_amount = values.token;
                     this.activity_name = values.menu_title;
@@ -713,6 +751,11 @@ export default {
                     // this.activity_name = 'Love';
                     // this.token_amount = null;
                     this.getHostTipMenu();
+                    Swal.fire(
+                        'Tip Saved',
+                        '',
+                        'success'
+                        )
                 });
                 } catch (error) {
                     console.log(error);
@@ -721,7 +764,7 @@ export default {
            
         },
         saveGoal() {
-            this.isLoading = true;
+            // this.isLoading = true;
             if (this.goal && this.goalToken) {
                 axios
                     .post("/goals", {
@@ -730,7 +773,12 @@ export default {
                     })
                     .then((res) => {
                         this.isLoading = false;
-                        console.log("res", res.data);
+                        this.disableGoalFied = false;
+                        Swal.fire(
+                        'Goal Saved',
+                        '',
+                        'success'
+                        )
                     });
             }
         },
@@ -740,6 +788,13 @@ export default {
                 try {
                     const res = await axios.post("/save-topic", {
                         today_topic: this.todayTopic,
+                    }).then((resp) => {
+                        this.disableTopicField = false;
+                        Swal.fire(
+                        'Topic Saved',
+                        '',
+                        'success'
+                        )
                     });
                 } catch (error) {
                     this.topicError = error.response;
@@ -752,6 +807,9 @@ export default {
 </script>
 
 <style scoped>
+input:disabled, select:disabled{
+    opacity: 0.6;
+}
 .timepicker {
     width: 100%;
     height: 35px;

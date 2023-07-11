@@ -117,7 +117,7 @@
                             
                             <span 
                                 >
-                                 <img src="/assets/coin2.png" width="16" class="mb-2px"/> tk <br/> {{ Auth::user()->token ?? 0 }}</span> 
+                                 <img src="/assets/coin2.png" width="18" class="mb-4px"/>tk <br/> {{ Auth::user()->token ?? 0 }}</span> 
             </a>    
                 </li>
                 <!-- <li class="nav-item d-block mob-disnone notification__icon">
@@ -167,9 +167,9 @@
                 </li>
                 @role('model')
                 <li class="nav-item display-mobile header_btn ms-2">
-                <a href="/live-stream/start">
+                <a href="/live-stream/start" >
                         <i class="bi bi-play-circle  ms-2 mt-1 search-bar-toggle nav-link nav-icon  cursor-pointer"
-                           style="font-size: 1.1rem;"></i>
+                           style="font-size: 1.1rem; background-color: #79943D; border-radius:30px"></i>
                            <span style="font-size:12px"> Live</span>
                     </a>
                 </li>
@@ -191,14 +191,14 @@
                        data-bs-toggle="dropdown" aria-expanded="true">
                         @if (auth()->user()->profile_image)
                         
-                            <img class="search-bar-toggle " width="18" height="18" src="/images/{{  $user->profile_image }}"
-                                 alt="" style="margin-top:2px; border-radius:20px"/>
+                            <img class="search-bar-toggle " width="40" height="40" src="/images/{{  $user->profile_image }}"
+                                 alt="" style="margin-top:2px; border-radius:20px; margin-bottom:2px;"/>
                         @else
                         <i class="bi bi-person ms-2 mt-1 search-bar-toggle nav-link nav-icon  cursor-pointer"></i>
                         @endif
                         <span class="d-none d-md-block dropdown-toggle ps-2"></span>
                     </a>
-                    <span >{{ substr($name, 0, 4) }}</span>
+                    {{-- <span >{{ substr($name, 0, 4) }}</span> --}}
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile pt-0"
                         data-popper-placement="bottom-end">
                         <li class="dropdown-header">

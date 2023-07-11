@@ -29,7 +29,7 @@ class ModelSignupRequest extends FormRequest
             'language_id'        => 'required',
             'subculture_id'      => 'required',
             'about'              => 'required',
-            'pricing'            => 'required',
+            // 'pricing'            => 'required',
             'specific_id'        => 'required',
             'profile_image'      => 'required|image',
             // 'cover_image'        => 'required|image',
@@ -42,7 +42,9 @@ class ModelSignupRequest extends FormRequest
             'country_id'         => 'required',
             'state_id'           => 'required',
             'document'           => 'required|image',
-            'id_photo'           => 'required|image'
+            'id_photo'           => 'required|image',
+            'ticket_show'           => 'required',
+            'private_call'           => 'required',
         ];
     }
 
@@ -54,7 +56,7 @@ class ModelSignupRequest extends FormRequest
             'language_id.required'        => 'Field is required.',
             'subculture_id.required'      => 'Field is required.',
             'about.required'              => 'Field is required.',
-            'pricing.required'            => 'Field is required.',
+            // 'pricing.required'            => 'Field is required.',
             'specific_id.required'        => 'Field is required.',
             'profile_image.required'      => 'Field is required.',
             'name.required'               => 'Field is required.',
@@ -62,7 +64,9 @@ class ModelSignupRequest extends FormRequest
             'country_id.required'         => 'Field is required.',
             'state_id.required'           => 'Field is required.',
             'document'           => 'Field is required.',
-            'id_photo'           => 'Field is required.'
+            'id_photo'           => 'Field is required.',
+            'ticket_show'           => 'Field is required.',
+            'private_call'           => 'Field is required.',
         ];
     }
 }

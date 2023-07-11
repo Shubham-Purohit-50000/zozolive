@@ -74,9 +74,11 @@ Route::prefix('checker')->group(function () {
 
     //----------------- code for ticket show------------------
     Route::post('host/start/ticket-show', [TicketShowController::class, 'start']);
+    Route::get('host/details/ticket-show-token/{user}', [TicketShowController::class, 'getTicketShowToken']);
     Route::post('user/join/ticket-show', [TicketShowController::class, 'join_show']);
     Route::post('show-details', [TicketShowController::class, 'show_details']);
     Route::post('host/end/ticket-show', [TicketShowController::class, 'end_show']);
+    Route::post('host/end/refresh-ticket-show', [TicketShowController::class, 'refreshTicketShow']);
 
     //----------code to get and update private call token------------------
     Route::get('host/private-call-token/{user}', [CallHistoryController::class, 'getPrivateCallToken']);
