@@ -10,12 +10,12 @@
           v-model="selectedToken"
       >
         <option value="10" style="font-size: small"> 10 tk </option>
-        <option value="10" style="font-size: small"> 15 tk </option>
-        <option value="10" style="font-size: small"> 18 tk </option>
-        <option value="10" style="font-size: small"> 20 tk </option>
-        <option value="10" style="font-size: small"> 25 tk </option>
-        <option value="10" style="font-size: small"> 30 tk </option>
-        <option value="10" style="font-size: small"> 35 tk </option>                         
+        <option value="15" style="font-size: small"> 15 tk </option>
+        <option value="18" style="font-size: small"> 18 tk </option>
+        <option value="20" style="font-size: small"> 20 tk </option>
+        <option value="25" style="font-size: small"> 25 tk </option>
+        <option value="30" style="font-size: small"> 30 tk </option>
+        <option value="35" style="font-size: small"> 35 tk </option>                         
       </select>
     </div>
     <div

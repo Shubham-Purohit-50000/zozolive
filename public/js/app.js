@@ -10973,7 +10973,7 @@ var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 var _hoisted_3 = {
   "class": "col-6"
 };
-var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<option value=\"10\" style=\"font-size:small;\"> 10 tk </option><option value=\"10\" style=\"font-size:small;\"> 15 tk </option><option value=\"10\" style=\"font-size:small;\"> 18 tk </option><option value=\"10\" style=\"font-size:small;\"> 20 tk </option><option value=\"10\" style=\"font-size:small;\"> 25 tk </option><option value=\"10\" style=\"font-size:small;\"> 30 tk </option><option value=\"10\" style=\"font-size:small;\"> 35 tk </option>", 7);
+var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<option value=\"10\" style=\"font-size:small;\"> 10 tk </option><option value=\"15\" style=\"font-size:small;\"> 15 tk </option><option value=\"18\" style=\"font-size:small;\"> 18 tk </option><option value=\"20\" style=\"font-size:small;\"> 20 tk </option><option value=\"25\" style=\"font-size:small;\"> 25 tk </option><option value=\"30\" style=\"font-size:small;\"> 30 tk </option><option value=\"35\" style=\"font-size:small;\"> 35 tk </option>", 7);
 var _hoisted_11 = [_hoisted_4];
 var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "col-2 inputLabel",
