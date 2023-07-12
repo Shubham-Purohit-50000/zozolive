@@ -494,6 +494,8 @@ export default {
     },
     async mounted() {
         window.addEventListener("beforeunload", this.setHostOffline);
+        // test it on mobile browsers
+        window.addEventListener("touchend", this.setHostOffline);
         $(document).mouseleave(function() {
             // To disable f5
             /* jQuery < 1.7 */

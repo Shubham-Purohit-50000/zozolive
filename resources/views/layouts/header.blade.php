@@ -115,9 +115,8 @@
                  <li class="nav-item d-block me-0 header_btn nav-item text-center desktop-d-none mob-disblock chat__icon">
                  <a href="{{ url('buy-token') }}" title="Buy Token">
                             
-                            <span 
-                                >
-                                 <img src="/assets/coin2.png" width="18" class="mb-4px"/>tk <br/> {{ Auth::user()->token ?? 0 }}</span> 
+                            <span class="me-2">
+                                {{ Auth::user()->token ?? 0 }} <img src="/assets/coin2.png" width="18" class="mb-4px"/>  <br/>Token </span> 
             </a>    
                 </li>
                 <!-- <li class="nav-item d-block mob-disnone notification__icon">

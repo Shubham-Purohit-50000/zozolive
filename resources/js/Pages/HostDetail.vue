@@ -484,7 +484,9 @@
                                         <li
                                             class="nav-item flex-fill"
                                             role="presentation"
-                                        > <button
+                                            v-if="authUser && authUser.model === null"
+                                        > 
+                                        <button
                                                  id="contact-tab"
                                                 class="nav-link w-100 chat_card--btn"
                                                 type="button"
