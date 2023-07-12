@@ -63,21 +63,34 @@ class CallHistoryController extends Controller
         // ->where('type', 'private_chat')
         // ->groupBy('host_id');
 
-        $token_spents = TokenSpent::select('host_id', DB::raw('SUM(token) as total_token'), DB::raw('MAX(created_at) as latest_created_at'))
-        ->where('user_id', $user->uuid)
-        ->where('type', 'private_chat')
-        ->groupBy('host_id')
-        ->orderByDesc('latest_created_at');
-
         $formet_date = null;
 
         if($req->has('date')) {
             $formet_date = Carbon::parse($req->date)->format('Y-m-d');
-            $token_spents->whereDate('created_at', $formet_date);
-        } else {
+        }else{
             $formet_date = Carbon::today()->format('Y-m-d');
-            $token_spents->whereDate('created_at', $formet_date);
         }
+
+        // $token_spents = TokenSpent::select('host_id', DB::raw('SUM(token) as total_token'), DB::raw('MAX(created_at) as latest_created_at'))
+        // ->where('user_id', $user->uuid)
+        // ->where('type', 'private_chat')
+        // ->groupBy('host_id')
+        // ->orderByDesc('latest_created_at');
+
+        $token_spents = TokenSpent::select('host_id', DB::raw('SUM(token) as total_token'), DB::raw('MAX(created_at) as latest_created_at'))
+        ->where('user_id', $user->uuid)
+        ->where('type', 'private_chat')
+        ->whereDate('created_at', $formet_date)
+        ->groupBy('host_id')
+        ->orderByDesc('latest_created_at');
+
+        // if($req->has('date')) {
+        //     $formet_date = Carbon::parse($req->date)->format('Y-m-d');
+        //     $token_spents->whereDate('created_at', $formet_date);
+        // } else {
+        //     $formet_date = Carbon::today()->format('Y-m-d');
+        //     $token_spents->whereDate('created_at', $formet_date);
+        // }
         $token_spents = $token_spents->latest()->get();
 
         Log::info($token_spents);
