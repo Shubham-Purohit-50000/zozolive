@@ -37,7 +37,8 @@ class TicketShowController extends Controller
         //------------ coin transaction
         $user = User::where('uuid', $request->user_id)->first();
         
-        $host = User::where('uuid', $ticket_show->host_id)->first();
+        $host = User::where('uuid', $request->host_id)->first();
+    
         $user->token = $user->token - $ticket_show->token;
         $host->token = $host->token + $ticket_show->token;
         $user->update();
