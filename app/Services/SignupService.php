@@ -10,6 +10,8 @@ class SignupService
 {
     public function createModelUser($request)
     {
+        $imageName1 = time().'.'.$request['profile_image']->extension();
+        $request['profile_image']->move(public_path('images'), $imageName1);
         //        $user->attachRole($this->getUserRoleId('model'));
         return User::updateOrCreate(
             [
@@ -17,7 +19,7 @@ class SignupService
             ],
             [
                 'name'   => $request['name'],
-                'avatar' => $request['profile_image']->store('users/avatar', 'public'),
+                'profile_image' => $imageName1,
                 'gender' => $request['gender'],
                 // 'dob'    => $request['birth_date'],
             ]
