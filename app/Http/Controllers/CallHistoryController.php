@@ -14,6 +14,7 @@ use App\Models\User;
 use App\Models\HostPricing;
 use Illuminate\Support\Facades\DB as FacadesDB;
 use stdClass;
+use Log;
 
 class CallHistoryController extends Controller
 {
@@ -72,6 +73,8 @@ class CallHistoryController extends Controller
             $token_spents->whereDate('created_at', $formet_date);
         }
         $token_spents = $token_spents->latest()->get();
+
+        Log::info($token_spents);
 
         $host_array = [];
         foreach ($token_spents as $data) {
