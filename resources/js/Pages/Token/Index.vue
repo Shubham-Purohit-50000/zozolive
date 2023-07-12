@@ -1,6 +1,6 @@
 <template>
-<section>
-    <div class="row">
+<section class="p-2 p-lg-5 min_height_450px">
+    <div class="row" v-if="role!=='host'">
         <div class="col-md-12">
         <div style="font-size: 1.5rem;" class="mb-3">Transaction History</div>
         <div class="table-responsive">
@@ -40,7 +40,7 @@
         </div>
     </div>
     
-    <div style="font-size: 1.5rem;" class="mb-3 mt-5">Token History</div>
+    <div style="font-size: 1.5rem;" class="mb-3 mt-3">Token History</div>
         <div class="row">
             <ul
                 class="nav nav-tabs chat_card--tabs d-flex"
@@ -85,7 +85,7 @@
                        Private Chat
                     </button>
                 </li>
-                <li
+                <!-- <li
                     class="nav-item"
                     role="presentation"
                 >
@@ -102,10 +102,11 @@
                     <i class="bi bi-telephone-inbound-fill"></i>
                        Private Call
                     </button>
-                </li>
+                </li> -->
                 <li
                     class="nav-item"
                     role="presentation"
+                    v-if="role ==='host'"
                 >
                     <button
                         class="nav-link w-100 chat_card--btn"
@@ -146,7 +147,7 @@
                         :upperLimit="to"
                         :lowerLimit="from"
                         :clearable="true"
-                        :style="'background-color:#000; border:1px solid #fff; border-radius:15px; height:40px; color:#fff; padding-left:10px'"
+                        :style="'background-color:#000; border:1px solid #fff; border-radius:15px; height:40px; color:#fff; padding-left:10px; width:190px'"
                     />
                         <!-- <input placeholder="Last 30 days" name="daterange" class="inputBox1" type="text"
                                value="{{ $date }}" id="date"/> -->
@@ -165,7 +166,7 @@
                                 <th v-else>User</th>
                            
                         <th>Date</th>
-                        <!-- <th>Status</th> -->
+                        <th>Type</th>
                         <th>Token</th>
                         </thead>
                         <tbody>
@@ -173,7 +174,7 @@
                                <td>{{  index+1 }}</td>
                                <td>{{  value.user_name ? value.user_name : value.host_name }}</td>
                                <td>{{  value.date }}</td>
-                               <!-- <td>{{  value.type === 'spend_tip' ? 'Send Tip' : 'Private Chat' }}</td> -->
+                               <td>{{  value.type === 'spend_tip' ? 'Send Tip' : value.type}}</td>
                                <td>{{  value.token ? value.token : value.total_token }}</td>
                             
                             </tr>
@@ -208,7 +209,7 @@
                         :upperLimit="to"
                         :lowerLimit="from"
                         :clearable="true"
-                        :style="'background-color:#000; border:1px solid #fff; border-radius:15px; height:40px; color:#fff; padding-left:10px'"
+                        :style="'background-color:#000; border:1px solid #fff; border-radius:15px; height:40px; color:#fff; padding-left:10px; width:190px'"
                     />
                         <!-- <input placeholder="Select Datte" name="daterange" class="inputBox1" type="date" v-model ="searchBy" id="date"/> -->
                         <div>
@@ -227,7 +228,7 @@
                            
                         <th>Date</th>
                         <!-- <th>Status</th> -->
-                        <th>Token</th>
+                        <th>Total Token</th>
                         </thead>
                         <tbody>
                             <tr v-for="(value, index2) in private_chat" :key="index2">
@@ -268,7 +269,7 @@
                         :upperLimit="to"
                         :lowerLimit="from"
                         :clearable="true"
-                        :style="'background-color:#000; border:1px solid #fff; border-radius:15px; height:40px; color:#fff; padding-left:10px'"
+                        :style="'background-color:#000; border:1px solid #fff; border-radius:15px; height:40px; color:#fff; padding-left:10px; width:190px'"
                     />
                         <!-- <input placeholder="Select Datte" name="daterange" class="inputBox1" type="date" v-model ="searchBy" id="date"/> -->
                         <div>
@@ -687,6 +688,9 @@ export default {
 </script>
 
 <style scoped>
+        .min_height_450px {
+            min-height: 450px;
+        }
         .inputBox1 {
             border-radius: 20px;
             background-color: black;
