@@ -147,6 +147,9 @@
             border-radius: 50%;
             padding: 0.1rem 0.8rem;
             font-size: 1.1rem !important;
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
         }
 
         .ml-0 {
@@ -403,10 +406,10 @@
         body aside {
             display: none;
         }
-
+/* 
         body.toggle-sidebar aside {
             display: block !important;
-        }
+        } */
 
         .second-nav .second-nav-ul {
             display: flex;

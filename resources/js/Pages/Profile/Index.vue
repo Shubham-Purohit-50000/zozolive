@@ -32,7 +32,6 @@
                 <div style="margin: 1rem  1rem 1rem 9rem">
                     <div
                         role="button"
-                        v-if="user.profile_image"
                         @click="editAvatar = true"
                     >
                         <i class="bi bi-pencil"></i>
@@ -527,7 +526,9 @@ export default {
                     URL, 
                     data,
                 ).then(
+                  
                     response => {
+                        this.editAvatar=false;
                         console.log('image upload response > ', response)
                     }
                 )

@@ -6,11 +6,41 @@
         height: 40px;
         
   }
- 
+   .username__label {
+            border: 1px solid;
+            border-radius: 50%;
+            padding: 0.5rem 0.8rem;
+            font-size: 1.1rem !important;
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            line-height: 20px !important;
+        }
+        .username__label-2 {
+            border: 1px solid;
+            border-radius: 50%;
+            padding: 0.2rem 0.8rem !important;
+            font-size: 1.1rem !important;
+            
+            
+        }
   .hexagon span {
     font-weight: bold;
     font-size: 12px;
   }
+
+  @media (max-width: 600px) {
+    .username__label-2 {
+            border: 1px solid;
+            border-radius: 50%;
+            padding: 0.3rem 0.8rem !important;
+            font-size: 1.1rem !important;
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+            line-height: 20px !important;
+        }
+}
   
 </style>
 <header id="header" class="header fixed-top d-flex align-items-center">
@@ -189,11 +219,10 @@
                      <a class="nav-link  show text-center" href="#"
                        data-bs-toggle="dropdown" aria-expanded="true">
                         @if (auth()->user()->profile_image)
-                        
                             <img class="search-bar-toggle " width="40" height="40" src="/images/{{  $user->profile_image }}"
                                  alt="" style="margin-top:2px; border-radius:20px; margin-bottom:2px;"/>
                         @else
-                        <i class="bi bi-person ms-2 mt-1 search-bar-toggle nav-link nav-icon  cursor-pointer"></i>
+                        <span class="username__label-2">{{ substr($name, 0, 1) }}</span>
                         @endif
                         <span class="d-none d-md-block dropdown-toggle ps-2"></span>
                     </a>
@@ -201,7 +230,7 @@
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile pt-0"
                         data-popper-placement="bottom-end">
                         <li class="dropdown-header">
-                            <div class="username_detail">
+                            <div class="username_detail d-flex">
                                 @php
                                     $name = auth()->user()->username ?? auth()->user()->name;
                                     $email = auth()->user()->email ?? auth()->user()->email;
@@ -210,25 +239,69 @@
                                 @if ($user->profile_image)
                                     <img class="search-bar-toggle loginLink dotImage nav-icon ml-0"
                                          src="/images/{{$user->profile_image }}" alt=""/>
-                                    {{ $name }} 
+                                    {{-- {{ $name }}  --}}
+                                    
                                 @else
-                                    {{-- <span class="username__label">{{ substr($name, 0, 1) }}</span> --}}
-                                    <span class="username_first">{{ substr($name, 0, 1) }}</span>
+                                   
+                                    <span class="username__label username_first">{{ substr($name, 0, 1) }}</span>
+                                    @endif
                                     <div class="d-flex flex-column">
-                                        <p class="mb-0">
+                                        <p class="mb-0 text-start">
                                             {{ $name }}
                                         </p>
-                                        <p class="mb-0">
+                                        {{-- <p class="mb-0">
                                             <?php
                                                 $level_data = get_user_level($user->token);
                                             ?>
                                             Level {{$level_data['level']}}
-                                        </p>
+                                        </p> --}}
                                     </div>
 
-                                @endif
+                               
                             </div>
                         </li>
+                        <li class="user_level">
+                            <p class="mb-0">
+                                           <?php
+                                               $level_data = get_user_level($user->token);
+                                           ?>
+                                           <div class="d-flex">
+                                           <div class="me-5 d-flex ">
+                                               <div class="hexagon  me-1">
+                                               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                                                   <path fill="white"  d="M43.681 2.863a12.69 12.69 0 0112.638 0l15.865 9.108 15.803 8.988a12.693 12.693 0 016.418 11.058L94.367 50l.038 17.983a12.692 12.692 0 01-6.418 11.058l-15.803 8.988-15.865 9.108a12.69 12.69 0 01-12.638 0l-15.865-9.108-15.803-8.988a12.69 12.69 0 01-6.418-11.058L5.633 50l-.038-17.983a12.691 12.691 0 016.418-11.058l15.803-8.988 15.865-9.108z"></path>
+                                               <path  fill="{{ $level_data['color']}}" d="M43.9419 4.777a12.1761 12.1761 90 0112.1262 0l15.2225 8.7391l15.163 8.624a12.1789 12.1789 90 016.1581 10.6102L92.5751 50.005l0.0365 17.2547a12.178 12.178 90 01-6.1581 10.6102l-15.163 8.624l-15.2225 8.7391a12.1761 12.1761 90 01-12.1262 0l-15.2225-8.7391l-15.163-8.624a12.1761 12.1761 90 01-6.1581-10.6102L7.4349 50.005l-0.0365-17.2547a12.177 12.177 90 016.1581-10.6102l15.163-8.624l15.2225-8.7391z" class="level-badge-stroke"></path>
+                                               <text text-anchor="middle" fill="white" font-weight="bold" font-size="51" x="50%" y="50%" dy="20" style="color:#fff">
+                                               {{$level_data['level']}}
+                                               </text>
+                                           </svg>
+           
+                                           </div>
+                                           <strong class="ms-1 mt-2">Level</strong>
+                                           </div>
+                                           <div>
+                                               <a href="/user/level-system" style="color:{{ $level_data['color'] }}" class="mt-2 d-flex">
+                                               {{$level_data['name']}} <i class="bi bi-arrow-right-short mt-1 ms-1"></i>
+                                               </a>
+                                           </div>
+                                           </div>
+                           </p>
+                         
+                           <div class="progress">
+                           <?php 
+                               $percent = ($user['token']- $level_data['previous_level'])  / $level_data['token']  * 100;
+                            ?>
+                       <div class="progress-bar bg-progress" role="progressbar" style="width: {{ $percent }}%">
+                       <!-- aria-valuenow="25" aria-valuemin="0" aria-valuemax="100 -->
+                      
+                       <span class="ms-2 p-absolute"> {{ $user['token']}} / {{ $level_data['token'] }}</span> 
+                      <span class="p-absolute-2"> Level {{ $level_data['level'] }}</span> 
+                       </div>
+                       </div>
+                       
+   
+                           <p class="mb-0 mt-0">Get {{ $level_data['token']-$user['token'] }} token for level {{ $level_data['level']}}  </p>
+                        </li> 
                         <li class="copyText">
                              <input type="text" class="copy_text_input" id="copyText2" value="{{ $email }}">
                              <button class="btn btn-sm btn-link" onclick="copyToClipboard('copyText2')"><i class="bi bi-clipboard-fill mt-4 ms-1"></i>  </button>
@@ -302,7 +375,7 @@
                             <img class="search-bar-toggle loginLink dotImage nav-icon" src="/images/{{  $user->profile_image }}"
                                  alt=""/>
                         @else
-                        <span class="username__label">{{ substr($name, 0, 1) }}</span>
+                        <span class="username__label-2">{{ substr($name, 0, 1) }}</span>
                         @endif
                         <span class="d-none d-md-block dropdown-toggle ps-2"></span>
                     </a>
@@ -353,7 +426,7 @@
                                             <div>
                                                 <a href="/user/level-system" style="color:{{ $level_data['color'] }}" class="mt-2 d-flex">
                                                 {{$level_data['name']}} <i class="bi bi-arrow-right-short mt-1 ms-1"></i>
-            </a>
+                                                </a>
                                             </div>
                                             </div>
                             </p>

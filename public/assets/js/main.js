@@ -37,7 +37,15 @@
    */
   if (select('.toggle-sidebar-btn')) {
     on('click', '.toggle-sidebar-btn', function(e) {
-      select('body').classList.toggle('toggle-sidebar')
+      select('body').classList.toggle('toggle-sidebar');
+      
+      var sidebar = document.getElementById('sidebar');
+      if(sidebar.classList.contains('d-block')) {
+        sidebar.classList.remove('d-block');
+      } else {
+        sidebar.classList.add('d-block');
+      }
+     
     })
   }
 
