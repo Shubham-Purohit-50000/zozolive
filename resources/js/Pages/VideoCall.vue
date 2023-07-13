@@ -520,7 +520,7 @@ export default {
                     this.callPlaced = false;
                     if (!this.isCustomer) {
                         setTimeout(() => {
-                            window.location.href = "/chat";
+                            window.location.href = "/live-stream/start";
                         }, 500);
                     } else {
                         window.location.href = "/stream/"+this.HostName;
