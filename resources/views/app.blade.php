@@ -169,6 +169,112 @@
         .ml-0 {
             margin-left: 0 !important;
         }
+        .formbody p,
+    .formbody label {
+        color: #000;
+    }
+    .desktop-d-none {
+        display: none !important;
+    }
+    ul.dropdown-menu.dropdown-menu-end.dropdown-menu-arrow.profile.show {
+        background: #202020;
+    }
+
+    .dropdown-header .username_detail {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #9f9f9f !important;
+        text-transform: capitalize;
+    }
+
+    .dropdown-header .username_detail .username_first {
+        text-transform: uppercase;
+        font-size: 30px !important;
+        height: 56px !important;
+        width: 56px;
+        border-radius: 38px;
+        border: 3px solid #9f9f9f;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #202020;
+        color: #9f9f9f;
+        font-weight: 400;
+    }
+
+    .header-nav .profile .dropdown-item:hover {
+        background-color: #4f5054;
+    }
+
+    .dropdown-menu .dropdown-divider {
+        color: #969696;
+        margin: 0px;
+        z-index: 999;
+        border: 1px solid;
+    }
+
+    .loginLink.dotImage.nav-icon {
+        border-radius: 50%;
+        margin: auto;
+    }
+
+    .bi-list.toggle-sidebar-btn.color_white {
+        width: 60px;
+    }
+
+    @media only screen and (max-width: 768px) {
+        .header {
+            padding-left: 0px;
+        }
+        .bi-list.toggle-sidebar-btn.color_white {
+        width: 40px !important;
+        font-size: 20px;
+    }
+        .mob-disnone {
+            display: none !important;
+        }  .mob-disnone {
+            display: none !important;
+        }
+
+        .mob-disblock {
+            display: block !important;
+        }
+
+        .mob-disblock i {
+            font-size: 20px;
+            margin-right: 10px;
+        }
+
+        .bi-list.toggle-sidebar-btn.color_white {
+            width: 60px;
+        }
+
+        .sidebar {
+            left: 0 !important;
+            width: 50% !important;
+            height: 100vh !important;
+        }
+
+        body aside {
+            display: none;
+        }
+
+        /* body.toggle-sidebar aside {
+            display: block !important;
+        } */
+
+        .second-nav .second-nav-ul {
+            display: flex;
+            align-items: center;
+            overflow-x: scroll;
+
+        }
+
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+    }
     </style>
     @if (request()->is('/'))
         <style>
@@ -330,114 +436,7 @@
 {{-- <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js"></script> --}}
 {{-- <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script> --}}
 {{-- <script type="text/javascript" src="{{ asset('js/firebase.js') }}"></script> --}}
-<style type="text/css">
-    .formbody p,
-    .formbody label {
-        color: #000;
-    }
-    .desktop-d-none {
-        display: none !important;
-    }
-    ul.dropdown-menu.dropdown-menu-end.dropdown-menu-arrow.profile.show {
-        background: #202020;
-    }
 
-    .dropdown-header .username_detail {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        color: #9f9f9f !important;
-        text-transform: capitalize;
-    }
-
-    .dropdown-header .username_detail .username_first {
-        text-transform: uppercase;
-        font-size: 30px !important;
-        height: 56px !important;
-        width: 56px;
-        border-radius: 38px;
-        border: 3px solid #9f9f9f;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: #202020;
-        color: #9f9f9f;
-        font-weight: 400;
-    }
-
-    .header-nav .profile .dropdown-item:hover {
-        background-color: #4f5054;
-    }
-
-    .dropdown-menu .dropdown-divider {
-        color: #969696;
-        margin: 0px;
-        z-index: 999;
-        border: 1px solid;
-    }
-
-    .loginLink.dotImage.nav-icon {
-        border-radius: 50%;
-        margin: auto;
-    }
-
-    .bi-list.toggle-sidebar-btn.color_white {
-        width: 60px;
-    }
-
-    @media only screen and (max-width: 768px) {
-        .header {
-            padding-left: 0px;
-        }
-        .bi-list.toggle-sidebar-btn.color_white {
-        width: 40px !important;
-        font-size: 20px;
-    }
-        .mob-disnone {
-            display: none !important;
-        }  .mob-disnone {
-            display: none !important;
-        }
-
-        .mob-disblock {
-            display: block !important;
-        }
-
-        .mob-disblock i {
-            font-size: 20px;
-            margin-right: 10px;
-        }
-
-        .bi-list.toggle-sidebar-btn.color_white {
-            width: 60px;
-        }
-
-        .sidebar {
-            left: 0 !important;
-            width: 50% !important;
-            height: 100vh !important;
-        }
-
-        body aside {
-            display: none;
-        }
-
-        body.toggle-sidebar aside {
-            display: block !important;
-        }
-
-        .second-nav .second-nav-ul {
-            display: flex;
-            align-items: center;
-            overflow-x: scroll;
-
-        }
-
-        ::-webkit-scrollbar {
-            width: 5px;
-        }
-    }
-</style>
 {{-- @if (!request()->routeIs('watch-stream')) --}}
 <script src="{{ asset('assets/js/main.js') }}"></script>
 {{-- <script src="{{ asset('js/main.js') }}"></script> --}}

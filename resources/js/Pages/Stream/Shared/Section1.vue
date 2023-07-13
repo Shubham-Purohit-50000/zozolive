@@ -89,7 +89,7 @@
                                 <button
                                     @click="join"
                                     v-if="!isStreamStarted"
-                                    class="ms-2  start_stream_btn"
+                                    class="ms-2  btn btn-success"
                                 >
                                 <i class="bi bi-camera-reels-fill"></i> Start
                                 </button> 
@@ -97,14 +97,14 @@
                                 <button
                                     @click="stopStream"
                                     v-else
-                                    class="start_stream_btn"
+                                    class="btn btn-danger"
                                 >
                                     Stop
                                 </button>
                                 <button
                                 v-if="isStreamStarted && show_started"
                                 @click="stopTicketShow"
-                                class="ms-2 start_stream_btn"
+                                class="ms-2 btn btn-danger"
                             >
                             <i class="bi bi-ticket-perforated"></i>  End Show <span style="font-weight:bold">{{  ticketShowDetails ? '/'+ ticketShowDetails.token : '' }} </span>
                              <img v-if ="ticketShowDetails"
@@ -113,7 +113,7 @@
                             <button
                                 v-if="isStreamStarted && !show_started"
                                 @click="startTicketShow"
-                                class="ms-2 start_stream_btn"
+                                class="ms-2 btn btn-success"
                             >
                             <i class="bi bi-ticket-perforated"></i>  Start Show <span style="font-weight:bold">{{  ticketShowDetails ? '/'+ ticketShowDetails.token: '' }} 
                                 <img v-if ="ticketShowDetails"
@@ -1093,6 +1093,7 @@ export default {
 
         async stopStream() {
             this.setHostOffline();
+            this.stopTicketShow();
             for (let trackName in this.localTracks) {
                 var track = this.localTracks[trackName];
                 if (track) {

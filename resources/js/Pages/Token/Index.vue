@@ -328,10 +328,13 @@
                         <div class="col-md-3">
                             <div class="card text-center">
                             <div class="card-header">
-                            <h5> Today Income</h5>
+                            <h5> Today Token</h5>
+                           <p class="text-white">
+                            {{ dateTime(new Date()) }} 
+                           </p>
                             </div>
                             <div class="card-body">
-                                <h5 class="card-title " style="font-size:40px;">Rs. <span style="font-size:60px; color:#d87fff" >{{  host_income_report_data.today_income }}</span>/-</h5>
+                                <h5 class="card-title" style="font-size:20px;">{{  host_income_report_data.today_income }}<img src="/assets/coin2.png" class="mb-4px"/></h5>
                             
                             </div>
                             </div>
@@ -340,10 +343,13 @@
                         <div class="col-md-3">
                             <div class="card text-center">
                             <div class="card-header">
-                            <h5> Weekly Income</h5>
+                            <h5> Weekly Token</h5>
+                            <p class="text-white">
+                            {{ weekRange }} 
+                           </p>
                             </div>
                             <div class="card-body">
-                                <h5 class="card-title " style="font-size:40px;">Rs. <span style="font-size:60px; color:rgb(127 204 255)" >{{   host_income_report_data.current_week_income }}</span>/-</h5>
+                                <h5 class="card-title " style="font-size:20px;">{{   host_income_report_data.current_week_income }}  <img src="/assets/coin2.png" class="mb-4px"/></h5>
                             
                             </div>
                             </div>
@@ -352,10 +358,13 @@
                         <div class="col-md-3">
                             <div class="card text-center">
                             <div class="card-header">
-                            <h5> Last Week Income</h5>
+                            <h5> Last Week Token</h5>
+                            <p class="text-white">
+                            {{ lastWeekRange }} 
+                           </p>
                             </div>
                             <div class="card-body">
-                                <h5 class="card-title " style="font-size:40px;">Rs. <span style="font-size:60px; color:rgb(255 127 127)" >{{  host_income_report_data.last_week_income }}</span>/-</h5>
+                                <h5 class="card-title " style="font-size:20px;">{{   host_income_report_data.last_week_income }}  <img src="/assets/coin2.png" class="mb-4px"/></h5>
                             
                             </div>
                             </div>
@@ -364,10 +373,13 @@
                         <div class="col-md-3">
                             <div class="card text-center">
                             <div class="card-header">
-                            <h5> Monthly Income</h5>
+                            <h5> Monthly Token</h5>
+                            <p class="text-white">
+                            {{ currentMonth }} 
+                           </p>
                             </div>
                             <div class="card-body">
-                                <h5 class="card-title " style="font-size:40px;">Rs. <span style="font-size:60px; color:rgb(17 163 56)" >{{  host_income_report_data.current_month_income  }}</span>/-</h5>
+                                <h5 class="card-title " style="font-size:20px;">{{   host_income_report_data.current_month_income }}  <img src="/assets/coin2.png" class="mb-4px"/></h5>
                             
                             </div>
                             </div>
@@ -422,7 +434,21 @@ export default {
         
 
     },
+    computed: {
+        weekRange() {    
+        return moment().startOf('isoWeek').format('D MMMM') + ' - ' + moment().endOf('isoWeek').format('D MMMM');
+        },  
+        lastWeekRange() {    
+        return moment().subtract(1, 'weeks').startOf('isoWeek').format('D MMMM') + ' - ' + moment().subtract(1, 'weeks').endOf('isoWeek').format('D MMMM');
+        },  
+        currentMonth() {    
+        return moment().format('MMMM');;
+        }, 
+    },
     methods: {
+        dateTime(value) {
+        return moment(value).format('D MMMM');
+        },
        findFilterData() {
         if(this.role === 'host') {
                 this.getHostPrivateChat();
@@ -649,7 +675,7 @@ export default {
 				if (node) {
 					var new_node = {};
 					new_node.host_name = node.host_name;
-					new_node.date = moment( node.created_at).format('dddd MMMM D Y');;
+					new_node.date = moment( node.created_at).format('dddd MMMM D Y');
 					new_node.call_duration = node.call_duration;
 					new_node.token = node.token;
 					table_rows.push(new_node);

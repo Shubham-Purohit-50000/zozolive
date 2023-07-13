@@ -39,6 +39,7 @@
     on('click', '.toggle-sidebar-btn', function (e) {
       console.log('event', e);
       select('body').classList.toggle('toggle-sidebar')
+     
     })
   }
 
