@@ -266,5 +266,15 @@ class UserController extends Controller
                 'host' =>  $host
             ]);
         }
+
+        // Make host offline when page refresh
+        public function makeHostOffline(Request $request, User $user){
+            $host = Host::where('user_id', $user->uuid)->first();
+            $host->is_online =  0;
+            $host->save();
+            return response()->json([
+                'host' =>  $host
+            ]);
+        }
     }
     

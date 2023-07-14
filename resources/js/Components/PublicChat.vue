@@ -60,8 +60,8 @@
         <a href="#" @click="showLoginModel"> create a free account.</a> 
       <!--      <span>With tokens, you get to</span>-->
       <br/>
-      <a v-if="authUser" href="/buy-token" class="btn public__chat--alert_btn">Buy Tokens</a>
-      <a v-else @click="showLoginModel" class="btn public__chat--alert_btn">Buy Tokens</a>
+      <a v-if="authUser" href="/buy-token" class="btn mt-2 btn-success">Buy Tokens</a>
+      <a v-else @click="showLoginModel" class="btn mt-2 btn-success">Buy Tokens</a>
       </div>
      
       <div class="tip_menu" v-if="authUser && authUserLevelData.token > 0 && !sended_tip">
