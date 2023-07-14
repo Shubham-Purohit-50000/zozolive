@@ -28,6 +28,7 @@ use Illuminate\Support\Str;
 use App\Models\TokenSpent;
 use App\Models\Recharge;
 use Log;
+use Illuminate\Support\Facades\Cache;
 
 class FrontendController extends Controller
 {
@@ -307,6 +308,11 @@ class FrontendController extends Controller
 
     public function logoutUser(Request $request)
     {
+        Log::info('user logout 310');
+        $user = auth()->user();
+        $user->update([
+            'is_onlnie' => 0,
+        ]);
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
