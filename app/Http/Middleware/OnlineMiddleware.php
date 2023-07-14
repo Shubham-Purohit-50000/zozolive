@@ -36,12 +36,12 @@ class OnlineMiddleware
             $user->save();
 
             //code to reset live host issue
-            if(filled($user->model) and $user->model->is_online == 1){
-                Log::info('code at 40');
-                $user->model->is_online = 0;
-                $user->model->update();
-                Log::info(date('d m, Y H:i:s a'));
-            }
+            // if(filled($user->model) and $user->model->is_online == 1){
+            //     Log::info('code at 40');
+            //     $user->model->is_online = 0;
+            //     $user->model->update();
+            //     Log::info(date('d m, Y H:i:s a'));
+            // }
 
         } elseif(!auth()->check() and filled(Cache::get('user-is-online'))) {
             $user = User::find(Cache::get('user-is-online'));
@@ -50,12 +50,12 @@ class OnlineMiddleware
                 $user->save();
 
                 //code to reset live host issue
-                if(filled($user->model) and $user->model->is_online == 1){
-                    Log::info('code at 54');
-                    $user->model->is_online = 0;
-                    $user->model->update();
-                    Log::info(date('d m, Y H:i:s a'));
-                }
+                // if(filled($user->model) and $user->model->is_online == 1){
+                //     Log::info('code at 54');
+                //     $user->model->is_online = 0;
+                //     $user->model->update();
+                //     Log::info(date('d m, Y H:i:s a'));
+                // }
             }
         }
 
