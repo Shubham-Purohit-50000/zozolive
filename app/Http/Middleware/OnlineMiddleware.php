@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use App\Models\User;
 use Illuminate\Support\Facades\Session;
+use Log;
 
 class OnlineMiddleware
 {
@@ -21,6 +22,7 @@ class OnlineMiddleware
     {
         $users_to_offline = User::where('last_activity', '<', now());
         $users_to_online = User::where('last_activity', '>=', now());
+        $user = null;
         if (isset($users_to_offline)) {
             $users_to_offline->update(['is_online' => false]);
         }if (isset($users_to_online)) {
@@ -32,13 +34,29 @@ class OnlineMiddleware
             $user->last_activity = now()->addMinutes(3);
             $user->is_online = true;
             $user->save();
+
+            //code to reset live host issue
+            if(filled($user->model) and $user->model->is_online == 1){
+                $user->model->is_online = 0;
+                $user->model->update();
+                Log::info(date('d m, Y H:i:s a'));
+            }
+
         } elseif(!auth()->check() and filled(Cache::get('user-is-online'))) {
             $user = User::find(Cache::get('user-is-online'));
             if (isset($user)) {
                 $user->is_online = false;
                 $user->save();
+
+                //code to reset live host issue
+                if(filled($user->model) and $user->model->is_online == 1){
+                    $user->model->is_online = 0;
+                    $user->model->update();
+                    Log::info(date('d m, Y H:i:s a'));
+                }
             }
         }
+
         return $next($request);
     }
 }

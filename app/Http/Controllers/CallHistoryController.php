@@ -58,11 +58,6 @@ class CallHistoryController extends Controller
     public function privateChatHistory(Request $req, User $user)
     {
 
-        // $token_spents = TokenSpent::select('host_id', DB::raw('SUM(token) as total_token'))
-        // ->where('user_id', $user->uuid)
-        // ->where('type', 'private_chat')
-        // ->groupBy('host_id');
-
         $formet_date = null;
 
         if($req->has('date')) {
@@ -71,38 +66,13 @@ class CallHistoryController extends Controller
             $formet_date = Carbon::today()->format('Y-m-d');
         }
 
-        // $token_spents = TokenSpent::select('host_id', DB::raw('SUM(token) as total_token'), DB::raw('MAX(created_at) as latest_created_at'))
-        // ->where('user_id', $user->uuid)
-        // ->where('type', 'private_chat')
-        // ->groupBy('host_id')
-        // ->orderByDesc('latest_created_at');
-
-        // $token_spents = TokenSpent::select('host_id', DB::raw('SUM(token) as total_token'), DB::raw('MAX(created_at) as latest_created_at'))
-        // ->where('user_id', $user->uuid)
-        // ->where('type', 'private_chat')
-        // ->whereDate('created_at', $formet_date)
-        // ->groupBy('host_id')
-        // ->orderByDesc('latest_created_at');
-
-        $token_spents = TokenSpent::select('host_id')
-            ->selectRaw('SUM(token) as total_token')
-            ->selectRaw('MAX(created_at) as latest_created_at')
-            ->where('user_id', $user->uuid)
-            ->where('type', 'private_chat')
-            ->whereDate('created_at', $formet_date)
-            ->groupBy('host_id')
-            ->orderByDesc('latest_created_at')
-            ->orderByDesc('created_at')
-            ->get();
-
-        // if($req->has('date')) {
-        //     $formet_date = Carbon::parse($req->date)->format('Y-m-d');
-        //     $token_spents->whereDate('created_at', $formet_date);
-        // } else {
-        //     $formet_date = Carbon::today()->format('Y-m-d');
-        //     $token_spents->whereDate('created_at', $formet_date);
-        // }
-        //$token_spents = $token_spents->latest()->get();
+        $token_spents = TokenSpent::select('host_id', DB::raw('SUM(token) as total_token'), DB::raw('MAX(created_at) as latest_created_at'))
+        ->where('user_id', $user->uuid)
+        ->where('type', 'private_chat')
+        ->whereDate('created_at', $formet_date)
+        ->groupBy('host_id')
+        ->orderByDesc('latest_created_at')
+        ->get();
 
         Log::info($token_spents);
 

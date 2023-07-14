@@ -722,4 +722,36 @@ class FrontendController extends Controller
             'user'  =>  Auth::user(),
         ]);
     }
+
+    public function shubTest(){
+        $apiKey = "08eda6ec48a049d4b4c19ed30ffebc31";
+        $apiSecret = "d74b80022a8c4c73b40655de4fb3ec34";
+
+        // Prepare the cURL request
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "https://api.agora.io/dev/v2/project/{$apiKey}/dynamic_key/rtc?expiredTs=" . (time() + 3600));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            "Content-Type: application/json",
+            "Authorization: Basic " . base64_encode("{$apiKey}:{$apiSecret}")
+        ));
+
+        // Send the request and get the response
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        dd($response);
+        // Process the response
+        if ($response) {
+            $streamers = json_decode($response, true);
+            if (isset($streamers['resourceId'])) {
+                $activeStreamers = $streamers['resourceId'];
+                print_r($activeStreamers);
+            } else {
+                echo "Error: Failed to retrieve active streamers.";
+            }
+        } else {
+            echo "Error: cURL request failed.";
+        }
+    }
 }
