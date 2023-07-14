@@ -112,7 +112,7 @@
                 <li class="nav-item signup__btn">
                     <a class="nav-link nav-icon search-bar-toggle loginLink bg_button" href="javascript::void();"
                        data-bs-toggle="modal" data-bs-target="#basicModal">
-                        Create Account
+                        Create Free Account
                     </a>
                 </li>
                 <li class="nav-item login__btn">
@@ -507,13 +507,18 @@
                 </li>
             @endguest
             @guest
-            
-            <li class="nav-item display-mobile me-3">
-                            <a class="dropdown-item d-flex align-items-center  search-bar-toggle  outline_button"
-                               data-bs-toggle="modal" data-bs-target="#basicModal">
-                                Sign Up
-                            </a>
-                        </li>
+            {{-- <li class="nav-item display-mobile me-3 signup__btn">
+                <a class="nav-link nav-icon search-bar-toggle loginLink bg_button" href="javascript::void();"
+                data-bs-toggle="modal" data-bs-target="#basicModal">
+                 Create Free Account
+             </a>
+            </li>
+            <li class="nav-item  display-mobile login__btn">
+                <a class="nav-link nav-icon search-bar-toggle loginLink outline_button" href="javascript::void();"
+                   data-bs-toggle="modal" data-bs-target="#loginModal">
+                    Log In
+                </a>
+            </li> --}}
                         <li class="nav-item d-none  mob-disblock" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="bi bi-three-dots-vertical"></i>
             </li>
@@ -535,7 +540,7 @@
             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile pt-0 text-white"
                 style="background-color: #373737; right: 1rem">
                 @guest
-                    <li>
+                    {{-- <li>
                         <a href="javascript::void();" class="dropdown-item d-flex align-items-center cursor-pointer"
                            data-bs-toggle="modal" data-bs-target="#basicModal">
                            <i class="bi bi-person"></i> Create Account
@@ -547,11 +552,17 @@
                            href="javascript::void();" data-bs-toggle="modal" data-bs-target="#loginModal">
                            <i class="bi bi-box-arrow-in-right"></i>  Log In
                         </a>
-                    </li>
+                    </li> --}}
                     <li class="nav-item display-mobile">
                         <a class="dropdown-item d-flex align-items-center"
                            href="/become-a-model">
                            <i class="bi bi-camera-video-fill ms-1"></i>  Become a model
+                        </a>
+                    </li>
+                    <li class="nav-item display-mobile">
+                        <a class="dropdown-item d-flex align-items-center"
+                        href="javascript::void();" data-bs-toggle="modal" data-bs-target="#modelLogin">
+                           <i class="bi bi-person ms-1"></i> Model Login
                         </a>
                     </li>
                 @else

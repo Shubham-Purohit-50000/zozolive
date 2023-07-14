@@ -1,5 +1,5 @@
 <template>
-    <div class="col-lg-2 col-6">
+    <div class="col-md-2 col-6">
         <a :href="`/stream/${host.user.username}`" class="card list">
             
             <span class="total_live--icon onlineDedector badge bg-success"
@@ -28,7 +28,7 @@
             /> -->
             <div class="caption">
                 <span>{{ host.user.name }}  <img :src="host.cflag" /></span>
-                <span class="me-2" v-if="host.user.is_online"><i class="bi bi-telephone-inbound-fill"></i></span>
+                <!-- <span class="me-2" v-if="host.user.is_online"><i class="bi bi-telephone-inbound-fill"></i></span> -->
 
             </div>
         </a>
@@ -59,9 +59,10 @@ export default {
 </style>
 
 <style scoped>
-@media screen and (max-width: 440px){
+@media screen and (max-width: 640px){
     .card-img-top{
-        height: 12rem !important;
+        width: 100 !important ;
+        height: 100px;
     }
 }
 </style>

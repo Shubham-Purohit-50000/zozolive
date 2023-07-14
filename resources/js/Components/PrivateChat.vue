@@ -116,7 +116,7 @@
       </div>
       <!-- send message-->
       <div class="d-flex align-items-center send__message--wrapper" 
-      v-if="authUser && parseInt(authUser.token) > 0">
+      v-if="authUser">
         <!--begin::Compose-->
         <EmojiPicker
             :native="true"
@@ -127,8 +127,10 @@
         />
         <input
             class="form-control border-0 p-0 resize-none"
-            placeholder="Type a message"
+            :placeholder="placeholder_text"
             v-model="message"
+            @focus="placeholder_text=''"
+            @blur="placeholder_text='1 token per chat'"
             @keyup.enter="send"
         />
         <div class="">
@@ -142,11 +144,7 @@
         </div>
         <!--begin::Compose-->
       </div>
-      <div v-else>
-        <a href="/buy-token"  class="bg-golden get__token ms-3">
-                GET TOKENS
-            </a>  
-      </div>
+      
       <!-- End send message -->
     </div>
   </div>
@@ -180,6 +178,7 @@ export default {
       hasReceiverAvatar: true,
       hasAuthAvatar: true,
       private_call_token: null,
+      placeholder_text: '1 token per chat',
     }
   },
   created() {
@@ -248,6 +247,9 @@ export default {
         }
     },
     send() {
+      if(this.authUser.token === 0 || this.authUser.token === '0') {
+        window.location.href='/buy-token'
+      }
       const date = new Date();
       // console.log("condition", this.authUser && this.authUser.token > 0);
       this.hasNotPermission = !this.authUser;

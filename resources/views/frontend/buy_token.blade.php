@@ -204,7 +204,7 @@
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <h3 class="mb-5 text-black">Get Tokens</h3>
+                    <h3 class="mb-5 text-black">Buy Token</h3>
                 </div>
                 @if ($errors && count($errors))
                     <div class="alert alert-elevate" id="errors" role="alert" style="color: #a2262e">

@@ -46,12 +46,25 @@ header#header {
   padding: 0.35rem 1rem;
   border-radius: 18px;
 }
+.bg_button:hover {
+  background: #c1c1c1;
+  padding: 0.35rem 1rem;
+  border-radius: 18px;
+}
 
 .outline_button {
   border: 1px solid #fff;
   padding: 0.35rem 1rem;
   border-radius: 18px;
   color: #fff !important;
+}
+
+.outline_button:hover {
+  border: 1px solid #fff;
+  padding: 0.35rem 1rem;
+  border-radius: 18px;
+  background: #fff;
+  color: #333 !important;
 }
 
 .card.list .caption{

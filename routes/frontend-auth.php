@@ -64,6 +64,7 @@ Route::middleware('auth')->group(function () {
     Route::post('update-ticket-show-price', [HostController::class, 'updateTicketShowPrice']);
     Route::get('buy-token', [FrontendController::class, 'buyToken']);
     Route::post('/user/status/{uuid}', [UserController::class, 'updateUserStatus']);
+    Route::post('/host-offline/{uuid}', [UserController::class, 'makeHostOffline']);
     Route::post('/upload/{uuid}/live-image', [UserController::class, 'storeLiveImage']);
 
     //---------------------------- send tip code---------------------------
