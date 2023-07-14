@@ -139,8 +139,8 @@
 }
 
 @media screen and (max-width: 768px){
-    .header-nav .login__btn, .header-nav .signup__btn{
+    /* .header-nav .login__btn, .header-nav .signup__btn{
         display: none;
-    }
+    } */
 
 }

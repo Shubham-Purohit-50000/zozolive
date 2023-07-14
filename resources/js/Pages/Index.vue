@@ -3,11 +3,11 @@
         <div class="special-deals" v-if="!authUser || (authUser && authRole == 'user')">
             <div class="text-white">Special Deal - 50% OFF</div>
             <div class="text-golden">JOIN NOW - ENJOY 50% DISCOUNT</div>
-            <a href="/buy-token"  class="bg-golden get__token" v-if="authUser">
-                <img src="/assets/coin2.png" width="18" class="mb-2px"/>  GET TOKENS
+            <a href="/buy-token"  class="btn btn-success" v-if="authUser">
+                <img src="/assets/coin2.png" width="18" class="mb-2px"/>  BUY TOKEN
             </a>  
-            <a href="javascript::void();" data-bs-toggle="modal" data-bs-target="#basicModal"  class="bg-golden get__token" v-else>
-                <img src="assets/coin2.png" width="18" class="mb-2px"/> GET TOKENS
+            <a href="javascript::void();" data-bs-toggle="modal" data-bs-target="#basicModal"  class="btn btn-success" v-else>
+                <img src="assets/coin2.png" width="18" class="mb-2px"/> BUY TOKEN
             </a>
         </div>
         <section class="section">
@@ -15,7 +15,7 @@
                 <div class="col-md-12 mb-3">
                     <h4>Live Users</h4>
                     <hr class="mb-5"/>
-                    <div class="mb-5 align-items-top" v-if="getLiveUserData.length > 0">
+                    <div class="mb-5 row align-items-top" v-if="getLiveUserData.length > 0">
                         <HostItem v-for="host in getLiveUserData" :key="host.uuid" :host="host" />
                     </div>
                     <div class="mb-5" v-else>
@@ -26,7 +26,7 @@
                 <div class="col-md-12 mb-3">
                     <h4>Online Users</h4>
                     <hr class="mb-5"/>
-                    <div class="mb-5 align-items-top" v-if="getOnlineUserData.length > 0">
+                    <div class="mb-5 row align-items-top" v-if="getOnlineUserData.length > 0">
                         <HostItem v-for="host in getOnlineUserData" :key="host.uuid" :host="host" />
                     </div>
                     <div class="mb-5" v-else>

@@ -540,6 +540,7 @@ export default {
 
 
         this.setHostOffline();
+        this.makeHostOffline();
         this.refreshTicketShow();
         this.ref
             .child(this.chatKey)
@@ -1050,6 +1051,13 @@ export default {
 				user_id: this.authUser.uuid,
 			});
 		},
+        makeHostOffline() {
+            try {
+                axios.post('/host-offline/' + authUser.uuid);
+                } catch (error) {
+                    console.log(error);
+                }
+        },
         async subscribe(user, mediaType) {
             const uid = user.uid;
             // subscribe to a remote user

@@ -35,17 +35,22 @@
                                 <div class="video-group relative h-100" >
                                     <div id="remote-playerlist" :style="'background:url(/images/' +hostDetail.user.profile_image+') center'">
                                       
+                                        <div class="loader">
+                                    
+                                   </div>
                                         <h4
                                             class="text-center stream__offline--text"
                                         >
-                                           <span :class="[!hostDetail.user.is_online ? 'text-danger' : '']"> {{ hostDetail?.user?.name }} {{! hostDetail.user.is_online ? 'is offline' : '' }} </span>
+                                       <span v-if="showLoader"> <img  src="/assets/loading-loading-forever.gif" width="50"/> </span>
+                                        <span v-if="!hostDetail.is_online || hostDetail.is_online === 0" class='text-danger'> {{ hostDetail?.user?.name }} {{hostDetail.is_online  === 0 || !hostDetail.is_online ?  'is offline' : '' }} </span>
                                         </h4>
                                     </div>
+                                   
                                     <div
                                         class="full-screen"
                                         v-show="isStreamStarted"
                                     >
-
+                                  
                                     <div class="ticket_show" v-if="latest_ticket_show.status ===1  && !show_joined_by_user">
                                             <i class="bi bi-ticket-perforated"></i><br/>
                                             <h4
@@ -71,7 +76,7 @@
                                         v-else-if="authUser && parseInt(authUser.token) <= 0"
                                         type="button"
                                         href="/buy-token"
-                                        class="btn btn-warning btn-sm"
+                                        class="btn btn-success btn-sm"
                                         >
                                         <i class="bi bi-check-circle-fill"></i> <br/>
                                        Buy Token
@@ -174,7 +179,7 @@
                                         <button
                                             v-else
                                             type="button"
-                                            class="bg-dark ms-2"
+                                            class="btn btn-success ms-2"
                                             @click="buyToken()"
                                         >
                                             Buy Token
@@ -563,30 +568,21 @@
                                     <div class="text-center">
                                       
                                         <button
-                                            v-if="authUser && parseInt(authUser.token) > 0"
+                                            v-if="authUser"
                                             type="button"
                                             class="btn btn-success "
                                             @click="placeCall()"
                                         >
                                         <i class="bi bi-camera-video-fill " ></i>  Private Call {{ '/'+private_call_token}}  <img src="/assets/coin2.png" width="18" class="mb-4px"/>
                                         </button>
-                                        <button
+                                        <!-- <button
                                             v-else-if="authUser && parseInt(authUser.token) < 1"
                                             type="button"
                                             class="btn btn-primary "
                                             @click="buyToken()"
                                         >
                                         <i class="bi bi-coin"></i>  Buy Token
-                                        </button>
-
-                                        <button
-                                            v-else
-                                            type="button"
-                                            class="btn btn-danger "
-                                            @click="showLoginModel()"
-                                        >
-                                        <i class="bi bi-person-check"></i>  Login to make private call 
-                                        </button>
+                                        </button> -->
                                     </div>
                                     
                                     </div>
@@ -926,6 +922,7 @@ import SignupModal from "@/Components/SignupModal.vue";
 import LoginModal from "@/Components/LoginModal.vue";
 import OutgoingCallModal from "./Chat/Shared/OutgoingCallModal.vue";
 import EventBus from '../event-bus';
+import Swal from 'sweetalert2';
 export default {
     name: "HostDetail",
     components: {
@@ -977,7 +974,8 @@ export default {
             total_watching: 0,
             host_tip_menus: [],
             host_gallery_array: [],
-            private_call_token: null
+            private_call_token: null,
+            showLoader:this.hostDetail.is_online
         };
     },
    
@@ -1029,6 +1027,7 @@ export default {
 
         this.client.on("user-published", (user, mediaType) => {
             console.log(user, 'published');
+            this.showLoader = false;
             let remoteUser = this.client.remoteUsers;
             // console.error("published", this.client.remoteUsers[0].uid);
             this.subscribe(remoteUser[0], mediaType);
@@ -1041,7 +1040,7 @@ export default {
             this.isStreamStarted = false;
             if (!evt.videoTrack) {
                 const player = $(`<h4
-                                        class="text-center stream__offline--text"
+                                        class="text-center stream__offline--text text-danger"
                                     >
                                         ${this.hostDetail?.user?.name} is offline
                                     </h4>`);
@@ -1297,6 +1296,10 @@ export default {
                     }
         },
         async placeCall() {
+            if(!this.hostDetail.is_online) {
+                Swal.fire('Host is offline', '', 'info')
+                return;
+            }
             if (this.authUser) {
                 if (this.authUser?.token > 10) {
                     try {
@@ -1315,7 +1318,24 @@ export default {
                         console.log(error);
                     }
                 } else {
-                    window.location.href = "/buy-token";
+                    Swal.fire({
+                    title: 'Buy Token to make call',
+                    showDenyButton: true,
+                    showCancelButton: false,
+                    confirmButtonText: 'Yes',
+                    denyButtonText: 'No',
+                    customClass: {
+                        actions: 'my-actions',
+                        cancelButton: 'order-1 right-gap',
+                        confirmButton: 'order-2',
+                        denyButton: 'order-3',
+                    }
+                     }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = "/buy-token";
+                        }
+                        
+                    });  
                 }
             } else {
                 $("#basicModal").modal("show");
@@ -1467,6 +1487,12 @@ export default {
 </script>
 
 <style>
+.loader {
+    width: 100%;
+    position: absolute;
+    top:30%;
+    z-index: 9999;
+}
 .text-danger {
     color: #a2262e !important;
 }
