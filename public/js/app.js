@@ -4958,24 +4958,24 @@ __webpack_require__.r(__webpack_exports__);
   },
   props: ["hosts"],
   mounted: function mounted() {
-    this.$store.commit("setAllHosts", this.hosts);
+    // this.$store.commit("setAllHosts", this.hosts);
   },
   computed: {
     getHostData: function getHostData() {
-      return this.$store.state.hosts;
+      return this.hosts;
     },
     getLiveUserData: function getLiveUserData() {
-      return this.$store.state.hosts.filter(function (node) {
+      return this.hosts.filter(function (node) {
         return node.is_online === 1;
       });
     },
     getOnlineUserData: function getOnlineUserData() {
-      return this.$store.state.hosts.filter(function (node) {
+      return this.hosts.filter(function (node) {
         return node.user.is_online === 1 && node.is_online !== 1;
       });
     },
     getOfflineUserData: function getOfflineUserData() {
-      return this.$store.state.hosts.filter(function (node) {
+      return this.hosts.filter(function (node) {
         return node.user.is_online !== 1 && node.is_online !== 1;
       });
     },
