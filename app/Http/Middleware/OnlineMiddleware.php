@@ -25,6 +25,14 @@ class OnlineMiddleware
         $user = null;
         if (isset($users_to_offline)) {
             $users_to_offline->update(['is_online' => false]);
+            //code to reset live host issue
+            if(auth()->check() and filled(auth()->user()->model) and auth()->user()->model->is_online == 1){
+                Log::info('code at 30');
+                $user = auth()->user();
+                $user->model->is_online = 0;
+                $user->model->update();
+                Log::info(date('d m, Y H:i:s a'));
+            }
         }if (isset($users_to_online)) {
             $users_to_online->update(['is_online' => true]);
         }
@@ -35,14 +43,6 @@ class OnlineMiddleware
             $user->is_online = true;
             $user->save();
 
-            //code to reset live host issue
-            // if(filled($user->model) and $user->model->is_online == 1){
-            //     Log::info('code at 40');
-            //     $user->model->is_online = 0;
-            //     $user->model->update();
-            //     Log::info(date('d m, Y H:i:s a'));
-            // }
-
         } elseif(!auth()->check() and filled(Cache::get('user-is-online'))) {
             $user = User::find(Cache::get('user-is-online'));
             if (isset($user)) {
@@ -50,12 +50,12 @@ class OnlineMiddleware
                 $user->save();
 
                 //code to reset live host issue
-                // if(filled($user->model) and $user->model->is_online == 1){
-                //     Log::info('code at 54');
-                //     $user->model->is_online = 0;
-                //     $user->model->update();
-                //     Log::info(date('d m, Y H:i:s a'));
-                // }
+                if(filled($user->model) and $user->model->is_online == 1){
+                    Log::info('code at 54');
+                    $user->model->is_online = 0;
+                    $user->model->update();
+                    Log::info(date('d m, Y H:i:s a'));
+                }
             }
         }
 
