@@ -66,20 +66,20 @@ export default {
     components: { HostItem, UserLayout },
     props: ["hosts"],
     mounted() {
-        this.$store.commit("setAllHosts", this.hosts);
+        // this.$store.commit("setAllHosts", this.hosts);
     },
     computed: {
         getHostData() { 
-            return this.$store.state.hosts;
+            return this.hosts;
         },
         getLiveUserData() {
-            return this.$store.state.hosts.filter(node=>node.is_online===1)
+            return this.hosts.filter(node=>node.is_online===1)
         },
         getOnlineUserData() {
-            return this.$store.state.hosts.filter(node=>node.user.is_online===1 && node.is_online!==1)
+            return this.hosts.filter(node=>node.user.is_online===1 && node.is_online!==1)
         },
         getOfflineUserData() {
-            return this.$store.state.hosts.filter(node=>node.user.is_online!==1 && node.is_online!==1)
+            return this.hosts.filter(node=>node.user.is_online!==1 && node.is_online!==1)
         },
         authUser() {
             console.warn('auth',this.$page.props);
