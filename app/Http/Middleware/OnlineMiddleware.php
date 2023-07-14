@@ -35,6 +35,13 @@ class OnlineMiddleware
             }
         }if (isset($users_to_online)) {
             $users_to_online->update(['is_online' => true]);
+            if(auth()->check() and filled(auth()->user()->model) and auth()->user()->model->is_online == 0){
+                Log::info('code at 30');
+                $user = auth()->user();
+                $user->model->is_online = 1;
+                $user->model->update();
+                Log::info(date('d m, Y H:i:s a'));
+            }
         }
         if (auth()->check()) {
             $cache_value = Cache::put('user-is-online', auth()->id(), \Carbon\Carbon::now()->addMinutes(3));
