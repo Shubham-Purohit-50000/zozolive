@@ -19,6 +19,7 @@ const store = createStore({
     getters: getters,
     actions: actions,
 });
+
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 
 createInertiaApp({

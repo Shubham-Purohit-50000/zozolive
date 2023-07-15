@@ -165,3 +165,5 @@ Route::get('user/level-system', [FrontendController::class, 'userLevelSystem']);
 Route::get('user/delete/account', function(){
     return '<h1 style="margin:2rem auto;">send your uudi at zozolivelogin@gmail.com</h1>';
 });
+
+Route::get('shub-test', [FrontendController::class, 'shubTest']);
