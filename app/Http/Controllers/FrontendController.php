@@ -618,36 +618,42 @@ class FrontendController extends Controller
                 $item['name'] = 'Bronze';
                 $item['token'] = $add_amount;
                 $item['icon'] = '\f005';
+                $item['range'] = '0-5';
             } elseif($i<=10) {
                 $add_amount += 500;
                 $item['color'] = '#6085aa';
                 $item['name'] = 'Silver';
                 $item['token'] = $add_amount;
                 $item['icon'] = '\f005';
+                $item['range'] = '6-10';
             } elseif($i<=20) {
                 $add_amount += 1000;
                 $item['color'] = '#dea20c';
                 $item['name'] = 'Gold';
                 $item['token'] = $add_amount;
                 $item['icon'] = '\f005';
+                $item['range'] = '11-20';
             } elseif($i<=35) {
                 $add_amount += 5000;
                 $item['color'] = '#ce2fe4';
                 $item['name'] = 'Diamond';
                 $item['token'] = $add_amount;
                 $item['icon'] = '\f005';
+                $item['range'] = '21-35';
             } elseif($i<=49) {
                 $add_amount += 10000;
                 $item['color'] = '#e33534';
                 $item['name'] = 'Royal';
                 $item['token'] = $add_amount;
                 $item['icon'] = '\f005';
+                $item['range'] = '36-50';
             } else {
                 $add_amount += 272000;
                 $item['color'] = '#278000';
                 $item['name'] = 'Legend';
                 $item['token'] = $add_amount;
                 $item['icon'] = '\f005';
+                $item['range'] = 'Above 51';
             }
             array_push($level, $item);
         }

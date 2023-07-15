@@ -5608,7 +5608,8 @@ __webpack_require__.r(__webpack_exports__);
   props: ['user'],
   data: function data() {
     return {
-      level_chart: []
+      level_chart: [],
+      click: true
     };
   },
   mounted: function mounted() {
@@ -5616,6 +5617,17 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {},
   methods: {
+    showActiveTab: function showActiveTab(level) {
+      console.log(level);
+      this.click = false;
+      $('.tab-pane').removeClass('active');
+      // const div = document.querySelector('.tab-content');
+      // console.log(div);
+      // div.classList.remove('active','show');
+      var element = document.getElementById(level.name + level.color);
+      element.classList.add('active');
+      element.classList.add('show');
+    },
     getLevelChart: function getLevelChart() {
       var _this = this;
       try {
@@ -14853,15 +14865,7 @@ var _hoisted_5 = {
   role: "tablist",
   "aria-orientation": "vertical"
 };
-var _hoisted_6 = {
-  "class": "nav-link mb-3 p-3 active shadow",
-  id: "v-pills-home-tab",
-  "data-toggle": "pill",
-  href: "#v-pills-home",
-  role: "tab",
-  "aria-controls": "v-pills-home",
-  "aria-selected": "true"
-};
+var _hoisted_6 = ["href", "aria-controls", "onClick"];
 var _hoisted_7 = {
   xmlns: "http://www.w3.org/2000/svg",
   viewBox: "0 0 100 100"
@@ -14885,64 +14889,100 @@ var _hoisted_10 = {
     "color": "#fff"
   }
 };
-var _hoisted_11 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "col-md-9"
-  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Tabs content "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "tab-content",
-    id: "v-pills-tabContent"
-  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "tab-pane fade shadow rounded bg-white show active p-5",
-    id: "v-pills-home",
-    role: "tabpanel",
-    "aria-labelledby": "v-pills-home-tab"
-  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h4", {
-    "class": "font-italic mb-4"
-  }, "Personal information"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
-    "class": "font-italic text-muted mb-2"
-  }, "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.")]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "tab-pane fade shadow rounded bg-white p-5",
-    id: "v-pills-profile",
-    role: "tabpanel",
-    "aria-labelledby": "v-pills-profile-tab"
-  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h4", {
-    "class": "font-italic mb-4"
-  }, "Bookings"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
-    "class": "font-italic text-muted mb-2"
-  }, "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.")]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "tab-pane fade shadow rounded bg-white p-5",
-    id: "v-pills-messages",
-    role: "tabpanel",
-    "aria-labelledby": "v-pills-messages-tab"
-  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h4", {
-    "class": "font-italic mb-4"
-  }, "Reviews"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
-    "class": "font-italic text-muted mb-2"
-  }, "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.")]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "tab-pane fade shadow rounded bg-white p-5",
-    id: "v-pills-settings",
-    role: "tabpanel",
-    "aria-labelledby": "v-pills-settings-tab"
-  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h4", {
-    "class": "font-italic mb-4"
-  }, "Confirm booking"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
-    "class": "font-italic text-muted mb-2"
-  }, "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.")])])], -1 /* HOISTED */);
+var _hoisted_11 = {
+  "class": "font-italic font-size-30 mb-2 display-mobile"
+};
+var _hoisted_12 = {
+  "class": "ms-2"
+};
+var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Token ");
+var _hoisted_14 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+    src: "/assets/coin2.png",
+    width: "18",
+    "class": "mb-4px"
+  }, null, -1 /* HOISTED */);
+});
+var _hoisted_15 = {
+  "class": "col-md-9 display-desktop"
+};
+var _hoisted_16 = ["id"];
+var _hoisted_17 = ["id"];
+var _hoisted_18 = {
+  "class": "font-italic font-size-30 mb-2"
+};
+var _hoisted_19 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+    src: "/assets/coin2.png",
+    width: "18",
+    "class": "mb-4px"
+  }, null, -1 /* HOISTED */);
+});
+var _hoisted_20 = ["id"];
+var _hoisted_21 = ["id"];
+var _hoisted_22 = {
+  "class": "font-italic font-size-30 mb-2"
+};
+var _hoisted_23 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+    src: "/assets/coin2.png",
+    width: "18",
+    "class": "mb-4px"
+  }, null, -1 /* HOISTED */);
 });
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("section", null, [_hoisted_1, _hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Tabs nav "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" start level "), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.level_chart, function (level, i) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
       key: i
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_6, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("svg", _hoisted_7, [_hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+      "class": "nav-link mb-3 p-3 active shadow",
+      id: "v-pills-home-tab",
+      "data-toggle": "pill",
+      href: '#' + level.name,
+      role: "tab",
+      "aria-controls": level.name,
+      "aria-selected": "true",
+      onClick: function onClick($event) {
+        return $options.showActiveTab(level);
+      }
+    }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("svg", _hoisted_7, [_hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
       fill: level.color,
       d: "M43.9419 4.777a12.1761 12.1761 90 0112.1262 0l15.2225 8.7391l15.163 8.624a12.1789 12.1789 90 016.1581 10.6102L92.5751 50.005l0.0365 17.2547a12.178 12.178 90 01-6.1581 10.6102l-15.163 8.624l-15.2225 8.7391a12.1761 12.1761 90 01-12.1262 0l-15.2225-8.7391l-15.163-8.624a12.1761 12.1761 90 01-6.1581-10.6102L7.4349 50.005l-0.0365-17.2547a12.177 12.177 90 016.1581-10.6102l15.163-8.624l15.2225-8.7391z",
       "class": "level-badge-stroke"
     }, null, 8 /* PROPS */, _hoisted_9), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("text", _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(i), 1 /* TEXT */)])), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
       "class": "font-weight-bold ms-2 text-uppercase",
       style: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeStyle)('color:' + level.color)
-    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(level.name), 5 /* TEXT, STYLE */)])]);
-  }), 128 /* KEYED_FRAGMENT */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" end level ")])]), _hoisted_11])]);
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(level.name), 5 /* TEXT, STYLE */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Levels " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(level.range) + " ", 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_12, [_hoisted_13, _hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(level.token), 1 /* TEXT */)])])], 8 /* PROPS */, _hoisted_6)]);
+  }), 128 /* KEYED_FRAGMENT */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" end level ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Tabs content "), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.level_chart, function (level2, i) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
+      key: i
+    }, [$data.click && level2.name === 'Bronze' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
+      key: 0,
+      "class": "tab-content",
+      id: level2.name
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+      "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(['tab-pane fade shadow rounded active show bg-white p-5']),
+      id: level2.name + level2.color,
+      role: "tabpanel",
+      "aria-labelledby": "v-pills-home-tab"
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", {
+      "class": "font-italic mb-1",
+      style: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeStyle)('color:' + level2.color)
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(level2.name), 5 /* TEXT, STYLE */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Levels " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(level2.range) + " | ", 1 /* TEXT */), _hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(level2.token), 1 /* TEXT */)])], 8 /* PROPS */, _hoisted_17)], 8 /* PROPS */, _hoisted_16)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
+      key: 1,
+      "class": "tab-content",
+      id: level2.name
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+      "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(['tab-pane fade shadow rounded bg-white p-5']),
+      id: level2.name + level2.color,
+      role: "tabpanel",
+      "aria-labelledby": "v-pills-home-tab"
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", {
+      "class": "font-italic mb-1",
+      style: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeStyle)('color:' + level2.color)
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(level2.name), 5 /* TEXT, STYLE */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Levels " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(level2.range) + " | ", 1 /* TEXT */), _hoisted_23, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(level2.token), 1 /* TEXT */)])], 8 /* PROPS */, _hoisted_21)], 8 /* PROPS */, _hoisted_20))]);
+  }), 128 /* KEYED_FRAGMENT */))])])]);
 }
 
 /***/ }),
@@ -19256,7 +19296,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\np[data-v-11ec6c76] {\n    opacity: .8;\n}\n.font-weight-bold[data-v-11ec6c76]  {\n    font-weight: 600;\n}\n.nav-link svg[data-v-11ec6c76] {\n    width: 40px;\n    height: 40px;\n}\n.nav-pills-custom .nav-link[data-v-11ec6c76] {\n    color: #aaa;\n    background: #000;\n    position: relative;\n}\n.nav-pills-custom .nav-link.active[data-v-11ec6c76] {\n    color: #45b649;\n    background: #242424;\n}\n\n\n/* Add indicator arrow for the active tab */\n@media (min-width: 992px) {\n.nav-pills-custom .nav-link[data-v-11ec6c76]::before {\n        content: '';\n        display: block;\n        border-top: 8px solid transparent;\n        border-left: 10px solid #242424;\n        border-bottom: 8px solid transparent;\n        position: absolute;\n        top: 50%;\n        right: -10px;\n        transform: translateY(-50%);\n        opacity: 0;\n}\n}\n.nav-pills-custom .nav-link.active[data-v-11ec6c76]::before {\n    opacity: 1;\n}\nbody[data-v-11ec6c76] {\n    min-height: 100vh;\n    background: linear-gradient(to left, #dce35b, #45b649);\n}\n\n\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.font-size-30[data-v-11ec6c76] {\n    font-size: 20px;\n    color: #fff !important;\n}\n.font-weight-bold[data-v-11ec6c76]  {\n    font-weight: 600;\n}\n.nav-link svg[data-v-11ec6c76] {\n    width: 40px;\n    height: 40px;\n}\n.nav-pills-custom .nav-link[data-v-11ec6c76] {\n    color: #aaa;\n    background: #000;\n    position: relative;\n}\n.nav-pills-custom .nav-link.active[data-v-11ec6c76] {\n    color: #45b649;\n    background: #242424;\n}\n\n\n/* Add indicator arrow for the active tab */\n@media (min-width: 992px) {\n.nav-pills-custom .nav-link[data-v-11ec6c76]::before {\n        content: '';\n        display: block;\n        border-top: 8px solid transparent;\n        border-left: 10px solid #242424;\n        border-bottom: 8px solid transparent;\n        position: absolute;\n        top: 50%;\n        right: -10px;\n        transform: translateY(-50%);\n        opacity: 0;\n}\n}\n.nav-pills-custom .nav-link.active[data-v-11ec6c76]::before {\n    opacity: 1;\n}\nbody[data-v-11ec6c76] {\n    min-height: 100vh;\n    background: linear-gradient(to left, #dce35b, #45b649);\n}\n\n/* Add indicator arrow for the active tab */\n@media (max-width: 600px) {\n.font-size-30[data-v-11ec6c76] {\n        font-size: 14px;\n        margin-left: 48px;\n}\n}\n\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
